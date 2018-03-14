@@ -1,0 +1,79 @@
+@font-face {
+	font-family: "Avenir Next";
+	src: url("fonts/avenir-next/AvenirNextLTPro-Regular.otf");
+}
+
+.app-logic-box img {
+	width: 60%;
+	margin-bottom: 5%;
+}
+
+.app-logic-box, .lipa-less-logo {
+	border: 1px solid #b2b2b2;
+}
+
+.app-logic-area {
+	text-align: -webkit-center;
+}
+
+.app-logic-box {
+	width: 60%;
+	padding: 5%;
+	margin-bottom: 2%;
+	box-shadow: 1px 1px 1px #6c757d;
+}
+
+body {
+	font-family: "Avenir Next", sans-serif;
+}
+
+.container {
+	margin: 0;
+	max-width: inherit;
+}
+
+.header {
+	background-color: #303133;
+	padding: 1%;
+}
+
+.header p, span {
+	color: white;
+}
+
+.lipa-less-btn {
+	text-decoration: none !important;
+	background-color: #00b39c;
+	color: white;
+	border-radius: 4px;
+}
+
+.lipa-less-btn:hover {
+	color: white;
+}
+
+.lipa-less-logo {
+	width: inherit;
+	margin: 10%;
+	border-radius: 50%;
+}
+
+.login-btn {
+	padding: 1.5%;
+	margin-left: 5px;
+}
+
+p {
+    color: #406e84;
+}
+
+.sign-up-btn {
+	padding: 1.5% 7%;
+	text-align: center;
+}
+
+#welcome-message {
+	text-align: center;
+	color: #303133;
+	font-size: 23px;
+}

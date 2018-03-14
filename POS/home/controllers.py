@@ -7,6 +7,7 @@ from ..constants import APP_NAME
 class Home(MethodView):
     @staticmethod
     def get():
+        # noinspection PyUnresolvedReferences
         return render_template("homepage.html", title=APP_NAME)
 
 
