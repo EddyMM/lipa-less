@@ -2,7 +2,7 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask
+from flask import Flask, send_from_directory
 
 from .home.controllers import home_bp
 from .utils import get_config_type
@@ -65,6 +65,20 @@ def init_app(app_instance):
 
 app = Flask(__name__)
 init_app(app)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    """
+        Browsers request for a favicon.ico file as the icon to use for the page
+        This controller will handle this request from the browser
+        :return:  App icon
+    """
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        'favicon.ico'
+    )
+
 
 # Register blueprints
 app.register_blueprint(home_bp)
