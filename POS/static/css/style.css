@@ -12,15 +12,13 @@
 	border: 1px solid #b2b2b2;
 }
 
-.app-logic-area {
-	text-align: -webkit-center;
-}
-
 .app-logic-box {
 	width: 60%;
 	padding: 5%;
 	margin-bottom: 2%;
 	box-shadow: 1px 1px 1px #6c757d;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 body {
