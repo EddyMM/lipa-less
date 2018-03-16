@@ -15,7 +15,12 @@ class SignUp(MethodView):
 signup_view = SignUp.as_view("signup")
 
 # Create sign up blueprint
-signup_bp = Blueprint("signup_bp", __name__, template_folder="templates")
+signup_bp = Blueprint(
+    name="signup_bp",
+    import_name=__name__,
+    template_folder="templates",
+    url_prefix="/signup",
+    static_folder="static")
 
 # Assign endpoint URLs
-signup_bp.add_url_rule("/signup", view_func=signup_view)
+signup_bp.add_url_rule("/", view_func=signup_view)

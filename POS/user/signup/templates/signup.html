@@ -4,12 +4,8 @@
     <!--suppress HtmlFormInputWithoutLabel, HtmlUnknownTarget -->
     <div class="container body">
         <div class="row content">
-            <nav class="side-nav-bar col-md-2">
-                <div class="col-md-12">
-                    <img class="lipa-less-logo"
-                         src="{{ url_for('static', filename='imgs/icons/LipaLess.png') }}">
-                </div>
-            </nav>
+
+            {% include "navigation.html" %}
 
             <div class="main-content col-md-10">
                 <div class="row">
@@ -135,4 +131,8 @@
             </div>
         </div>
     </div>
+
+    <!--Include the JS files (lazy loading)-->
+    <script src="{{ url_for('signup_bp.static', filename='js/signup.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nicescroll.min.js') }}"></script>
 {% endblock %}

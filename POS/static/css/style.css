@@ -114,6 +114,8 @@ html {
 .main-content {
 	padding: 2%;
 	text-align: center;
+	height: 100vh;
+	overflow-y: scroll;
 }
 
 .main-content p {
@@ -143,6 +145,13 @@ p {
 
 .signup-form .sign-up-btn, .clear-btn {
 	border: None;
+}
+
+.sticky {
+	position: sticky;
+	left: 0;
+	top: 0;
+	z-index: 1;
 }
 
 #welcome-message {
