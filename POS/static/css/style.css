@@ -8,8 +8,9 @@
 	margin-bottom: 5%;
 }
 
-.app-logic-box, .lipa-less-logo {
-	border: 1px solid #b2b2b2;
+.app-logic-box, .lipa-less-logo,
+.business-information, .owner-information {
+	border: 1px solid #bfbfbf;
 }
 
 .app-logic-box {
@@ -24,6 +25,37 @@
 
 body {
 	font-family: "Avenir Next", sans-serif;
+	height: inherit;
+}
+
+.body {
+	height: 100% !important;
+}
+
+.business-information, .owner-information {
+	padding-left: 4%;
+	padding-right: 4%;
+}
+
+.business-information .row,
+.owner-information .row {
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+.business-information p,
+.owner-information p {
+	color: #a8a8a8 !important;
+}
+
+.business-information label,
+.owner-information label {
+	margin-left: 20%;
+	font-weight: bold;
+}
+
+.clear-btn {
+	padding: 2% 4%;
 }
 
 .container {
@@ -31,13 +63,30 @@ body {
 	max-width: inherit;
 }
 
-.header {
+.content {
+	height: inherit;
+}
+
+.form-btn-area {
+	margin-top: 10% !important;
+	text-align: center;
+}
+
+h3 {
+	font-weight: bold;
+}
+
+.header, .side-nav-bar {
 	background-color: #303133;
 	padding: 1%;
 }
 
 .header p, span {
 	color: white;
+}
+
+html {
+	height: 100%;
 }
 
 .lipa-less-btn {
@@ -53,8 +102,8 @@ body {
 
 .lipa-less-logo {
 	width: inherit;
-	margin: 10%;
 	border-radius: 50%;
+	background-color: white;
 }
 
 .login-btn {
@@ -62,13 +111,38 @@ body {
 	margin-left: 5px;
 }
 
+.main-content {
+	padding: 2%;
+	text-align: center;
+}
+
+.main-content p {
+	color: black;
+}
+
+.owner-information {
+	margin-top: 3%;
+}
+
 p {
     color: #406e84;
+}
+
+.side-nav-bar {
+	height: 100% !important;
 }
 
 .sign-up-btn {
 	padding: 1.5% 7%;
 	text-align: center;
+}
+
+.signup-form {
+	text-align: left;
+}
+
+.signup-form .sign-up-btn, .clear-btn {
+	border: None;
 }
 
 #welcome-message {
