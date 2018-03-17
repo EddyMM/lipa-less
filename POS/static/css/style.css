@@ -46,11 +46,11 @@ body {
 .business-information p,
 .owner-information p {
 	color: #a8a8a8 !important;
+	margin-left: 2%;
 }
 
 .business-information label,
 .owner-information label {
-	margin-left: 20%;
 	font-weight: bold;
 }
 
@@ -141,6 +141,10 @@ p {
 
 .signup-form {
 	text-align: left;
+}
+
+.signup-form input {
+	width: inherit;
 }
 
 .signup-form .sign-up-btn, .clear-btn {
