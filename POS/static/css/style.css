@@ -95,10 +95,26 @@ html {
 	color: white;
 }
 
+/*General*/
 .lipa-less-logo {
-	width: inherit;
-	border-radius: 50%;
-	background-color: white;
+    width: inherit;
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* Mobile device */
+@media (max-width:768px) {
+    .lipa-less-logo {
+	    width: 10%;
+        height: inherit;
+    }
+}
+
+/* Desktop */
+@media (min-width:768px) {
+    .lipa-less-logo {
+	    margin-bottom: 30%;
+    }
 }
 
 .login-btn {
@@ -117,6 +133,10 @@ html {
 	color: black;
 }
 
+.navbar-nav li {
+	margin-bottom: 2%;
+}
+
 .owner-information {
 	margin-top: 3%;
 }
@@ -125,8 +145,70 @@ p {
     color: #406e84;
 }
 
+.main-content .row {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.nav-links-area {
+    margin-top: 10%;
+}
+
+.navbar {
+	align-items: unset;
+}
+
+.navbar-nav {
+	display: block;
+}
+
+.navbar-toggler {
+	float: right;
+}
+
+.navbar-toggler-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
 .side-nav-bar {
-	height: 100% !important;
+	position: sticky;
+	left: 0;
+	top: 0;
+	z-index: 1;
+}
+
+.side-nav-bar a {
+    width: inherit !important;
+    color: white;
+    font-size: 110%;
+}
+
+.side-nav-bar a:hover {
+    text-decoration: unset;
+    background-color: white;
+    color: #303133;
+}
+
+@media (max-width: 768px) {
+    .side-nav-bar {
+        height: unset;
+    }
+
+    .side-nav-bar a {
+        padding: 1%;
+    }
+}
+
+@media (min-width: 768px) {
+    .side-nav-bar {
+        height: 100%;
+    }
+
+    .side-nav-bar a {
+        padding: 5%;
+		border: 1px solid white;
+    	border-radius: 4px;
+    }
 }
 
 .sign-up-btn {
