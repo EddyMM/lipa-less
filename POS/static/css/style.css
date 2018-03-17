@@ -58,11 +58,6 @@ body {
 	padding: 2% 4%;
 }
 
-.container {
-	margin: 0;
-	max-width: inherit;
-}
-
 .content {
 	height: inherit;
 }
