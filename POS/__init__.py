@@ -6,6 +6,7 @@ from flask import Flask, send_from_directory
 
 from .home.controllers import home_bp
 from .user.signup.controllers import signup_bp
+from .user.login.controllers import login_bp
 from .utils import get_config_type
 from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR, APP_NAME
 
@@ -84,3 +85,4 @@ def favicon():
 # Register blueprints
 app.register_blueprint(home_bp)
 app.register_blueprint(signup_bp)
+app.register_blueprint(login_bp)

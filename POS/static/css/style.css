@@ -9,7 +9,8 @@
 }
 
 .app-logic-box, .lipa-less-logo,
-.business-information, .owner-information {
+.business-information, .owner-information,
+.login-information {
 	border: 1px solid #bfbfbf;
 }
 
@@ -32,13 +33,15 @@ body {
 	height: 100% !important;
 }
 
-.business-information, .owner-information {
+.business-information, .owner-information,
+.login-information {
 	padding-left: 4%;
 	padding-right: 4%;
 }
 
 .business-information .row,
-.owner-information .row {
+.owner-information .row,
+.login-information .row {
 	margin-top: 2%;
 	margin-bottom: 2%;
 }
@@ -50,7 +53,8 @@ body {
 }
 
 .business-information label,
-.owner-information label {
+.owner-information label,
+.login-information label {
 	font-weight: bold;
 }
 
@@ -122,6 +126,14 @@ html {
 	margin-left: 5px;
 }
 
+.login-information {
+	padding: 5%;
+}
+
+.login-form {
+	margin-top: 10%;
+}
+
 .main-content {
 	padding: 2%;
 	text-align: center;
@@ -158,6 +170,10 @@ p {
 	align-items: unset;
 }
 
+.navbar-brand a {
+	width: inherit;
+}
+
 .navbar-nav {
 	display: block;
 }
@@ -177,13 +193,13 @@ p {
 	z-index: 1;
 }
 
-.side-nav-bar a {
+.side-nav-bar .nav-link {
     width: inherit !important;
     color: white;
     font-size: 110%;
 }
 
-.side-nav-bar a:hover {
+.side-nav-bar .nav-link:hover {
     text-decoration: unset;
     background-color: white;
     color: #303133;
@@ -204,7 +220,7 @@ p {
         height: 100%;
     }
 
-    .side-nav-bar a {
+    .side-nav-bar .nav-link {
         padding: 5%;
 		border: 1px solid white;
     	border-radius: 4px;
@@ -216,15 +232,17 @@ p {
 	text-align: center;
 }
 
-.signup-form {
+.signup-form,
+.login-form {
 	text-align: left;
 }
 
+.login-information input,
 .signup-form input {
 	width: inherit;
 }
 
-.signup-form .sign-up-btn, .clear-btn {
+.sign-up-btn, .clear-btn {
 	border: None;
 }
 

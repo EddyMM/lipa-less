@@ -1,137 +1,127 @@
-{% extends "layout.html" %}
+{% extends "layout-with-sidebar.html" %}
 
 {% block body %}
-    <!--suppress HtmlFormInputWithoutLabel, HtmlUnknownTarget -->
-    <div class="container-fluid body">
-        <div class="row content">
+    <!--suppress HtmlUnknownTarget, HtmlFormInputWithoutLabel -->
+    <div class="row">
+        <div class="col-md-11 col-12">
+            <h3>SIGN UP</h3>
+        </div>
+    </div>
 
-            {% include "navigation.html" %}
+    <div class="row">
+        <div class="offset-md-2 col-md-8 col-12">
+            <div style="text-align: left" class="col-md-12">
+                <p>
+                    Already have an account? <a href="/login">Login</a>
+                </p>
+            </div>
 
-            <div class="main-content col-md-9 col-12">
+            <form class="signup-form container-fluid">
+                <!--Business Information section-->
                 <div class="row">
-                    <div class="col-md-11 col-12">
-                        <h3>SIGN UP</h3>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="offset-md-2 col-md-9 col-12">
-                        <div style="text-align: left" class="col-md-12">
-                            <p>
-                                Already have an account? <a href="#">Login</a>
-                            </p>
+                    <div class="business-information col-md-12 col-12">
+                        <div class="row">
+                            <p>Business information</p>
+                        </div>
+                        <!--Business name-->
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <label>
+                                    Business name
+                                </label>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <input name="business-name" type="text">
+                            </div>
                         </div>
 
-                        <form class="signup-form container-fluid">
-                            <!--Business Information section-->
-                            <div class="row">
-                                <div class="business-information col-md-12 col-12">
-                                    <div class="row">
-                                        <p>Business information</p>
-                                    </div>
-                                    <!--Business name-->
-                                    <div class="row">
-                                        <div class="col-md-6 col-12">
-                                            <label>
-                                                Business name
-                                            </label>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                            <input name="business-name" type="text">
-                                        </div>
-                                    </div>
-
-                                    <!--Business contact number-->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>
-                                                Contact number
-                                            </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input name="contact-number" type="text">
-                                        </div>
-                                    </div>
-                                </div>
+                        <!--Business contact number-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    Contact number
+                                </label>
                             </div>
-                            <!--End of Business Information section-->
-
-                            <!--Owner information section-->
-                            <div class="row">
-                                <div class="owner-information col-md-12">
-                                    <div class="row">
-                                        <p>Owner information</p>
-                                    </div>
-                                    <!--Owner name-->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>
-                                                Name
-                                            </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input name="owner-name" type="text">
-                                        </div>
-                                    </div>
-
-                                    <!--Owner email-->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>
-                                                Email
-                                            </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input name="owner-email" type="email">
-                                        </div>
-                                    </div>
-
-                                    <!--Owner password-->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>
-                                                Password
-                                            </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input name="owner-password" type="text">
-                                        </div>
-                                    </div>
-
-                                    <!--Confirm password-->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>
-                                                Confirm password
-                                            </label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input name="owner-confirm-password" type="text">
-                                        </div>
-                                    </div>
-
-                                    <!--Signup and Clear-->
-                                    <div class="form-btn-area row">
-                                        <div class="col-md-6">
-                                            <input class="sign-up-btn lipa-less-btn"
-                                                   value="SIGN UP"
-                                                   type="submit">
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <input class="clear-btn" type="reset" value="Clear">
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-md-6">
+                                <input name="contact-number" type="text">
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <!--End of Business Information section-->
+
+                <!--Owner information section-->
+                <div class="row">
+                    <div class="owner-information col-md-12">
+                        <div class="row">
+                            <p>Owner information</p>
+                        </div>
+                        <!--Owner name-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    Name
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input name="owner-name" type="text">
+                            </div>
+                        </div>
+
+                        <!--Owner email-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    Email
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input name="owner-email" type="email">
+                            </div>
+                        </div>
+
+                        <!--Owner password-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    Password
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input name="owner-password" type="text">
+                            </div>
+                        </div>
+
+                        <!--Confirm password-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    Confirm password
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input name="owner-confirm-password" type="text">
+                            </div>
+                        </div>
+
+                        <!--Signup and Clear-->
+                        <div class="form-btn-area row">
+                            <div class="col-md-6">
+                                <input class="sign-up-btn lipa-less-btn"
+                                       value="SIGN UP"
+                                       type="submit">
+                            </div>
+
+                            <div class="col-md-6">
+                                <input class="clear-btn" type="reset" value="Clear">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
     <!--Include the JS files (lazy loading)-->
     <script src="{{ url_for('signup_bp.static', filename='js/signup.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.nicescroll.min.js') }}"></script>
 {% endblock %}
