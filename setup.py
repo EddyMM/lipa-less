@@ -15,6 +15,8 @@ setup(
         "Jinja2==2.10",
         "MarkupSafe==1.0",
         "Werkzeug==0.14.1",
+        "psycopg2-binary==2.7.4",
+        "SQLAlchemy==1.2.5",
     ],
     author="Eddy Mwenda, Jeff Ndungu, Catherine Nyambura",
     author_email="mwendaeddy@gmail.com, jeffkim207@gmail.com, cnyambura043@gmail.com",
