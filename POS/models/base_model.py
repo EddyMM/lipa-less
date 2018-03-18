@@ -40,6 +40,24 @@ try:
     # BaseModel.metadata.drop_all()
     BaseModel.metadata.create_all()
 
+    # Load default user roles
+    default_roles = Role.load_roles_from_config()
+
+    for role_id, role in default_roles.items():
+        role_name = role["name"]
+        role_description = role["description"]
+
+        # Check if role already exists
+        existing_role = db_session.query(Role).filter(
+            Role.name == role_name
+        ).first()
+
+        # If it doesn't create it
+        if not existing_role:
+            role = Role(role_name, role_description)
+            db_session.add(role)
+            db_session.commit()
+
 except AttributeError as attr_err:
     logger = logging.getLogger()
     logger.log(

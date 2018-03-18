@@ -1,6 +1,7 @@
+import yaml
 from sqlalchemy import Column, Integer, String
 
-from .base_model import BaseModel
+from POS.models.base_model import BaseModel
 
 
 class Role(BaseModel):
@@ -22,3 +23,8 @@ class Role(BaseModel):
         return "Role<name=%s>" % (
             self.name
         )
+
+    @staticmethod
+    def load_roles_from_config():
+        with open("POS/config/roles.yaml", "rb") as roles_yaml:
+            return yaml.load(roles_yaml)
