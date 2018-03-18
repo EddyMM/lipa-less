@@ -11,9 +11,17 @@ from sqlalchemy.orm import sessionmaker
 
 from ..constants import DATABASE_URL_ENV_NAME, DATABASE_URL
 
-
 # Create the BaseModel model through which all other models will be declared
 BaseModel = declarative_base()
+
+# Import the various models
+
+# noinspection PyUnresolvedReferences
+from .user import User
+# noinspection PyUnresolvedReferences
+from .business import Business
+# noinspection PyUnresolvedReferences
+from .role import Role
 
 try:
     db_engine = create_engine(DATABASE_URL)

@@ -17,7 +17,26 @@ class SignUp(MethodView):
 
         if user_request:
             if SignUp.request_is_filled(user_request):
-                return "All is well"
+                # Business info
+                business_name = user_request["business_name"]
+                contact_number = user_request["contact_number"]
+
+                # Owner info
+                name = user_request["owner_name"]
+                email = user_request["owner_email"]
+                password = user_request["password"]
+
+                print(
+                    "business: %s, contact#: %s, name: %s, email: %s, password: %s" % (
+                        business_name,
+                        contact_number,
+                        name,
+                        email,
+                        password
+                    )
+                )
+
+                return make_response("Owner created", 200)
             else:
                 return make_response(
                     "Fill in all details",
@@ -36,17 +55,22 @@ class SignUp(MethodView):
 
     @staticmethod
     def request_is_filled(client_request):
+        """
+        Checks to confirm that the necessary fields exist and are filled
+        :param client_request: The JSON request
+        :return: True if exists and are filled, False otherwise
+        """
         return (
                 "business_name" and
                 "contact_number" and
                 "owner_name" and
                 "owner_email" and
-                "owner_password" in client_request.keys()) and \
+                "password" in client_request.keys()) and \
                (client_request["business_name"] not in ["", None]) and \
                (client_request["contact_number"] not in ["", None]) and \
                (client_request["owner_name"] not in ["", None]) and \
                (client_request["owner_email"] not in ["", None]) and \
-               (client_request["owner_password"] not in ["", None])
+               (client_request["password"] not in ["", None])
 
 
 # Create signup view
