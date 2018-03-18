@@ -1,9 +1,9 @@
 import os
-from .constants import APP_NAME
+from .constants import APP_NAME, DATABASE_URL
 
 
 class BaseConfig(object):
-    SQLALCHEMY_DATABASE_URI = os.environ.get(APP_NAME + "_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SECRET_KEY = os.environ.get(APP_NAME + "_SECRET_KEY")
 
 

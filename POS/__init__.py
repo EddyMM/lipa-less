@@ -38,6 +38,9 @@ def config_app(app_instance):
     if config_file_path and os.path.exists(config_file_path):
         app_instance.config.from_pyfile(config_file_path)
 
+    # Ensure flask doesn't redirect to trailing slach endpoint
+    app_instance.url_map.strict_slashes = False
+
 
 def set_up_logging(app_instance):
     """
