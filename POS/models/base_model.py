@@ -30,9 +30,11 @@ try:
     BaseModel.metadata.bind = db_engine
 
     # Create a session object to be used by the app to do any DB transaction
-    db_session = sessionmaker(
+    Session = sessionmaker(
         bind=db_engine
     )
+
+    db_session = Session()
 
     # Create all structures
     # BaseModel.metadata.drop_all()

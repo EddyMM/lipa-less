@@ -3,6 +3,9 @@ from flask.views import MethodView
 
 from ...constants import APP_NAME
 from ...models.base_model import db_session
+from ...models.user import User
+from ...models.business import Business
+from ...models.role import Role
 
 
 class SignUp(MethodView):
@@ -17,6 +20,8 @@ class SignUp(MethodView):
 
         if user_request:
             if SignUp.request_is_filled(user_request):
+                print(user_request)
+
                 # Business info
                 business_name = user_request["business_name"]
                 contact_number = user_request["contact_number"]
@@ -26,15 +31,25 @@ class SignUp(MethodView):
                 email = user_request["owner_email"]
                 password = user_request["password"]
 
-                print(
-                    "business: %s, contact#: %s, name: %s, email: %s, password: %s" % (
-                        business_name,
-                        contact_number,
-                        name,
-                        email,
-                        password
-                    )
+                # Create user data object
+                user = User(
+                    name=name,
+                    email=email,
+                    password=password
                 )
+
+                # Create business data object
+                business = Business(
+                    name=business_name,
+                    contact_no=contact_number,
+                )
+
+                # Add these objects to the session
+                db_session.add(user)
+                db_session.add(business)
+
+                # Commit the information
+                db_session.commit()
 
                 return make_response("Owner created", 200)
             else:
