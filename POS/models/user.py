@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from .base_model import BaseModel
 
@@ -15,6 +16,12 @@ class User(BaseModel):
     name = Column(String)
     email = Column(String, unique=True)
     password = Column(String)
+
+    # Specify relationships
+    businesses = relationship(
+        "Business",
+        back_populates="owner"
+    )
 
     def __init__(self, name, email, password):
         self.name = name

@@ -43,19 +43,20 @@ class SignUp(MethodView):
                     password=password
                 )
 
-                # Add user to the database
-                db_session.add(user)
-                db_session.commit()
-
                 # Create business data object
                 business = Business(
                     name=business_name,
                     contact_no=contact_number,
-                    emp_id=user.emp_id
                 )
+
+                # Associate the business with the owner
+                business.owner = user
 
                 # Add business info to database
                 db_session.add(business)
+                # Add user to the database
+                db_session.add(user)
+
                 db_session.commit()
 
                 # Assign an "owner" role to the user

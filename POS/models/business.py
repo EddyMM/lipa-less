@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 from .base_model import BaseModel
 
@@ -18,10 +19,11 @@ class Business(BaseModel):
         ForeignKey("lipalessuser.emp_id")
     )
 
-    def __init__(self, name, contact_no, emp_id):
+    owner = relationship("User", back_populates="businesses")
+
+    def __init__(self, name, contact_no):
         self.name = name
         self.contact_number = contact_no
-        self.emp_id = emp_id
 
     def __repr__(self):
         return "Business<name=%s, contact_number=%s>" % (
