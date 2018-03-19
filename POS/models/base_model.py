@@ -22,6 +22,8 @@ from .user import User
 from .business import Business
 # noinspection PyUnresolvedReferences
 from .role import Role
+# noinspection PyUnresolvedReferences
+from .user_role import UserRole
 
 try:
     db_engine = create_engine(DATABASE_URL)

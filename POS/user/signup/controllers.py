@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, request, logging, make_response
 from flask.views import MethodView
 
-from ...constants import APP_NAME
+from ...constants import APP_NAME, OWNER_ROLE_NAME
 from ...models.base_model import db_session
 from ...models.user import User
 from ...models.business import Business
 from ...models.role import Role
+from ...models.user_role import UserRole
 
 
 class SignUp(MethodView):
@@ -20,7 +21,11 @@ class SignUp(MethodView):
 
         if user_request:
             if SignUp.request_is_filled(user_request):
-                print(user_request)
+                if SignUp.user_exists(user_request["owner_email"]):
+                    return make_response(
+                        "User by that email already exists",
+                        409
+                    )
 
                 # Business info
                 business_name = user_request["business_name"]
@@ -38,17 +43,48 @@ class SignUp(MethodView):
                     password=password
                 )
 
+                # Add user to the database
+                db_session.add(user)
+                db_session.commit()
+
                 # Create business data object
                 business = Business(
                     name=business_name,
                     contact_no=contact_number,
+                    emp_id=user.emp_id
                 )
 
-                # Add these objects to the session
-                db_session.add(user)
+                # Add business info to database
                 db_session.add(business)
+                db_session.commit()
 
-                # Commit the information
+                # Assign an "owner" role to the user
+                # First find the owner role object
+                owner_role = db_session.query(Role).filter(
+                    Role.name == OWNER_ROLE_NAME
+                ).first()
+
+                if not owner_role:
+                    # Owner role has not been created yet, so log this occurrence
+                    # and send a 500 error
+                    error_msg = "Problem creating owner account. We are working on it"
+                    logging.getLogger().log(
+                        logging.ERROR,
+                        error_msg
+                    )
+                    return make_response(
+                        error_msg,
+                        500
+                    )
+
+                # Owner exists so add it to the user-role model
+                user_role = UserRole(
+                    emp_id=user.emp_id,
+                    role_id=owner_role.id
+                )
+
+                # Assign role in database
+                db_session.add(user_role)
                 db_session.commit()
 
                 return make_response("Owner created", 200)
@@ -86,6 +122,19 @@ class SignUp(MethodView):
                (client_request["owner_name"] not in ["", None]) and \
                (client_request["owner_email"] not in ["", None]) and \
                (client_request["password"] not in ["", None])
+
+    @staticmethod
+    def user_exists(email):
+        """
+            Checks if the user already has an account
+        :param email: User email
+        :return: True if they have an account, False otherwise
+        """
+        if db_session.query(User).filter(
+            User.email == email
+        ).first():
+            return True
+        return False
 
 
 # Create signup view
