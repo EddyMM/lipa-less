@@ -39,7 +39,7 @@ try:
     db_session = Session()
 
     # Create all structures
-    BaseModel.metadata.drop_all()
+    # BaseModel.metadata.drop_all()
     BaseModel.metadata.create_all()
 
     # Load default user roles
