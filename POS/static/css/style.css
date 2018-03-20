@@ -33,6 +33,10 @@ body {
 	height: 100% !important;
 }
 
+.business-information {
+	margin-top: 1%;
+}
+
 .business-information, .owner-information,
 .login-information {
 	padding-left: 4%;
@@ -60,6 +64,13 @@ body {
 
 .clear-btn {
 	padding: 2% 4%;
+}
+
+#create-business-btn {
+	width: inherit;
+	padding: 1% 6%;
+	margin-top: 5%;
+	margin-bottom: 5%;
 }
 
 .content {
@@ -92,11 +103,14 @@ html {
 	text-decoration: none !important;
 	background-color: #00b39c;
 	color: white;
+	border: none;
+	padding: 2% 4%;
 	border-radius: 4px;
 }
 
 .lipa-less-btn:hover {
 	color: white;
+	cursor: pointer;
 }
 
 /*General*/
@@ -143,6 +157,10 @@ html {
 
 .main-content p {
 	color: black;
+}
+
+.modal-content {
+	padding: 1%;
 }
 
 .navbar-nav li {

@@ -1,5 +1,6 @@
 import yaml
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from POS.models.base_model import BaseModel
 
@@ -14,6 +15,11 @@ class Role(BaseModel):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     description = Column(String)
+
+    user_businesses = relationship(
+        "UserBusiness",
+        back_populates="role"
+    )
 
     def __init__(self, name, description):
         self.name = name

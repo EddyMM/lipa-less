@@ -1,12 +1,9 @@
 from flask import Blueprint, render_template, request, logging, make_response
 from flask.views import MethodView
 
-from ...constants import APP_NAME, OWNER_ROLE_NAME
+from ...constants import APP_NAME
 from ...models.base_model import db_session
 from ...models.user import User
-from ...models.business import Business
-from ...models.role import Role
-from ...models.user_role import UserRole
 
 
 class SignUp(MethodView):
@@ -21,19 +18,15 @@ class SignUp(MethodView):
 
         if user_request:
             if SignUp.request_is_filled(user_request):
-                if SignUp.user_exists(user_request["owner_email"]):
+                if SignUp.user_exists(user_request["email"]):
                     return make_response(
                         "User by that email already exists",
                         409
                     )
 
-                # Business info
-                business_name = user_request["business_name"]
-                contact_number = user_request["contact_number"]
-
-                # Owner info
-                name = user_request["owner_name"]
-                email = user_request["owner_email"]
+                # User info
+                name = user_request["name"]
+                email = user_request["email"]
                 password = user_request["password"]
 
                 # Create user data object
@@ -43,52 +36,11 @@ class SignUp(MethodView):
                     password=password
                 )
 
-                # Create business data object
-                business = Business(
-                    name=business_name,
-                    contact_no=contact_number,
-                )
-
-                # Associate the business with the owner
-                business.owner = user
-
-                # Add business info to database
-                db_session.add(business)
                 # Add user to the database
                 db_session.add(user)
-
                 db_session.commit()
 
-                # Assign an "owner" role to the user
-                # First find the owner role object
-                owner_role = db_session.query(Role).filter(
-                    Role.name == OWNER_ROLE_NAME
-                ).first()
-
-                if not owner_role:
-                    # Owner role has not been created yet, so log this occurrence
-                    # and send a 500 error
-                    error_msg = "Problem creating owner account. We are working on it"
-                    logging.getLogger().log(
-                        logging.ERROR,
-                        error_msg
-                    )
-                    return make_response(
-                        error_msg,
-                        500
-                    )
-
-                # Owner exists so add it to the user-role model
-                user_role = UserRole(
-                    emp_id=user.emp_id,
-                    role_id=owner_role.id
-                )
-
-                # Assign role in database
-                db_session.add(user_role)
-                db_session.commit()
-
-                return make_response("Owner created", 200)
+                return make_response("User created", 200)
             else:
                 return make_response(
                     "Fill in all details",
@@ -112,16 +64,11 @@ class SignUp(MethodView):
         :param client_request: The JSON request
         :return: True if exists and are filled, False otherwise
         """
-        return (
-                "business_name" and
-                "contact_number" and
-                "owner_name" and
-                "owner_email" and
+        return ("name" in client_request.keys() and
+                "email" in client_request.keys() and
                 "password" in client_request.keys()) and \
-               (client_request["business_name"] not in ["", None]) and \
-               (client_request["contact_number"] not in ["", None]) and \
-               (client_request["owner_name"] not in ["", None]) and \
-               (client_request["owner_email"] not in ["", None]) and \
+               (client_request["name"] not in ["", None]) and \
+               (client_request["email"] not in ["", None]) and \
                (client_request["password"] not in ["", None])
 
     @staticmethod

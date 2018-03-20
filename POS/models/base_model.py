@@ -23,7 +23,7 @@ from .business import Business
 # noinspection PyUnresolvedReferences
 from .role import Role
 # noinspection PyUnresolvedReferences
-from .user_role import UserRole
+from .user_business import UserBusiness
 
 try:
     db_engine = create_engine(DATABASE_URL)
@@ -39,7 +39,7 @@ try:
     db_session = Session()
 
     # Create all structures
-    # BaseModel.metadata.drop_all()
+    BaseModel.metadata.drop_all()
     BaseModel.metadata.create_all()
 
     # Load default user roles

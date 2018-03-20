@@ -3,10 +3,17 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask, send_from_directory
+from flask_login import LoginManager
 
 from .home.controllers import home_bp
 from .user.signup.controllers import signup_bp
 from .user.login.controllers import login_bp
+from .business.controllers import business_bp
+from .user.logout.controllers import logout_bp
+
+from .models.base_model import db_session
+from .models.user import User
+
 from .utils import get_config_type
 from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR, APP_NAME
 
@@ -71,6 +78,16 @@ def init_app(app_instance):
 app = Flask(__name__)
 init_app(app)
 
+# Create login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login_bp.login"
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db_session.query(User).get(user_id)
+
 
 @app.route("/favicon.ico")
 def favicon():
@@ -89,3 +106,5 @@ def favicon():
 app.register_blueprint(home_bp)
 app.register_blueprint(signup_bp)
 app.register_blueprint(login_bp)
+app.register_blueprint(logout_bp)
+app.register_blueprint(business_bp)

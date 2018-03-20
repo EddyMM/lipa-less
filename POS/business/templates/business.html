@@ -1,0 +1,104 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <!--suppress HtmlUnknownTarget, HtmlFormInputWithoutLabel -->
+    <div class="row">
+        <div class="col-md-11 col-12">
+            <h3>SELECT BUSINESS</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="offset-md-1 col-md-3 col-12">
+            <button id="create-business-btn" class="lipa-less-btn">
+                <b>CREATE BUSINESS</b>
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5 col-12">
+            <p>
+                <b>Select business to login to</b>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="offset-md-1 col-md-3 col-12">
+            <form class="select-business-form container-fluid">
+                <!--TODO: Show list if any business exists-->
+                <p>List goes here</p>
+            </form>
+        </div>
+    </div>
+
+    <!--Add Business Modal -->
+    <div class="modal fade" id="add-business-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Business
+                    </h4>
+                </div>
+
+                <form class="add-business-form container-fluid"
+                      method="POST"
+                      action="#">
+                    <!--Business Information section-->
+                    <div class="row">
+                        <div class="business-information col-md-12 col-12">
+                            <div class="row">
+                                <p>Business information</p>
+                            </div>
+                            <!--Business name-->
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <label>
+                                        Business name
+                                    </label>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <input name="business-name" type="text" required>
+                                </div>
+                            </div>
+
+                            <!--Business contact number-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>
+                                        Contact number
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input name="contact-number" type="text" required>
+                                </div>
+                            </div>
+
+                            <!--Add business and Clear-->
+                            <div class="form-btn-area row">
+                                <div class="col-md-6">
+                                    <input class="lipa-less-btn"
+                                           value="ADD"
+                                           type="submit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="clear-btn" type="reset" value="Clear" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of Business Information section-->
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+
+
+    <!--Include the JS files (lazy loading)-->
+    <script src="{{ url_for('business_bp.static', filename='js/business.js') }}"></script>
+{% endblock %}

@@ -1,11 +1,12 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
 
 from .base_model import BaseModel
 
 
-class User(BaseModel):
+class User(BaseModel, UserMixin):
     """
         Represents a Lipa Less User, may be an owner, admin or cashier
     """
@@ -19,8 +20,8 @@ class User(BaseModel):
 
     # Specify relationships
     businesses = relationship(
-        "Business",
-        back_populates="owner"
+        "UserBusiness",
+        back_populates="user"
     )
 
     def __init__(self, name, email, password):
@@ -33,6 +34,9 @@ class User(BaseModel):
             self.name,
             self.email
         )
+
+    def get_id(self):
+        return self.emp_id
 
     def confirm_password(self, proposed_password):
         """
