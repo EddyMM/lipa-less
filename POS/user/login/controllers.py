@@ -24,7 +24,7 @@ class Login(AppView):
             Validate user identity
         :return:
         """
-        user_request = request.form
+        user_request = request.get_json()
 
         if not user_request:
             error = "Request mime type for JSON not specified"
@@ -48,7 +48,6 @@ class Login(AppView):
         password = user_request["password"]
 
         # Find user by that email
-        # TODO: handle user login
         user = AppDB.db_session.query(User).filter(
             User.email == email
         ).first()
