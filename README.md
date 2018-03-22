@@ -36,6 +36,10 @@ For example
 
 `export LipaLess_DATABASE_URL="postgresql+psycopg2://lipaless_admin:lipaless_pw@localhost/lipaless_db"`
 
+N/B: If you want to run tests on the application, create another database (usually called a mock database)
+and export its url using the `<APP_NAME>_TEST_DATABSE_URL` environment variable e.g.
+`export LipaLess_TEST_DATABASE_URL="postgresql+psycopg2://lipaless_test_admin:lipaless_pw@localhost/lipaless_test_db"`
+
 
 The app also needs a secret key to be used to encrypt passwords
 

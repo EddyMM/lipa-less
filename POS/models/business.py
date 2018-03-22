@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
-from .base_model import BaseModel
+from .base_model import AppDB
 
 
-class Business(BaseModel):
+class Business(AppDB.BaseModel):
     """
         Represents a Lipa Less Business
     """

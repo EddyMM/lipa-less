@@ -11,11 +11,11 @@ from .user.login.controllers import login_bp
 from .business.controllers import business_bp
 from .user.logout.controllers import logout_bp
 
-from .models.base_model import db_session
+from .models.base_model import  AppDB
 from .models.user import User
 
 from .utils import get_config_type
-from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR, APP_NAME
+from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR, TESTING_CONFIG_VAR, APP_NAME
 
 
 def config_app(app_instance):
@@ -35,7 +35,8 @@ def config_app(app_instance):
     # Possible configurations as a dictionary
     configs = {
         DEV_CONFIG_VAR: "POS.config.DevelopmentConfig",
-        PROD_CONFIG_VAR: "POS.config.ProductionConfig"
+        PROD_CONFIG_VAR: "POS.config.ProductionConfig",
+        TESTING_CONFIG_VAR: "POS.config.TestingConfig"
     }
 
     app_instance.config.from_object(configs[config_type])
@@ -45,7 +46,7 @@ def config_app(app_instance):
     if config_file_path and os.path.exists(config_file_path):
         app_instance.config.from_pyfile(config_file_path)
 
-    # Ensure flask doesn't redirect to trailing slach endpoint
+    # Ensure flask doesn't redirect to trailing slash endpoint
     app_instance.url_map.strict_slashes = False
 
 
@@ -78,6 +79,10 @@ def init_app(app_instance):
 app = Flask(__name__)
 init_app(app)
 
+# Initialize the DB
+with app.app_context():
+    AppDB.init_db()
+
 # Create login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -86,7 +91,7 @@ login_manager.login_view = "login_bp.login"
 
 @login_manager.user_loader
 def load_user(user_id):
-    return db_session.query(User).get(user_id)
+    return AppDB.db_session.query(User).get(user_id)
 
 
 @app.route("/favicon.ico")

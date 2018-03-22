@@ -3,10 +3,10 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 
-from .base_model import BaseModel
+from .base_model import AppDB
 
 
-class User(BaseModel, UserMixin):
+class User(AppDB.BaseModel, UserMixin):
     """
         Represents a Lipa Less User, may be an owner, admin or cashier
     """

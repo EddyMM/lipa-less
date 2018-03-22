@@ -1,11 +1,15 @@
+import os
+
 import yaml
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
+from flask import logging
 
-from POS.models.base_model import BaseModel
+from POS.models.base_model import AppDB
+from ..constants import ROLES_YAML_ENV_VAR
 
 
-class Role(BaseModel):
+class Role(AppDB.BaseModel):
     """
         Represents the various roles played by users
     """
@@ -32,5 +36,23 @@ class Role(BaseModel):
 
     @staticmethod
     def load_roles_from_config():
-        with open("POS/config/roles.yaml", "rb") as roles_yaml:
-            return yaml.load(roles_yaml)
+        local_roles_yaml_path = os.environ.get(ROLES_YAML_ENV_VAR)
+
+        roles = Role.get_dict_from_yaml(local_roles_yaml_path)
+
+        if not roles:
+            logging.getLogger().log(
+                logging.ERROR,
+                "ROLES_YAML_PATH not specified, trying to load from in-app config"
+            )
+
+            in_app_roles_yaml_path = "POS/config/roles.yaml"
+            roles = Role.get_dict_from_yaml(in_app_roles_yaml_path)
+        return roles
+
+    @staticmethod
+    def get_dict_from_yaml(yaml_path):
+        if yaml_path and os.path.exists(yaml_path):
+            with open(yaml_path, "rb") as roles_yaml:
+                return yaml.load(roles_yaml)
+        return None

@@ -1,12 +1,13 @@
-from flask import Blueprint, render_template, request, logging, make_response
-from flask.views import MethodView
+from flask import Blueprint, render_template, request, redirect, url_for, logging
+from flask_login import login_user
 
+from ...base.app_view import AppView
 from ...constants import APP_NAME
-from ...models.base_model import db_session
+from ...models.base_model import AppDB
 from ...models.user import User
 
 
-class SignUp(MethodView):
+class SignUp(AppView):
     @staticmethod
     def get():
         # noinspection PyUnresolvedReferences
@@ -19,9 +20,9 @@ class SignUp(MethodView):
         if user_request:
             if SignUp.request_is_filled(user_request):
                 if SignUp.user_exists(user_request["email"]):
-                    return make_response(
-                        "User by that email already exists",
-                        409
+                    return SignUp.send_response(
+                        msg="User by that email already exists",
+                        status=409
                     )
 
                 # User info
@@ -37,14 +38,31 @@ class SignUp(MethodView):
                 )
 
                 # Add user to the database
-                db_session.add(user)
-                db_session.commit()
+                AppDB.db_session.add(user)
+                AppDB.db_session.commit()
 
-                return make_response("User created", 200)
+                # Log event
+                logger = logging.getLogger()
+                logger.setLevel(logging.DEBUG)
+                logger.log(
+                    logging.DEBUG,
+                    "User(%s), Email(%s) created" % (
+                        user.name,
+                        user.email
+                    )
+                )
+
+                # log the user in
+                login_user(user)
+
+                return SignUp.send_response(
+                    msg="User created",
+                    status=200
+                )
             else:
-                return make_response(
-                    "Fill in all details",
-                    404
+                return SignUp.send_response(
+                    msg="Fill in all details",
+                    status=400
                 )
         else:
             error = "Request mime type for JSON not specified"
@@ -52,9 +70,9 @@ class SignUp(MethodView):
                 logging.ERROR,
                 error
             )
-            return make_response(
-                error,
-                404
+            return SignUp.send_response(
+                msg=error,
+                status=400
             )
 
     @staticmethod
@@ -78,7 +96,7 @@ class SignUp(MethodView):
         :param email: User email
         :return: True if they have an account, False otherwise
         """
-        if db_session.query(User).filter(
+        if AppDB.db_session.query(User).filter(
             User.email == email
         ).first():
             return True

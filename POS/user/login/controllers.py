@@ -1,13 +1,15 @@
-from flask.views import MethodView
-from flask import Blueprint, render_template, request, make_response, logging
+from flask import Blueprint, render_template, request, logging
 from flask_login import login_user
 
 from ...constants import APP_NAME
-from ...models.base_model import db_session
+
+from ...base.app_view import AppView
+
+from ...models.base_model import AppDB
 from ...models.user import User
 
 
-class Login(MethodView):
+class Login(AppView):
     @staticmethod
     def get():
         # noinspection PyUnresolvedReferences
@@ -22,7 +24,7 @@ class Login(MethodView):
             Validate user identity
         :return:
         """
-        user_request = request.get_json()
+        user_request = request.form
 
         if not user_request:
             error = "Request mime type for JSON not specified"
@@ -30,15 +32,15 @@ class Login(MethodView):
                 logging.ERROR,
                 error
             )
-            return make_response(
-                error,
-                404
+            return Login.send_response(
+                msg=error,
+                status=404
             )
 
         if not Login.request_is_filled(user_request):
-            return make_response(
-                "Fill in all details",
-                404
+            return Login.send_response(
+                msg="Fill in all details",
+                status=404
             )
 
         # User info
@@ -47,14 +49,14 @@ class Login(MethodView):
 
         # Find user by that email
         # TODO: handle user login
-        user = db_session.query(User).filter(
+        user = AppDB.db_session.query(User).filter(
             User.email == email
         ).first()
 
         if not user:
-            return make_response(
-                "User by that email not found",
-                404
+            return Login.send_response(
+                msg="User by that email not found",
+                status=404
             )
 
         # User exists, so confirm password
@@ -62,14 +64,14 @@ class Login(MethodView):
             # Register user with login manager
             login_user(user)
 
-            return make_response(
-                "Successful login",
-                200
+            return Login.send_response(
+                msg="Successful login",
+                status=200
             )
         else:
-            return make_response(
-                "Wrong password",
-                403
+            return Login.send_response(
+                msg="Wrong password",
+                status=403
             )
 
     @staticmethod

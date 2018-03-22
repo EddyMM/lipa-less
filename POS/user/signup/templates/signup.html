@@ -16,14 +16,19 @@
                 </p>
             </div>
 
-            <form class="signup-form container-fluid">
-                <!--Owner information section-->
+            <form id="signup-form" class="container-fluid">
+                <!--User information section-->
                 <div class="row">
-                    <div class="owner-information col-md-12">
+                    <div class="user-information col-md-12">
                         <div class="row">
-                            <p>Owner information</p>
+                            <p>User information</p>
                         </div>
-                        <!--Owner name-->
+
+                        <div class="row">
+                            <p id="server-responses"></p>
+                        </div>
+
+                        <!--User name-->
                         <div class="row">
                             <div class="col-md-6">
                                 <label>
@@ -31,11 +36,11 @@
                                 </label>
                             </div>
                             <div class="col-md-6">
-                                <input name="owner-name" type="text" required>
+                                <input name="name" type="text" required>
                             </div>
                         </div>
 
-                        <!--Owner email-->
+                        <!--User email-->
                         <div class="row">
                             <div class="col-md-6">
                                 <label>
@@ -43,19 +48,22 @@
                                 </label>
                             </div>
                             <div class="col-md-6">
-                                <input name="owner-email" type="email" required>
+                                <input name="email" type="email" required>
                             </div>
                         </div>
 
-                        <!--Owner password-->
+                        <!--User password-->
                         <div class="row">
+                            <div class="col-md-12">
+                                <p id="confirm-password-mismatch"></p>
+                            </div>
                             <div class="col-md-6">
                                 <label>
                                     Password
                                 </label>
                             </div>
                             <div class="col-md-6">
-                                <input name="owner-password" type="password" required>
+                                <input name="password" type="password" required>
                             </div>
                         </div>
 
@@ -67,14 +75,14 @@
                                 </label>
                             </div>
                             <div class="col-md-6">
-                                <input name="owner-confirm-password" type="password" required>
+                                <input name="confirm-password" type="password" required>
                             </div>
                         </div>
 
                         <!--Signup and Clear-->
                         <div class="form-btn-area row">
                             <div class="col-md-6">
-                                <input class="sign-up-btn lipa-less-btn"
+                                <input id="sign-up-btn" class="lipa-less-btn"
                                        value="SIGN UP"
                                        type="submit">
                             </div>
@@ -90,5 +98,6 @@
     </div>
 
     <!--Include the JS files (lazy loading)-->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
     <script src="{{ url_for('signup_bp.static', filename='js/signup.js') }}"></script>
 {% endblock %}

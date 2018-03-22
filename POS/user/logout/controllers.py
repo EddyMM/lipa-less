@@ -1,16 +1,14 @@
-from flask import Blueprint, make_response
-from flask.views import MethodView
+from flask import Blueprint, redirect, url_for
 from flask_login import logout_user
 
+from ...base.app_view import AppView
 
-class LogoutAPI(MethodView):
+
+class LogoutAPI(AppView):
     @staticmethod
     def get():
         logout_user()
-        return make_response(
-            "Logged out",
-            200
-        )
+        return redirect(url_for("login_bp.login"))
 
 
 # Create logout view

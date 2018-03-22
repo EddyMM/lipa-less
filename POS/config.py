@@ -1,5 +1,5 @@
 import os
-from .constants import APP_NAME, DATABASE_URL
+from .constants import APP_NAME, DATABASE_URL, TESTING_DATABASE_URL
 
 
 class BaseConfig(object):
@@ -13,5 +13,11 @@ class DevelopmentConfig(BaseConfig):
 
 
 class ProductionConfig(BaseConfig):
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    DEBUG = False
+
+
+class TestingConfig(BaseConfig):
+    SQLALCHEMY_DATABASE_URI = TESTING_DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False

@@ -9,7 +9,7 @@
 }
 
 .app-logic-box, .lipa-less-logo,
-.business-information, .owner-information,
+.business-information, .user-information,
 .login-information {
 	border: 1px solid #bfbfbf;
 }
@@ -37,27 +37,27 @@ body {
 	margin-top: 1%;
 }
 
-.business-information, .owner-information,
+.business-information, .user-information,
 .login-information {
 	padding-left: 4%;
 	padding-right: 4%;
 }
 
 .business-information .row,
-.owner-information .row,
+.user-information .row,
 .login-information .row {
 	margin-top: 2%;
 	margin-bottom: 2%;
 }
 
 .business-information p,
-.owner-information p {
+.user-information p {
 	color: #a8a8a8 !important;
 	margin-left: 2%;
 }
 
 .business-information label,
-.owner-information label,
+.user-information label,
 .login-information label {
 	font-weight: bold;
 }
@@ -71,6 +71,10 @@ body {
 	padding: 1% 6%;
 	margin-top: 5%;
 	margin-bottom: 5%;
+}
+
+#confirm-password-mismatch {
+	color: #ff3c41 !important;
 }
 
 .content {
@@ -167,7 +171,7 @@ html {
 	margin-bottom: 2%;
 }
 
-.owner-information {
+.user-information {
 	margin-top: 3%;
 }
 
@@ -202,6 +206,11 @@ p {
 
 .navbar-toggler-icon {
 	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+#server-responses {
+	color: #0c5460 !important;
+	border: 1px solid #0c5460;
 }
 
 .side-nav-bar {
@@ -245,22 +254,22 @@ p {
     }
 }
 
-.sign-up-btn {
+#sign-up-btn {
 	padding: 1.5% 7%;
 	text-align: center;
 }
 
-.signup-form,
+#signup-form,
 .login-form {
 	text-align: left;
 }
 
 .login-information input,
-.signup-form input {
+#signup-form input {
 	width: inherit;
 }
 
-.sign-up-btn, .clear-btn {
+#sign-up-btn, .clear-btn {
 	border: None;
 }
 

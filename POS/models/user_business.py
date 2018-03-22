@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
-from .base_model import BaseModel
+from .base_model import AppDB
 
 
-class UserBusiness(BaseModel):
+class UserBusiness(AppDB.BaseModel):
     """
         Association model for the User and Business models
     """
