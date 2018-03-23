@@ -54,7 +54,7 @@ class Login(AppView):
 
         if not user:
             return Login.send_response(
-                msg="User by that email not found",
+                msg="User by that email not found, consider signing up",
                 status=404
             )
 
@@ -94,6 +94,7 @@ login_bp = Blueprint(
     name="login_bp",
     import_name=__name__,
     url_prefix="/login",
+    static_folder="static",
     template_folder="templates"
 )
 

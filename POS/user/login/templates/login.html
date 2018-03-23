@@ -10,19 +10,28 @@
 
     <div class="row">
         <div class="offset-md-2 col-md-8 col-12">
-            <form class="login-form container-fluid">
+            <form id="login-form" class="container-fluid">
                 <!--Login Information section-->
                 <div class="row">
                     <div class="login-information col-md-12 col-12">
-                        <!--Username section-->
+                        <!--Server response section-->
+                        <div class="row">
+                            <p id="server-responses"></p>
+                        </div>
+
+                        <!--Email section-->
                         <div class="row">
                             <div class="offset-md-2 col-md-4 col-12">
                                 <label>
-                                    Username
+                                    Email
                                 </label>
                             </div>
                             <div class="col-md-6 col-12">
-                                <input name="username" type="text" required>
+                                <input name="email"
+                                       type="email"
+                                       title="e.g. jondoe@gmail.com"
+                                       pattern=".*@.*\..*"
+                                       required>
                             </div>
                         </div>
 
@@ -41,7 +50,7 @@
                         <!--Login and Clear-->
                         <div class="form-btn-area row">
                             <div class="col-md-6">
-                                <input class="sign-up-btn lipa-less-btn"
+                                <input id="login-btn" class="lipa-less-btn"
                                        value="LOGIN"
                                        type="submit">
                             </div>
@@ -53,7 +62,8 @@
 
                         <div style="text-align: left" class="col-md-12">
                             <p>
-                                Don't have an account? <a href="/signup">Signup</a>
+                                Don't have an account? <!--suppress HtmlUnknownTarget -->
+                                <a href="/signup">Signup</a>
                             </p>
                         </div>
                     </div>
@@ -61,4 +71,10 @@
             </form>
         </div>
     </div>
+
+    <!--Include the JS files (lazy loading)-->
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('login_bp.static', filename='js/login.js') }}"></script>
 {% endblock %}

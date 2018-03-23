@@ -139,7 +139,7 @@ html {
     }
 }
 
-.login-btn {
+#login-btn {
 	padding: 1.5%;
 	margin-left: 5px;
 }
@@ -148,7 +148,7 @@ html {
 	padding: 5%;
 }
 
-.login-form {
+#login-form {
 	margin-top: 10%;
 }
 
@@ -260,7 +260,7 @@ p {
 }
 
 #signup-form,
-.login-form {
+#login-form {
 	text-align: left;
 }
 

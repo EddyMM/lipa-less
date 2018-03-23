@@ -1,23 +1,18 @@
-import sys
-import os
 import unittest
 import json
-
-from POS.constants import APP_CONFIG_ENV_VAR, TESTING_CONFIG_VAR, TESTING_DATABASE_URL
 
 from POS.models.base_model import AppDB
 from POS.models.user import User
 from POS.user.signup.controllers import SignUp
 
-from POS import app
+from POS.tests.base.base_test_case import BaseTestCase
 
 
-class TestSignUp(unittest.TestCase):
+class TestSignUp(BaseTestCase):
     def setUp(self):
-        if os.getenv(APP_CONFIG_ENV_VAR, "") != TESTING_CONFIG_VAR or \
-                not TESTING_DATABASE_URL:
-            print("Testing env vars not defined")
-            sys.exit(0)
+        TestSignUp.confirm_app_in_testing_mode()
+
+        from POS import app
         app.testing = True
         app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
         self.test_app = app.test_client()

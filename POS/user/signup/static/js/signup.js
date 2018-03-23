@@ -3,7 +3,7 @@
 **/
 function onSignupSuccess(res) {
     var responseStatus = res["status"];
-    if(responseStatus == "200") {
+    if(responseStatus === 200) {
         window.location = "/business";
         return;
     }
