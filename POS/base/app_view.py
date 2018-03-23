@@ -7,9 +7,8 @@ class AppView(MethodView):
         Generic method view to handle responses
     """
     @staticmethod
-    def send_response(msg, status):
-        return make_response(
-            jsonify(dict(
-                msg=msg,
-                status=status
-            )))
+    def send_response(**kwargs):
+        if kwargs is not None:
+            return make_response(
+                jsonify(kwargs)
+            )

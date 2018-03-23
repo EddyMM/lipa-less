@@ -2,6 +2,8 @@ import os
 import sys
 import unittest
 
+from flask import logging
+
 from POS.constants import APP_CONFIG_ENV_VAR, TESTING_CONFIG_VAR, TESTING_DATABASE_URL
 
 
@@ -15,5 +17,7 @@ class BaseTestCase(unittest.TestCase):
         """
         if os.getenv(APP_CONFIG_ENV_VAR, "") != TESTING_CONFIG_VAR or \
                 not TESTING_DATABASE_URL:
-            print("Testing env vars not defined")
+            logging.getLogger().log(
+                logging.ERROR,
+                "Testing env vars not defined")
             sys.exit(0)

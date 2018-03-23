@@ -73,10 +73,11 @@ class TestLogin(BaseTestCase):
     def add_business(self, name, contact_number):
         return self.test_app.post(
             "/business",
-            data=json.dumps(dict(
-                name=name,
-                contact_number=contact_number
-            )),
+            data=json.dumps({
+                "name":name,
+                "contact-number":contact_number
+                }
+            ),
             content_type="application/json"
         )
 

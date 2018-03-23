@@ -29,3 +29,9 @@ class Business(AppDB.BaseModel):
             self.name,
             self.contact_number
         )
+
+    @staticmethod
+    def exists(business_id):
+        return AppDB.db_session.query(Business).filter(
+            Business.id == business_id
+        ).first()

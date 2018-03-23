@@ -9,6 +9,7 @@ from .home.controllers import home_bp
 from .user.signup.controllers import signup_bp
 from .user.login.controllers import login_bp
 from .business.controllers import business_bp
+from .dashboard.controllers import dashboard_bp
 from .user.logout.controllers import logout_bp
 
 from .models.base_model import  AppDB
@@ -113,3 +114,4 @@ app.register_blueprint(signup_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(logout_bp)
 app.register_blueprint(business_bp)
+app.register_blueprint(dashboard_bp)

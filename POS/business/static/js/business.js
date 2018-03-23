@@ -3,11 +3,8 @@
 **/
 function onAddBusinessSuccess(res) {
     var responseStatus = res["status"];
-    console.log("Response: " + JSON.stringify(res));
     if(responseStatus === 200) {
-        console.log("Added business");
-        // TODO: Redirect user to dashboard
-        $("#add-business-modal").modal("hide");
+        window.location = "/dashboard/" + res["business_id"]
     } else {
         if((res["msg"]!==undefined) || (res["msg"]!==null)) {
             $("#server-responses").text(res["msg"]);
@@ -20,7 +17,6 @@ function onAddBusinessSuccess(res) {
 **/
 function onAddBusinessError(res) {
     var errorMsg = JSON.parse(res.responseText);
-    console.log(errorMsg);
 
     if((errorMsg["msg"]!==undefined) || (errorMsg["msg"]!=null)) {
         alert(errorMsg["msg"]);
@@ -36,6 +32,7 @@ $(document).ready(function (){
         $("#add-business-modal").modal("show");
     });
 
+    // Configure add business button
     $("#add-business-btn").click(function(ele) {
         // Prevent submission
         ele.preventDefault();
@@ -62,5 +59,21 @@ $(document).ready(function (){
             onAddBusinessSuccess,
             onAddBusinessError
         );
+    });
+
+    // Configure select business button
+    $("#select-business-btn").click(function(ele) {
+        // Prevent submission
+        ele.preventDefault();
+
+        // Validate fields
+        var selectBusinessForm = document.getElementById("select-business-form");
+        if(!selectBusinessForm.reportValidity()) {
+            return;
+        }
+
+        // Load dashboard using business id
+        var business_id = $("input[name='business']:checked").val();
+        window.location = "/dashboard/" + business_id;
     });
 });

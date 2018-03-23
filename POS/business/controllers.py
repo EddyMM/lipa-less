@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, logging
 from flask_login import login_required, current_user
 
-from ..constants import APP_NAME, OWNER_ROLE_NAME
+from ..constants import APP_NAME
 
 from ..base.app_view import AppView
 
@@ -20,9 +20,24 @@ class BusinessAPI(AppView):
             associated with the current user
         :return:
         """
+        # Load list of businesses where user is owner
+        # First get the id of owner role
+        owner_role_id = Role.get_owner_role_id()
+
+        businesses = AppDB.db_session.query(Business).join(UserBusiness).filter(
+            UserBusiness.emp_id == current_user.emp_id,
+            UserBusiness.role_id == owner_role_id
+        ).all()
+
+        businesses = [dict(
+            name=business.name,
+            id=business.id) for business in businesses]
+
+        # noinspection PyUnresolvedReferences
         return render_template(
             template_name_or_list="business.html",
-            title="%s: %s" % (APP_NAME, "business")
+            title="%s: %s" % (APP_NAME, "business"),
+            businesses=businesses
         )
 
     @staticmethod
@@ -68,13 +83,11 @@ class BusinessAPI(AppView):
 
         # Assign owner role to user
         # First find the owner role object
-        owner_role = AppDB.db_session.query(Role).filter(
-            Role.name == OWNER_ROLE_NAME
-        ).first()
+        owner_role_id = Role.get_owner_role_id()
 
         # Owner role exists so associate currently logged in user to it
         # but relative to the business
-        user_business = UserBusiness(owner_role.id)
+        user_business = UserBusiness(owner_role_id)
         user_business.business = business
         user_business.user = current_user
 
@@ -87,6 +100,7 @@ class BusinessAPI(AppView):
 
         return BusinessAPI.send_response(
             msg="Business created",
+            business_id=business.id,
             status=200
         )
 
