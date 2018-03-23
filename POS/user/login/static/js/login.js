@@ -1,5 +1,5 @@
 /**
-* Handle successful registration of a new organization
+* Handle successful login
 **/
 function onLoginSuccess(res) {
     var responseStatus = res["status"];
@@ -15,7 +15,7 @@ function onLoginSuccess(res) {
 }
 
 /**
-* Handle any error when registering a new organization
+* Handle any error when logging in a user
 **/
 function onLoginError(res) {
     var errorMsg = JSON.parse(res.responseText);

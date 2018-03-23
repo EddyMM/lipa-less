@@ -50,15 +50,15 @@ class BusinessAPI(AppView):
                 msg="Fill in all details",
                 status=400
             )
-        if BusinessAPI.business_exists(business_request["business_name"]):
+        if BusinessAPI.business_exists(business_request["name"]):
             return BusinessAPI.send_response(
                 msg="Business by that name exists",
                 status=409
             )
 
         # Business info
-        business_name = business_request["business_name"]
-        contact_number = business_request["contact_number"]
+        business_name = business_request["name"]
+        contact_number = business_request["contact-number"]
 
         # Create business data object
         business = Business(
@@ -97,10 +97,10 @@ class BusinessAPI(AppView):
         :param client_request: The JSON request
         :return: True if exists and are filled, False otherwise
         """
-        return ("business_name" in client_request.keys() and
-                "contact_number" in client_request.keys()) and \
-               (client_request["business_name"] not in ["", None]) and \
-               (client_request["contact_number"] not in ["", None])
+        return ("name" in client_request.keys() and
+                "contact-number" in client_request.keys()) and \
+               (client_request["name"] not in ["", None]) and \
+               (client_request["contact-number"] not in ["", None])
 
     @staticmethod
     def business_exists(name):

@@ -44,9 +44,14 @@
                     </h4>
                 </div>
 
-                <form class="add-business-form container-fluid"
+                <form id="add-business-form" class="container-fluid"
                       method="POST"
                       action="#">
+                    <!--Server response section-->
+                    <div class="row">
+                        <p id="server-responses"></p>
+                    </div>
+
                     <!--Business Information section-->
                     <div class="row">
                         <div class="business-information col-md-12 col-12">
@@ -61,7 +66,7 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6 col-12">
-                                    <input name="business-name" type="text" required>
+                                    <input name="name" type="text" required>
                                 </div>
                             </div>
 
@@ -73,14 +78,15 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input name="contact-number" type="text" required>
+                                    <input name="contact-number" type="number" required>
                                 </div>
                             </div>
 
                             <!--Add business and Clear-->
                             <div class="form-btn-area row">
                                 <div class="col-md-6">
-                                    <input class="lipa-less-btn"
+                                    <input id="add-business-btn"
+                                           class="lipa-less-btn"
                                            value="ADD"
                                            type="submit">
                                 </div>
@@ -97,8 +103,8 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 
-
-
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
     <!--Include the JS files (lazy loading)-->
     <script src="{{ url_for('business_bp.static', filename='js/business.js') }}"></script>
 {% endblock %}
