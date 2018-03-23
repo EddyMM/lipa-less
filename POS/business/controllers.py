@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, logging, redirect
+from flask import Blueprint, render_template, request, logging
 from flask_login import login_required, current_user
 
 from ..constants import APP_NAME, OWNER_ROLE_NAME

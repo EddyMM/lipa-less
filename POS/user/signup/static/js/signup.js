@@ -1,18 +1,15 @@
 /**
 * Handle successful registration of a new organization
 **/
-function onSignupSuccess(res, status) {
-    console.log("Request status: " + status);
-    console.log("Response status code: " + res[1]);
-
-    var responseStatus = res[1];
-    if(responseStatus == 200) {
+function onSignupSuccess(res) {
+    var responseStatus = res["status"];
+    if(responseStatus == "200") {
         window.location = "/business";
         return;
     }
 
-    if((res[0]["msg"]!==undefined) || (res[0]["msg"]!==null)) {
-        $("#server-responses").text(res[0]["msg"]);
+    if((res["msg"]!==undefined) || (res["msg"]!==null)) {
+        $("#server-responses").text(res["msg"]);
     }
 }
 
