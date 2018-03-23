@@ -9,7 +9,6 @@ class AppView(MethodView):
     @staticmethod
     def send_response(msg, status):
         return make_response(jsonify(
-            dict(
-                msg=msg
-            ), status
+            msg=msg,
+            status=status
         ))

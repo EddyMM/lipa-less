@@ -54,7 +54,7 @@ class AppDB(object):
             logger = logging.getLogger()
             logger.log(
                 logging.ERROR,
-                "%s attribute not found or provided" % DATABASE_URL_ENV_NAME
+                "Database URL attribute not found or provided"
             )
             raise
 
