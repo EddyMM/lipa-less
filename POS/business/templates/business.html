@@ -34,16 +34,20 @@
                         <div class="select-business-box col-md-12">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-6 ">
                                         <img src="{{ url_for('static', filename='imgs/icons/BusinessIcon.png') }}">
                                     </div>
-                                    <div class="col-md-7">
-                                        <p>{{ business.name }}</p>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input name="business"
-                                               type="radio"
-                                               value="{{ business.id }}" required>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-10 col-10">
+                                                <p>{{ business.name }}</p>
+                                            </div>
+                                            <div class="col-md-2 col-2">
+                                                <input name="business"
+                                                       type="radio"
+                                                       value="{{ business.id }}" required>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

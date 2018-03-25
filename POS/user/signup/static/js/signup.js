@@ -39,7 +39,7 @@ function removePasswordMismatchAlert() {
 }
 
 $(document).ready(function (){
-    $(".main-content").niceScroll();
+    // $(".main-content").niceScroll();
 
     $("#sign-up-btn").click(function(ele) {
         // Prevent submission

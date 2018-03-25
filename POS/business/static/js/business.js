@@ -25,7 +25,7 @@ function onAddBusinessError(res) {
 }
 
 $(document).ready(function (){
-    $(".main-content").niceScroll();
+    // $(".main-content").niceScroll();
 
     // Create modal business form functionality
     $("#create-business-btn").click(function() {

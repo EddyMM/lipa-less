@@ -28,7 +28,7 @@ function onLoginError(res) {
 }
 
 $(document).ready(function (){
-    $(".main-content").niceScroll();
+    // $(".main-content").niceScroll();
 
     $("#login-btn").click(function(ele) {
         // Prevent submission
