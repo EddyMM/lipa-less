@@ -291,7 +291,7 @@ p {
 
 @media (min-width: 768px) {
     .side-nav-bar {
-        height: 100%;
+        height: inherit;
     }
 
     .side-nav-bar .nav-link {
