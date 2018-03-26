@@ -63,6 +63,8 @@ class Login(AppView):
             # Register user with login manager
             login_user(user)
 
+            # Update session object with current user name
+
             return Login.send_response(
                 msg="Successful login",
                 status=200

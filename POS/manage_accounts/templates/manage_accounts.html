@@ -1,0 +1,100 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="row">
+        <div class="col-md-11 col-12">
+            <h3>ACCOUNT MANAGEMENT</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <!--Add new admin-->
+        <div class="col-md-3">
+            <div class="row">
+                <a href="#">
+                <div class="add-accounts col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/AdminIcon.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>New admin</p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+
+        <!--Add new cashier-->
+        <div class="col-md-3">
+            <div class="row">
+                <a href="#">
+                <div class="add-accounts col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/CashierIcon.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>New Cashier</p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div id="accounts-area" class="container-fluid">
+                <!-- Accounts column title -->
+                <div id="accounts-title-bar" class="row">
+                    <div class="col-4">
+                        <h5>Role</h5>
+                    </div>
+                    <div class="col-4">
+                        <h5>Name</h5>
+                    </div>
+                    <div class="col-4">
+                        <h5>Deactivated</h5>
+                    </div>
+                </div>
+
+                <!-- Accounts list -->
+                <div id="accounts-list-item" class="row">
+                    {% for account in accounts %}
+                        <div class="col-4">
+                            <select name="role">
+                                {% for role in roles %}
+                                <option value="{{ role.id }}" {% if role.name == account.role %} selected {% endif %}>
+                                    {{ role.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <p>{{ account.name }}</p>
+                        </div>
+                        <div class="col-4">
+                            <input name="deactivated" type="checkbox" {% if account.deactivated %} checked {% endif %}>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Include the JS files (lazy loading)-->
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('manage_accounts_bp.static', filename='js/manageAccounts.js') }}"></script>
+{% endblock %}

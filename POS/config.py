@@ -5,6 +5,7 @@ from .constants import APP_NAME, DATABASE_URL, TESTING_DATABASE_URL
 class BaseConfig(object):
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SECRET_KEY = os.environ.get(APP_NAME + "_SECRET_KEY")
+    SESSION_TYPE = "filesystem"
 
 
 class DevelopmentConfig(BaseConfig):

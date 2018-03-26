@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, request, logging
+from flask import Blueprint, render_template, request, logging, redirect, url_for, session
 from flask_login import login_required, current_user
 
-from ..constants import APP_NAME
+from ..constants import APP_NAME, OWNER_ROLE_NAME
 
 from ..base.app_view import AppView
 
@@ -20,13 +20,10 @@ class BusinessAPI(AppView):
             associated with the current user
         :return:
         """
-        # Load list of businesses where user is owner
+        # Load list of businesses where user is associated with
         # First get the id of owner role
-        owner_role_id = Role.get_owner_role_id()
-
         businesses = AppDB.db_session.query(Business).join(UserBusiness).filter(
             UserBusiness.emp_id == current_user.emp_id,
-            UserBusiness.role_id == owner_role_id
         ).all()
 
         businesses = [dict(
@@ -83,7 +80,7 @@ class BusinessAPI(AppView):
 
         # Assign owner role to user
         # First find the owner role object
-        owner_role_id = Role.get_owner_role_id()
+        owner_role_id = Role.get_role_id(OWNER_ROLE_NAME)
 
         # Owner role exists so associate currently logged in user to it
         # but relative to the business
@@ -97,6 +94,9 @@ class BusinessAPI(AppView):
         AppDB.db_session.add(user_business)
 
         AppDB.db_session.commit()
+
+        session["business_id"] = business.id
+        session["role"] = AppDB.db_session.query(Role).get(owner_role_id).name
 
         return BusinessAPI.send_response(
             msg="Business created",
@@ -130,8 +130,54 @@ class BusinessAPI(AppView):
         return False
 
 
+class SelectBusinessAPI(AppView):
+    """
+        API to handle the user selections of the business they want to log into
+    """
+    @staticmethod
+    @login_required
+    def get(business_id=None):
+        # Confirm that business ID was sent
+        if business_id is None:
+            return SelectBusinessAPI.send_response(
+                msg="No business ID",
+                status=400
+            )
+
+        # Confirm business exists
+        if not Business.exists(business_id=business_id):
+            return redirect(
+                location="/business"
+            )
+
+        # Check if current user belongs to the specified business
+        user_role = AppDB.db_session.query(UserBusiness).filter(
+            UserBusiness.emp_id == current_user.emp_id,
+            UserBusiness.business_id == business_id
+        ).first()
+
+        if not user_role:
+            # User is not a member of this business
+            return redirect(
+                location="/login"
+            )
+
+        # Business exists, store it in the session to know which business
+        # the user is going to be interacting with
+        session["business_id"] = business_id
+        session["role"] = AppDB.db_session.query(Role).get(user_role.role_id).name
+        print("Session business ID set to: %s" % session.get("business_id"))
+
+        # User is the owner of this business, go ahead and redirect them to dashboard
+
+        return redirect(
+            location=url_for("dashboard_bp.dashboard")
+        )
+
+
 # Create business view
 business_view = BusinessAPI.as_view("business")
+select_business_view = SelectBusinessAPI.as_view("select_business")
 
 # Create business blueprint
 business_bp = Blueprint(
@@ -146,4 +192,9 @@ business_bp = Blueprint(
 business_bp.add_url_rule(
     rule="",
     view_func=business_view
+)
+
+business_bp.add_url_rule(
+    rule="/select/<int:business_id>",
+    view_func=select_business_view
 )

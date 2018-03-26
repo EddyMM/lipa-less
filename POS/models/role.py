@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from flask import logging
 
 from POS.models.base_model import AppDB
-from ..constants import ROLES_YAML_ENV_VAR, OWNER_ROLE_NAME
+from ..constants import ROLES_YAML_ENV_VAR, CASHIER_ROLE_NAME
 
 
 class Role(AppDB.BaseModel):
@@ -58,9 +58,9 @@ class Role(AppDB.BaseModel):
         return None
 
     @staticmethod
-    def get_owner_role_id():
+    def get_role_id(role_name=CASHIER_ROLE_NAME):
         owner_role = AppDB.db_session.query(Role).filter(
-            Role.name == OWNER_ROLE_NAME
+            Role.name == role_name
         ).first()
         if owner_role:
             return owner_role.id

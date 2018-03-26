@@ -4,6 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 from flask import Flask, send_from_directory
 from flask_login import LoginManager
+from flask_session import Session
 
 from .home.controllers import home_bp
 from .user.signup.controllers import signup_bp
@@ -11,12 +12,14 @@ from .user.login.controllers import login_bp
 from .business.controllers import business_bp
 from .dashboard.controllers import dashboard_bp
 from .user.logout.controllers import logout_bp
+from .manage_accounts.controllers import manage_accounts_bp
 
 from .models.base_model import  AppDB
 from .models.user import User
 
 from .utils import get_config_type
-from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR, TESTING_CONFIG_VAR, APP_NAME
+from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR,\
+    TESTING_CONFIG_VAR, APP_NAME, OWNER_ROLE_NAME, ADMIN_ROLE_NAME, CASHIER_ROLE_NAME
 
 
 def config_app(app_instance):
@@ -89,6 +92,10 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login_bp.login"
 
+# Create session manager
+ses = Session()
+ses.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -108,6 +115,16 @@ def favicon():
     )
 
 
+# Inject some important variables for templates to use
+@app.context_processor
+def inject_roles():
+    return dict(
+        OWNER_ROLE_NAME=OWNER_ROLE_NAME,
+        ADMIN_ROLE_NAME=ADMIN_ROLE_NAME,
+        CASHIER_ROLE_NAME=CASHIER_ROLE_NAME
+    )
+
+
 # Register blueprints
 app.register_blueprint(home_bp)
 app.register_blueprint(signup_bp)
@@ -115,3 +132,4 @@ app.register_blueprint(login_bp)
 app.register_blueprint(logout_bp)
 app.register_blueprint(business_bp)
 app.register_blueprint(dashboard_bp)
+app.register_blueprint(manage_accounts_bp)

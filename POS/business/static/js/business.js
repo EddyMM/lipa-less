@@ -4,7 +4,7 @@
 function onAddBusinessSuccess(res) {
     var responseStatus = res["status"];
     if(responseStatus === 200) {
-        window.location = "/dashboard/" + res["business_id"]
+        window.location = "/dashboard";
     } else {
         if((res["msg"]!==undefined) || (res["msg"]!==null)) {
             $("#server-responses").text(res["msg"]);
@@ -74,6 +74,6 @@ $(document).ready(function (){
 
         // Load dashboard using business id
         var business_id = $("input[name='business']:checked").val();
-        window.location = "/dashboard/" + business_id;
+        window.location = "/business/select/" + business_id;
     });
 });

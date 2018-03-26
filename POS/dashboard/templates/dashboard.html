@@ -2,15 +2,33 @@
 
 {% block body %}
     <!--suppress HtmlFormInputWithoutLabel -->
-<div class="row">
+    <div class="row">
         <div class="col-md-11 col-12">
             <h3>DASHBOARD</h3>
         </div>
     </div>
 
     <div class="row">
-        <div class="offset-md-2 col-md-8 col-12">
-            <p>Initial dashboard for business with ID: {{ business_id }}</p>
+        <div class="col-md-3">
+            <div class="row">
+                {% if session.role == OWNER_ROLE_NAME or session.role == ADMIN_ROLE_NAME %}
+                <a href="/manage_accounts">
+                <div id="dashboard-manage-accounts" class="dashboard-link col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/UserAccountIcon.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Manage Accounts</p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                {% endif %}
+            </div>
         </div>
     </div>
 

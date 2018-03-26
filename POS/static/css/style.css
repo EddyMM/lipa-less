@@ -3,6 +3,10 @@
 	src: url("fonts/avenir-next/AvenirNextLTPro-Regular.otf");
 }
 
+#accounts-area {
+	margin-top: 5%;
+}
+
 .app-logic-box img {
 	width: 60%;
 	margin-bottom: 5%;
@@ -11,7 +15,8 @@
 .app-logic-box, .lipa-less-logo,
 .business-information, .user-information,
 .login-information, #select-business-form,
-.select-business-box {
+.select-business-box, .dashboard-link, .add-accounts,
+#accounts-area {
 	border: 1px solid #bfbfbf;
 }
 
@@ -96,6 +101,10 @@ body {
     .content {
         height: inherit;
     }
+}
+
+.dashboard-link {
+	padding: 1%;
 }
 
 .form-btn-area {
@@ -267,7 +276,7 @@ p {
 	z-index: 1;
 }
 
-.side-nav-bar .nav-link {
+.side-nav-bar .nav-link, .navbar-nav p {
     width: inherit !important;
     color: white;
     font-size: 110%;

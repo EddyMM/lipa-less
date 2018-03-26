@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for
+from flask import Blueprint, redirect, url_for, session
 from flask_login import logout_user
 
 from ...base.app_view import AppView
@@ -8,6 +8,10 @@ class LogoutAPI(AppView):
     @staticmethod
     def get():
         logout_user()
+
+        # Clear session info
+        session.clear()
+
         return redirect(url_for("login_bp.login"))
 
 
