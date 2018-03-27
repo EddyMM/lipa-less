@@ -57,7 +57,7 @@ function onAddCashierError(res) {
 }
 
 function clearAccountsList() {
-    $("#accounts-list-item").empty();
+    $("#accounts-list-area").empty();
 }
 
 function loadAccountsList(accounts, roles) {
@@ -75,7 +75,7 @@ function loadAccountsList(accounts, roles) {
             );
         });
 
-        $("#accounts-list-item").append(
+        $("#accounts-list-area").append(
             '<div class="col-4">\
                 <select name="role">'+
                     roleOptions
@@ -157,5 +157,17 @@ $(document).ready(function () {
             onAddCashierSuccess,
             onAddCashierError
         );
+    });
+
+    // Configure modify roles button
+    $("#modify-roles-btn").click(function() {
+        // Prevent submission
+        ele.preventDefault();
+
+        // Validate fields
+        var modifyRolesForm = document.getElementById("modify-roles-form");
+        if(!modifyRolesForm.reportValidity()) {
+            return;
+        }
     });
 });

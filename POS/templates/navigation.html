@@ -20,6 +20,9 @@
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
                         <li>
+                            {% if session.business_name %}
+                                <p>Business: {{ session.business_name }}</p>
+                            {% endif %}
                             <p>
                                 Logged in as {{ current_user.name }}
                                 {% if session.role %}

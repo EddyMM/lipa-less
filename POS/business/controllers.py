@@ -96,6 +96,7 @@ class BusinessAPI(AppView):
         AppDB.db_session.commit()
 
         session["business_id"] = business.id
+        session["business_name"] = business.name
         session["role"] = AppDB.db_session.query(Role).get(owner_role_id).name
 
         return BusinessAPI.send_response(
@@ -165,6 +166,7 @@ class SelectBusinessAPI(AppView):
         # Business exists, store it in the session to know which business
         # the user is going to be interacting with
         session["business_id"] = business_id
+        session["business_name"] = AppDB.db_session.query(Business).get(business_id).name
         session["role"] = AppDB.db_session.query(Role).get(user_role.role_id).name
 
         # User is the owner of this business, go ahead and redirect them to dashboard

@@ -6,6 +6,7 @@ class BaseConfig(object):
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SECRET_KEY = os.environ.get(APP_NAME + "_SECRET_KEY")
     SESSION_TYPE = "filesystem"
+    SESSION_PERMANENT = False
 
 
 class DevelopmentConfig(BaseConfig):
