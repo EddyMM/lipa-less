@@ -166,7 +166,6 @@ class SelectBusinessAPI(AppView):
         # the user is going to be interacting with
         session["business_id"] = business_id
         session["role"] = AppDB.db_session.query(Role).get(user_role.role_id).name
-        print("Session business ID set to: %s" % session.get("business_id"))
 
         # User is the owner of this business, go ahead and redirect them to dashboard
 

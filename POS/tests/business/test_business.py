@@ -2,6 +2,7 @@ import unittest
 import json
 
 from POS.models.base_model import AppDB
+from POS.models.business import Business
 
 from POS.tests.base.base_test_case import BaseTestCase
 
@@ -54,11 +55,12 @@ class TestLogin(BaseTestCase):
         assert b"Business created" in rv.data
 
         # Check if app detects business with same name
-        rv = self.add_business(
+        self.add_business(
             name=test_business_name,
             contact_number=test_contact_number
         )
-        assert b"name exists" in rv.data
+
+        self.assertTrue(AppDB.db_session.query(Business).count() == 1)
 
     def signup(self, name, email, password):
         return self.test_app.post(

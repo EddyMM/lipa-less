@@ -49,12 +49,12 @@ class TestSignUp(BaseTestCase):
         test_email = "lipaless_guy@gmail.com"
         test_password = "lipaless_pw"
         
-        rv = self.signup(
+        self.signup(
             name=test_name,
             email=test_email,
             password=test_password
         )
-        assert b"User created" in rv.data
+        self.assertTrue(AppDB.db_session.query(User).count() == 1)
         
         # Try signing up again to confirm it
         # detects you're already signed up
