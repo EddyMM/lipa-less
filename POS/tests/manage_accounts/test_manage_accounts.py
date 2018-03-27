@@ -3,6 +3,8 @@ import json
 
 from POS.models.base_model import AppDB
 from POS.models.business import Business
+from POS.models.user import User
+from POS.models.role import Role
 from POS.models.user_business import UserBusiness
 from POS.tests.base.base_test_case import BaseTestCase
 
@@ -57,6 +59,11 @@ class TestManageAccounts(BaseTestCase):
             contact_number="0712345678"
         )
 
+        business_1 = AppDB.db_session.query(Business).filter(
+            Business.name == self.business_1_name
+        ).first()
+        self.business_1_id = business_1.id
+
         # logout as owner
         self.logout()
 
@@ -104,10 +111,7 @@ class TestManageAccounts(BaseTestCase):
         self.login(self.user_1_email, self.user_1_password)
 
         # Select business
-        business = AppDB.db_session.query(Business).filter(
-            Business.name == self.business_1_name
-        ).first()
-        self.select_business(business.id)
+        self.select_business(self.business_1_id)
 
         # Attempt to add user #2 to business as a cashier
         self.add_user_role(
@@ -131,23 +135,54 @@ class TestManageAccounts(BaseTestCase):
         self.business_2_name = "lipaless_2_business"
         self.create_business(self.business_2_name, "0712524536")
 
-        # Get business #1 ID
-        business_1 = AppDB.db_session.query(Business).filter(
-            Business.name == self.business_1_name
-        ).first()
-        business_1_id = business_1.id
-
         # Add user #2 to business #1 yet current logged in user(user #1) is not the owner
         self.add_user_role("cashier", self.user_2_email)
 
         # Confirm that it didn't work
         self.assertTrue(
             len(AppDB.db_session.query(UserBusiness).filter(
-                UserBusiness.business_id == business_1_id
+                UserBusiness.business_id == self.business_1_id
             ).all()) == 2)
 
     def test_modify_role(self):
-        pass
+        # Change user #1 to an admin
+        # Login as owner of business #1
+        self.login(self.owner_email, self.owner_password)
+
+        # Select business #1
+        self.select_business(self.business_1_id)
+
+        # Add user #1 to business as a cashier
+        self.add_user_role(
+            role_name="cashier",
+            email=self.user_1_email
+        )
+
+        # Get user #1 id
+        user_1 = AppDB.db_session.query(User).filter(
+            User.email == self.user_1_email
+        ).first()
+        user_1_id = user_1.emp_id
+
+        # Modify user #1
+        rv = self.modify_user_role(
+            emp_id=user_1_id,
+            role="admin",
+            deactivated="false"
+        )
+
+        # Get user #1's role
+        user_1_role = AppDB.db_session.query(UserBusiness).filter(
+            UserBusiness.emp_id == user_1_id,
+            UserBusiness.business_id == self.business_1_id
+        ).first()
+        admin_role_id = Role.get_role_id("admin")
+
+        # Logout as owner
+        self.logout()
+
+        # Confirm that user #1's role is now admin
+        self.assertEqual(admin_role_id, user_1_role.role_id)
 
     def signup(self, name, email, password):
         return self.test_app.post(
@@ -191,6 +226,19 @@ class TestManageAccounts(BaseTestCase):
             data=json.dumps({
                 "role": role_name,
                 "email": email
+            }),
+            content_type="application/json"
+        )
+
+    def modify_user_role(self, emp_id, role, deactivated):
+        return self.test_app.put(
+            "/manage_accounts/role",
+            data=json.dumps({
+                "roles": [{
+                    "emp_id": emp_id,
+                    "role": role,
+                    "deactivated": deactivated
+                }]
             }),
             content_type="application/json"
         )
