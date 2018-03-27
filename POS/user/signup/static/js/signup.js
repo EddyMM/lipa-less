@@ -73,7 +73,7 @@ $(document).ready(function (){
 
         // Make AJAX API call
         apiCall(
-            "/signup",
+            "/signup", 'POST',
             JSON.stringify(signupInfo),
             onSignupSuccess,
             onSignupError

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, jsonify
 from flask_login import login_required
 
 from POS.base.app_view import AppView
@@ -19,17 +19,7 @@ class ManageAccountsAPI(AppView):
     @is_owner
     def get():
         # Get a list of all the user accounts in the business
-        accounts = AppDB.db_session.query(User, UserBusiness, Role)\
-            .join(UserBusiness).join(Role).filter(
-            UserBusiness.business_id == session.get("business_id")
-        ).all()
-
-        # Modify the list for the template to use
-        accounts = [dict(
-            name=account[0].name,
-            deactivated=account[1].is_deactivated,
-            role=account[2].name
-        ) for account in accounts]
+        accounts = ManageAccountsAPI.get_all_accounts()
 
         # Get a list of all possible roles in the business so
         # that the owner or admin can select from a variety or roles
@@ -48,6 +38,27 @@ class ManageAccountsAPI(AppView):
             accounts=accounts,
             roles=roles
         )
+
+    @staticmethod
+    def get_all_accounts():
+        accounts = AppDB.db_session.query(User, UserBusiness, Role) \
+            .join(UserBusiness).join(Role).filter(
+            UserBusiness.business_id == session.get("business_id")
+        ).all()
+
+        # Modify the list for the template to use
+        return [dict(
+            name=account[0].name,
+            deactivated=account[1].is_deactivated,
+            role=account[2].name
+        ) for account in accounts]
+
+    @staticmethod
+    def get_all_roles():
+        return [dict(
+            id=role.id,
+            name=role.name
+        ) for role in AppDB.db_session.query(Role).all()]
 
 
 class UserRoleAPI(AppView):
@@ -104,7 +115,11 @@ class UserRoleAPI(AppView):
             AppDB.db_session.commit()
 
         return ManageAccountsAPI.send_response(
-            msg="New list of users",
+            msg=jsonify(
+                dict(
+                    accounts=ManageAccountsAPI.get_all_accounts()
+                )
+            ),
             status=200
         )
 
@@ -177,7 +192,10 @@ class UserRoleAPI(AppView):
         AppDB.db_session.commit()
 
         return ManageAccountsAPI.send_response(
-            msg="New list of users",
+            msg=dict(
+                    accounts=ManageAccountsAPI.get_all_accounts(),
+                    roles=ManageAccountsAPI.get_all_roles()
+                ),
             status=200
         )
 

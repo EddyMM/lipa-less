@@ -12,8 +12,7 @@
         <!--Add new admin-->
         <div class="col-md-3">
             <div class="row">
-                <a href="#">
-                <div class="add-accounts col-md-11 col-12">
+                <div id="add-admin-box" class="add-accounts col-md-11 col-12">
                     <div class="row">
                         <div class="col-12">
                             <img style="width: inherit !important;"
@@ -26,15 +25,13 @@
                         </div>
                     </div>
                 </div>
-                </a>
             </div>
         </div>
 
         <!--Add new cashier-->
         <div class="col-md-3">
             <div class="row">
-                <a href="#">
-                <div class="add-accounts col-md-11 col-12">
+                <div id="add-cashier-box" class="add-accounts col-md-11 col-12">
                     <div class="row">
                         <div class="col-12">
                             <img style="width: inherit !important;"
@@ -47,7 +44,6 @@
                         </div>
                     </div>
                 </div>
-                </a>
             </div>
         </div>
     </div>
@@ -91,6 +87,122 @@
             </div>
         </div>
     </div>
+
+    <!-- Add admin modal -->
+    <div class="modal fade" id="add-admin-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Admin
+                    </h4>
+                </div>
+
+                <form id="add-admin-form" class="container-fluid"
+                      method="POST"
+                      action="#">
+                    <!--Server response section-->
+                    <div class="row">
+                        <p id="admin-server-responses"></p>
+                    </div>
+
+                    <!--Email section-->
+                    <div class="row">
+                        <div class="email-area col-md-12 col-12">
+                            <!--admin email-->
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    <label>
+                                        Email
+                                    </label>
+                                </div>
+                                <div class="col-md-9 col-12">
+                                    <input name="admin-email"
+                                           type="email"
+                                           pattern=".*@.*\..*"
+                                           title="e.g. johndoe@gmail.com" required>
+                                </div>
+                            </div>
+
+                            <!--Add admin and Clear-->
+                            <div class="form-btn-area row">
+                                <div class="col-md-6">
+                                    <input id="add-admin-btn"
+                                           class="lipa-less-btn"
+                                           value="ADD"
+                                           type="submit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="clear-btn" type="reset" value="Clear" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+    <!-- Add cashier modal -->
+    <div class="modal fade" id="add-cashier-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Admin
+                    </h4>
+                </div>
+
+                <form id="add-cashier-form" class="container-fluid"
+                      method="POST"
+                      action="#">
+                    <!--Server response section-->
+                    <div class="row">
+                        <p id="cashier-server-responses"></p>
+                    </div>
+
+                    <!--Email section-->
+                    <div class="row">
+                        <div class="email-area col-md-12 col-12">
+                            <!--admin email-->
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <label>
+                                        Email
+                                    </label>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <input name="cashier-email"
+                                           type="email"
+                                           pattern=".*@.*\..*"
+                                           title="e.g. johndoe@gmail.com"
+                                           required>
+                                </div>
+                            </div>
+
+                            <!--Add admin and Clear-->
+                            <div class="form-btn-area row">
+                                <div class="col-md-6">
+                                    <input id="add-cashier-btn"
+                                           class="lipa-less-btn"
+                                           value="ADD"
+                                           type="submit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="clear-btn" type="reset" value="Clear" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
 
     <!--Include the JS files (lazy loading)-->
     <!--suppress HtmlUnknownTarget -->

@@ -1,7 +1,7 @@
-function apiCall(url_path, data, successCallback, errorCallback) {
+function apiCall(url_path, method, data, successCallback, errorCallback) {
     $.ajax({
         url: url_path,
-        type: 'POST',
+        type: method,
         data: data,
         contentType: 'application/json',
         success: successCallback,

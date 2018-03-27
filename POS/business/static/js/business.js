@@ -54,7 +54,7 @@ $(document).ready(function (){
 
         // Make AJAX API call
         apiCall(
-            "/business",
+            "/business", 'POST',
             JSON.stringify(businessInfo),
             onAddBusinessSuccess,
             onAddBusinessError

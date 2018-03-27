@@ -7,6 +7,10 @@
 	margin-top: 5%;
 }
 
+.add-accounts:hover {
+	cursor: pointer;
+}
+
 .app-logic-box img {
 	width: 60%;
 	margin-bottom: 5%;
@@ -135,6 +139,10 @@ h3 {
 
 html {
 	height: 100%;
+}
+
+input {
+	width: inherit;
 }
 
 .lipa-less-btn {

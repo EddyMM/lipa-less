@@ -51,7 +51,7 @@ $(document).ready(function (){
 
         // Make AJAX API call
         apiCall(
-            "/login",
+            "/login",  'POST',
             JSON.stringify(loginInfo),
             onLoginSuccess,
             onLoginError
