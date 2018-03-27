@@ -67,34 +67,37 @@
                 <!-- Accounts list -->
                 <div id="accounts-list-area" class="row">
                     <form id="modify-roles-form" class="container-fluid">
-
-                            {% for account in accounts %}
-                                <div class="row">
-                                    <div class="col-4">
-                                        <select name="role">
-                                            {% for role in roles %}
-                                            <option value="{{ role.id }}" {% if role.name == account.role %} selected {% endif %}>
-                                                {{ role.name }}
-                                            </option>
-                                            {% endfor %}
-                                        </select>
+                        <div class="row">
+                            <div id="accounts-list-items" class="container-fluid">
+                                {% for account in accounts %}
+                                    <div class="account row">
+                                        <div class="col-4">
+                                            <select name="role">
+                                                {% for role in roles %}
+                                                <option value="{{ role.name }}"
+                                                        {% if role.name == account.role %} selected {% endif %}>
+                                                    {{ role.name }}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-4">
+                                            <label id="{{ account.id }}">{{ account.name }}</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input name="deactivated"
+                                                   value="{{ account.deactivated }}"
+                                                   type="checkbox" {% if account.deactivated %} checked {% endif %}>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <p>{{ account.name }}</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <input name="deactivated"
-                                               value="{{ account.deactivated }}"
-                                               type="checkbox" {% if account.deactivated %} checked {% endif %}>
-                                    </div>
-                                </div>
-                            {% endfor %}
-
+                                {% endfor %}
+                            </div>
+                        </div>
                         <hr>
 
                         <div class="row">
-                            <div class="offset-md-8 col-md-4 col-12">
-                                <button id="modify-roles-btn" class="lipa-less-btn">Save</button>
+                            <div class="offset-md-10 col-md-2 col-12">
+                                <input id="modify-roles-btn" class="lipa-less-btn" type="submit" value="Save">
                             </div>
                         </div>
                     </form>

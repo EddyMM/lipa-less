@@ -28,9 +28,6 @@ class ManageAccountsAPI(AppView):
             name=role.name
         ) for role in AppDB.db_session.query(Role).all()]
 
-        print("Accounts: %s" % accounts)
-        print("Roles: %s" % roles)
-
         # noinspection PyUnresolvedReferences
         return render_template(
             template_name_or_list="manage_accounts.html",
@@ -48,6 +45,7 @@ class ManageAccountsAPI(AppView):
 
         # Modify the list for the template to use
         return [dict(
+            id=account[0].emp_id,
             name=account[0].name,
             deactivated=account[1].is_deactivated,
             role=account[2].name
@@ -112,13 +110,16 @@ class UserRoleAPI(AppView):
 
             # Change the user's role in the business
             user_business.role_id = role_id
+
+            # Update user's deactivation status
+            user_business.is_deactivated = role["deactivated"]
+
             AppDB.db_session.commit()
 
         return ManageAccountsAPI.send_response(
-            msg=jsonify(
-                dict(
-                    accounts=ManageAccountsAPI.get_all_accounts()
-                )
+            msg=dict(
+                accounts=ManageAccountsAPI.get_all_accounts(),
+                roles=ManageAccountsAPI.get_all_roles()
             ),
             status=200
         )
@@ -200,9 +201,9 @@ class UserRoleAPI(AppView):
         )
 
     @staticmethod
-    def validate_role_assignment_request(role_addition_request):
-        if "roles" in role_addition_request:
-            for role in role_addition_request["roles"]:
+    def validate_role_assignment_request(role_assignment_request):
+        if "roles" in role_assignment_request:
+            for role in role_assignment_request["roles"]:
                 # Key existence check
                 if "emp_id" not in role or "role" not in role or "deactivated" not in role:
                     return False

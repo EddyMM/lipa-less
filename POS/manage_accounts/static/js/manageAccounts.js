@@ -57,35 +57,33 @@ function onAddCashierError(res) {
 }
 
 function clearAccountsList() {
-    $("#accounts-list-area").empty();
+    $("#accounts-list-items").empty();
 }
 
 function loadAccountsList(accounts, roles) {
-    console.log(accounts);
-    console.log(roles);
-
     accounts.forEach(function(account) {
         var roleOptions = "";
 
         roles.forEach(function(role) {
-            console.log("account.role(" + account.role + ")==" + "role("+ role +"): " + (account.role===role));
             roleOptions += ((account.role===role.name)?
-                '<option value="'+ role.id +'" selected>' + role.name + '</option>':
-                    '<option value="'+ role.id +'">' + role.name + '</option>'
+                '<option value="'+ role.name +'" selected>' + role.name + '</option>':
+                    '<option value="'+ role.name +'">' + role.name + '</option>'
             );
         });
 
-        $("#accounts-list-area").append(
-            '<div class="col-4">\
-                <select name="role">'+
-                    roleOptions
-                +'</select>\
-            </div>\
-            <div class="col-4">\
-                <p>'+ account.name +'</p>\
-            </div>\
-            <div class="col-4">\
-                <input name="deactivated" type="checkbox" '+ ((account.deactivated)?'checked':'') +'>\
+        $("#accounts-list-items").append(
+            '<div class="account row">\
+                <div class="col-4">\
+                    <select name="role">'+
+                        roleOptions
+                    +'</select>\
+                </div>\
+                <div class="col-4">\
+                    <label id="'+ account.id +'">'+ account.name +'</label>\
+                </div>\
+                <div class="col-4">\
+                    <input name="deactivated" type="checkbox" '+ ((account.deactivated)?'checked':'') +'>\
+                </div>\
             </div>'
         );
     });
@@ -160,7 +158,7 @@ $(document).ready(function () {
     });
 
     // Configure modify roles button
-    $("#modify-roles-btn").click(function() {
+    $("#modify-roles-btn").click(function(ele) {
         // Prevent submission
         ele.preventDefault();
 
@@ -169,5 +167,36 @@ $(document).ready(function () {
         if(!modifyRolesForm.reportValidity()) {
             return;
         }
+
+        var roles = {
+            roles:[]
+        };
+
+        $(".account").each(function() {
+            // Single account item
+            // Get info
+            // Start with role
+            var role = $(this).find("select").val();
+            // Then the user id
+            var id = $(this).find("label").attr("id");
+            // Then the deactivation status
+            var deactivated = $(this).find("input[type='checkbox']").is(":checked");
+
+            roles.roles.push(
+                {
+                    emp_id: id,
+                    role: role,
+                    deactivated: deactivated
+                }
+            );
+        });
+
+        // Make AJAX API call
+        apiCall(
+            "/manage_accounts/role", 'PUT',
+            JSON.stringify(roles),
+            onAddCashierSuccess,
+            onAddCashierError
+        );
     });
 });
