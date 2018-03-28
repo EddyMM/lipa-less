@@ -8,25 +8,22 @@ from POS.models.business import Business
 from POS.models.role import Role
 from POS.models.user_business import UserBusiness
 
-from POS.constants import APP_NAME
-from POS.utils import selected_business, is_owner
+from POS.constants import APP_NAME, OWNER_ROLE_NAME, ADMIN_ROLE_NAME
+from POS.utils import selected_business, is_admin
 
 
 class ManageAccountsAPI(AppView):
     @staticmethod
     @login_required
     @selected_business
-    @is_owner
+    @is_admin
     def get():
         # Get a list of all the user accounts in the business
         accounts = ManageAccountsAPI.get_all_accounts()
 
         # Get a list of all possible roles in the business so
         # that the owner or admin can select from a variety or roles
-        roles = [dict(
-            id=role.id,
-            name=role.name
-        ) for role in AppDB.db_session.query(Role).all()]
+        roles = ManageAccountsAPI.get_all_roles()
 
         # noinspection PyUnresolvedReferences
         return render_template(
@@ -38,7 +35,7 @@ class ManageAccountsAPI(AppView):
 
     @staticmethod
     def get_all_accounts():
-        # Exclude the current owner
+        # Exclude the current user if owner or admin
         accounts = AppDB.db_session.query(User, UserBusiness, Role) \
             .join(UserBusiness).join(Role).filter(
             UserBusiness.business_id == session.get("business_id"),
@@ -55,17 +52,26 @@ class ManageAccountsAPI(AppView):
 
     @staticmethod
     def get_all_roles():
+        if session["role"] == ADMIN_ROLE_NAME:
+            # admin_related_roles
+            roles = AppDB.db_session.query(Role).filter(
+                Role.id != Role.get_role_id(OWNER_ROLE_NAME)
+            ).all()
+        else:
+            # owner_related_roles
+            roles = AppDB.db_session.query(Role).all()
+
         return [dict(
             id=role.id,
             name=role.name
-        ) for role in AppDB.db_session.query(Role).all()]
+        ) for role in roles]
 
 
 class UserRoleAPI(AppView):
     @staticmethod
     @login_required
     @selected_business
-    @is_owner
+    @is_admin
     def put():
         role_assignment_request = request.get_json()
 
@@ -91,7 +97,13 @@ class UserRoleAPI(AppView):
                 print("No role with that name")
                 continue
 
-            # Confirm existence of email
+            # Confirm that as an admin, you can perform this role change
+            if session["role"] == ADMIN_ROLE_NAME and role_name == OWNER_ROLE_NAME:
+                # An admin cannot change the role to owner
+                print("You don't have privilege to change anything about an owner")
+                continue
+
+            # Confirm existence of employee
             emp_id = role["emp_id"]
             user = AppDB.db_session.query(User).filter(
                 User.emp_id == emp_id
@@ -106,12 +118,18 @@ class UserRoleAPI(AppView):
                 UserBusiness.business_id == session.get("business_id"),
             ).first()
 
+            # Confirm that an admin is not altering an owner
+            if session["role"] == ADMIN_ROLE_NAME and user_business.role_id == Role.get_role_id(OWNER_ROLE_NAME):
+                print("You cannot alter an owner's details")
+                continue
+
             if not user_business:
                 print("That user does not work for you")
                 continue
 
             # Prevent owner from deactivating or demoting himself
-            if user_business.role_id == Role.get_role_id("owner"):
+            if current_user.emp_id == user_business.emp_id and \
+                    user_business.role_id == Role.get_role_id(OWNER_ROLE_NAME):
                 print("Cannot demote or deactivate yourself(%s, %s | Owner of(%s))" % (
                     current_user.name,
                     current_user.email,
@@ -138,7 +156,7 @@ class UserRoleAPI(AppView):
     @staticmethod
     @login_required
     @selected_business
-    @is_owner
+    @is_admin
     def post():
         role_addition_request = request.get_json()
 
@@ -163,6 +181,14 @@ class UserRoleAPI(AppView):
             return UserRoleAPI.send_response(
                 msg="No role with that name",
                 status=404
+            )
+
+        # Confirm that as an admin, you can perform this role change
+        if session["role"] == ADMIN_ROLE_NAME and role_name == OWNER_ROLE_NAME:
+            # An admin cannot change the role to owner
+            return UserRoleAPI.send_response(
+                msg="You don't have permission to do this",
+                status=400
             )
 
         # Confirm existence of email
