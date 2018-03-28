@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, session, jsonify
-from flask_login import login_required
+from flask import Blueprint, render_template, request, session
+from flask_login import login_required, current_user
 
 from POS.base.app_view import AppView
 from POS.models.base_model import AppDB
@@ -38,9 +38,11 @@ class ManageAccountsAPI(AppView):
 
     @staticmethod
     def get_all_accounts():
+        # Exclude the current owner
         accounts = AppDB.db_session.query(User, UserBusiness, Role) \
             .join(UserBusiness).join(Role).filter(
-            UserBusiness.business_id == session.get("business_id")
+            UserBusiness.business_id == session.get("business_id"),
+            UserBusiness.emp_id != current_user.emp_id
         ).all()
 
         # Modify the list for the template to use
@@ -106,6 +108,15 @@ class UserRoleAPI(AppView):
 
             if not user_business:
                 print("That user does not work for you")
+                continue
+
+            # Prevent owner from deactivating or demoting himself
+            if user_business.role_id == Role.get_role_id("owner"):
+                print("Cannot demote or deactivate yourself(%s, %s | Owner of(%s))" % (
+                    current_user.name,
+                    current_user.email,
+                    session["business_name"]
+                ))
                 continue
 
             # Change the user's role in the business
