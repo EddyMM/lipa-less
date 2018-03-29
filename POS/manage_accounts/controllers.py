@@ -36,11 +36,22 @@ class ManageAccountsAPI(AppView):
     @staticmethod
     def get_all_accounts():
         # Exclude the current user if owner or admin
-        accounts = AppDB.db_session.query(User, UserBusiness, Role) \
-            .join(UserBusiness).join(Role).filter(
-            UserBusiness.business_id == session.get("business_id"),
-            UserBusiness.emp_id != current_user.emp_id
-        ).all()
+        # Plus if current user is an admin, do not reveal owners
+        if session["role"] == ADMIN_ROLE_NAME:
+            accounts = AppDB.db_session.query(User, UserBusiness, Role) \
+                .join(UserBusiness).join(Role).filter(
+                UserBusiness.business_id == session.get("business_id"),
+                UserBusiness.emp_id != current_user.emp_id,
+                UserBusiness.role_id != Role.get_role_id(OWNER_ROLE_NAME)
+            ).all()
+        else:
+            accounts = AppDB.db_session.query(User, UserBusiness, Role) \
+                .join(UserBusiness).join(Role).filter(
+                UserBusiness.business_id == session.get("business_id"),
+                UserBusiness.emp_id != current_user.emp_id,
+            ).all()
+
+        print("accounts: %s" % accounts)
 
         # Modify the list for the template to use
         return [dict(

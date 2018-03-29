@@ -77,28 +77,26 @@
                                     </div>
                                 {% endif %}
                                 {% for account in accounts %}
-                                    {% if account.role != OWNER_ROLE_NAME %}
-                                        <div class="account row">
-                                            <div class="col-4">
-                                                <select name="role">
-                                                    {% for role in roles %}
-                                                    <option value="{{ role.name }}"
-                                                            {% if role.name == account.role %} selected {% endif %}>
-                                                        {{ role.name }}
-                                                    </option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="col-4">
-                                                <label id="{{ account.id }}">{{ account.name }}</label>
-                                            </div>
-                                            <div class="col-4">
-                                                <input name="deactivated"
-                                                       value="{{ account.deactivated }}"
-                                                       type="checkbox" {% if account.deactivated %} checked {% endif %}>
-                                            </div>
+                                    <div class="account row">
+                                        <div class="col-4">
+                                            <select name="role">
+                                                {% for role in roles %}
+                                                <option value="{{ role.name }}"
+                                                        {% if role.name == account.role %} selected {% endif %}>
+                                                    {{ role.name }}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
-                                    {% endif %}
+                                        <div class="col-4">
+                                            <label id="{{ account.id }}">{{ account.name }}</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input name="deactivated"
+                                                   value="{{ account.deactivated }}"
+                                                   type="checkbox" {% if account.deactivated %} checked {% endif %}>
+                                        </div>
+                                    </div>
                                 {% endfor %}
 
                             </div>

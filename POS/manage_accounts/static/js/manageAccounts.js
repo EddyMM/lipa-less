@@ -198,5 +198,5 @@ $(document).ready(function () {
             onAddCashierSuccess,
             onAddCashierError
         );
-    });
+    });chrom
 });
