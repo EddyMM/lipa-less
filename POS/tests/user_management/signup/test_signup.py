@@ -5,7 +5,7 @@ from POS.models.base_model import AppDB
 from POS.models.user import User
 from POS.user.signup.controllers import SignUp
 
-from POS.tests.base.base_test_case import BaseTestCase
+from POS.tests.user_management.base.base_test_case import BaseTestCase
 
 
 class TestSignUp(BaseTestCase):
@@ -64,16 +64,6 @@ class TestSignUp(BaseTestCase):
             password=test_password
         )
         assert b"already exists" in rv.data
-
-    def signup(self, name, email, password):
-        return self.test_app.post(
-            "/signup",
-            data=json.dumps(dict(
-                name=name,
-                email=email,
-                password=password)),
-            content_type="application/json"
-        )
 
 
 if __name__ == "__main__":

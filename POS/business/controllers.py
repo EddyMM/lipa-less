@@ -172,8 +172,9 @@ class SelectBusinessAPI(AppView):
 
         # Check if user is activated
         if user_role.is_deactivated:
-            return redirect(
-                location=url_for("business_bp.business")
+            return SelectBusinessAPI.send_response(
+                msg="You are deactivated",
+                status=403
             )
 
         # User belongs to this business, go ahead and redirect them to dashboard

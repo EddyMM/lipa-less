@@ -6,7 +6,7 @@ from POS.models.business import Business
 from POS.models.user import User
 from POS.models.role import Role
 from POS.models.user_business import UserBusiness
-from POS.tests.base.base_test_case import BaseTestCase
+from POS.tests.user_management.base.base_test_case import BaseTestCase
 
 
 class TestManageAccounts(BaseTestCase):
@@ -54,7 +54,7 @@ class TestManageAccounts(BaseTestCase):
 
         # create business #1 that links the users
         self.business_1_name = "lipaless_business"
-        self.create_business(
+        self.add_business(
             name=self.business_1_name,
             contact_number="0712345678"
         )
@@ -133,7 +133,7 @@ class TestManageAccounts(BaseTestCase):
 
         # Create business #2 (So user #1 becomes owner of business #2)
         self.business_2_name = "lipaless_2_business"
-        self.create_business(self.business_2_name, "0712524536")
+        self.add_business(self.business_2_name, "0712524536")
 
         # Add user #2 to business #1 yet current logged in user(user #1) is not the owner
         self.add_user_role("cashier", self.user_2_email)
@@ -183,65 +183,6 @@ class TestManageAccounts(BaseTestCase):
 
         # Confirm that user #1's role is now admin
         self.assertEqual(admin_role_id, user_1_role.role_id)
-
-    def signup(self, name, email, password):
-        return self.test_app.post(
-            "/signup",
-            data=json.dumps(dict(
-                name=name,
-                email=email,
-                password=password)),
-            content_type="application/json"
-        )
-
-    def create_business(self, name, contact_number):
-        return self.test_app.post(
-            "/business",
-            data=json.dumps({
-                "name": name,
-                "contact-number": contact_number
-            }),
-            content_type="application/json"
-        )
-
-    def login(self, email, password):
-        return self.test_app.post(
-            "/login",
-            data=json.dumps(dict(
-                email=email,
-                password=password
-            )),
-            content_type="application/json"
-        )
-
-    def logout(self):
-        return self.test_app.get("/logout")
-
-    def select_business(self, business_id):
-        return self.test_app.get("/business/select/%s" % business_id)
-
-    def add_user_role(self, role_name, email):
-        return self.test_app.post(
-            "/manage_accounts/role",
-            data=json.dumps({
-                "role": role_name,
-                "email": email
-            }),
-            content_type="application/json"
-        )
-
-    def modify_user_role(self, emp_id, role, deactivated):
-        return self.test_app.put(
-            "/manage_accounts/role",
-            data=json.dumps({
-                "roles": [{
-                    "emp_id": emp_id,
-                    "role": role,
-                    "deactivated": deactivated
-                }]
-            }),
-            content_type="application/json"
-        )
 
 
 if __name__ == "__main__":

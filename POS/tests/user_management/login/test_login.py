@@ -3,7 +3,7 @@ import json
 
 from POS.models.base_model import AppDB
 
-from POS.tests.base.base_test_case import BaseTestCase
+from POS.tests.user_management.base.base_test_case import BaseTestCase
 
 
 class TestLogin(BaseTestCase):
@@ -63,16 +63,6 @@ class TestLogin(BaseTestCase):
         # Test for an email that doesn't exist in the first place
         rv = self.login(test_email + "extra", test_password)
         assert b"email not found" in rv.data
-
-    def login(self, email, password):
-        return self.test_app.post(
-            "/login",
-            data=json.dumps(dict(
-                email=email,
-                password=password
-            )),
-            content_type="application/json"
-        )
 
 
 if __name__ == "__main__":
