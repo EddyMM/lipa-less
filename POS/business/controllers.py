@@ -24,6 +24,7 @@ class BusinessAPI(AppView):
         # First get the id of owner role
         businesses = AppDB.db_session.query(Business).join(UserBusiness).filter(
             UserBusiness.emp_id == current_user.emp_id,
+            UserBusiness.is_deactivated != True
         ).all()
 
         businesses = [dict(
@@ -169,8 +170,13 @@ class SelectBusinessAPI(AppView):
         session["business_name"] = AppDB.db_session.query(Business).get(business_id).name
         session["role"] = AppDB.db_session.query(Role).get(user_role.role_id).name
 
-        # User is the owner of this business, go ahead and redirect them to dashboard
+        # Check if user is activated
+        if user_role.is_deactivated:
+            return redirect(
+                location=url_for("business_bp.business")
+            )
 
+        # User belongs to this business, go ahead and redirect them to dashboard
         return redirect(
             location=url_for("dashboard_bp.dashboard")
         )

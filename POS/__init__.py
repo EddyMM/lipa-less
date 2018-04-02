@@ -2,7 +2,7 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask, send_from_directory, redirect, url_for
+from flask import Flask, send_from_directory, redirect, url_for, render_template
 from flask_login import LoginManager
 from flask_session import Session
 
@@ -128,6 +128,17 @@ def inject_roles():
         ADMIN_ROLE_NAME=ADMIN_ROLE_NAME,
         CASHIER_ROLE_NAME=CASHIER_ROLE_NAME
     )
+
+
+@app.errorhandler(400)
+def error_400(error):
+    return render_template("400-error.html")
+
+
+@app.errorhandler(500)
+def error_500(error):
+    if error >= 500:
+        return render_template("500-error.html")
 
 
 # Register blueprints

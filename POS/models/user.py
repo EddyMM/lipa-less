@@ -1,9 +1,11 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
+from flask import session
 from flask_login import UserMixin
 
 from .base_model import AppDB
+from .user_business import UserBusiness
 
 
 class User(AppDB.BaseModel, UserMixin):
