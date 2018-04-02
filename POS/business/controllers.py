@@ -69,8 +69,8 @@ class BusinessAPI(AppView):
             )
 
         # Business info
-        business_name = business_request["name"]
-        contact_number = business_request["contact-number"]
+        business_name = business_request["name"].strip().lower()
+        contact_number = business_request["contact-number"].strip().lower()
 
         # Create business data object
         business = Business(
@@ -125,7 +125,7 @@ class BusinessAPI(AppView):
         :return: True if they have an account, False otherwise
         """
         if AppDB.db_session.query(Business).filter(
-                Business.name == name
+                Business.name == name.strip().lower()
         ).first():
             return True
         return False
@@ -148,7 +148,7 @@ class SelectBusinessAPI(AppView):
         # Confirm business exists
         if not Business.exists(business_id=business_id):
             return redirect(
-                location="/business"
+                location=url_for("business_bp.business")
             )
 
         # Check if current user belongs to the specified business
@@ -160,7 +160,7 @@ class SelectBusinessAPI(AppView):
         if not user_role:
             # User is not a member of this business
             return redirect(
-                location="/login"
+                location=url_for("login_bp.login")
             )
 
         # Business exists, store it in the session to know which business

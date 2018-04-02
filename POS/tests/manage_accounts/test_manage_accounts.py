@@ -168,7 +168,7 @@ class TestManageAccounts(BaseTestCase):
         rv = self.modify_user_role(
             emp_id=user_1_id,
             role="admin",
-            deactivated="false"
+            deactivated=False
         )
 
         # Get user #1's role

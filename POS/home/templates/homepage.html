@@ -8,7 +8,7 @@
     <div class="row header sticky">
         <div class="offset-md-9 col-md-3 col-12">
             <span>
-                Already have an account? <a class="login-btn lipa-less-btn" href="/login">Login</a>
+                Already have an account? <a class="login-btn lipa-less-btn" href="{{ url_for('login_bp.login') }}">Login</a>
             </span>
         </div>
     </div>
@@ -70,7 +70,7 @@
             <div class="row" style="margin-top: 3%; margin-bottom: 5%">
                 <div class="col-md-12 col-12" style="text-align: center">
                     <a id="signup-call-to-action" class="lipa-less-btn"
-                       href="/signup">SIGN UP</a>
+                           href="{{ url_for('signup_bp.signup') }}">SIGN UP</a>
                 </div>
             </div>
         </div>

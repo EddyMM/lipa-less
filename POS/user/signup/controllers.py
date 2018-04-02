@@ -26,9 +26,9 @@ class SignUp(AppView):
                     )
 
                 # User info
-                name = user_request["name"]
-                email = user_request["email"]
-                password = user_request["password"]
+                name = user_request["name"].strip().lower()
+                email = user_request["email"].strip().lower()
+                password = user_request["password"].strip().lower()
 
                 # Create user data object
                 user = User(
@@ -97,7 +97,7 @@ class SignUp(AppView):
         :return: True if they have an account, False otherwise
         """
         if AppDB.db_session.query(User).filter(
-            User.email == email
+            User.email == email.strip().lower()
         ).first():
             return True
         return False

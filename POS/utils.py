@@ -22,7 +22,7 @@ def selected_business(business_dependent_func):
     def wrapper():
         if not session.get("business_id"):
             return redirect(
-                location="/business",
+                location=url_for("business_bp.business"),
                 code=303
             )
         return business_dependent_func()

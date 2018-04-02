@@ -44,8 +44,8 @@ class Login(AppView):
             )
 
         # User info
-        email = user_request["email"]
-        password = user_request["password"]
+        email = user_request["email"].strip().lower()
+        password = user_request["password"].strip().lower()
 
         # Find user by that email
         user = AppDB.db_session.query(User).filter(

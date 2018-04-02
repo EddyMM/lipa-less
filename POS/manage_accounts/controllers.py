@@ -102,7 +102,7 @@ class UserRoleAPI(AppView):
 
         for role in role_assignment_request["roles"]:
             # Confirm existence of the role
-            role_name = role["role"]
+            role_name = role["role"].strip().lower()
             role_id = Role.get_role_id(role_name)
             if not role_id:
                 print("No role with that name")
@@ -186,7 +186,7 @@ class UserRoleAPI(AppView):
             )
 
         # Confirm existence of the role
-        role_name = role_addition_request["role"]
+        role_name = role_addition_request["role"].strip().lower()
         role_id = Role.get_role_id(role_name)
         if not role_id:
             return UserRoleAPI.send_response(
@@ -203,7 +203,7 @@ class UserRoleAPI(AppView):
             )
 
         # Confirm existence of email
-        email_address = role_addition_request["email"]
+        email_address = role_addition_request["email"].strip().lower()
         user = AppDB.db_session.query(User).filter(
             User.email == email_address
         ).first()

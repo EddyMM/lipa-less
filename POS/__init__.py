@@ -2,7 +2,7 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask, send_from_directory, redirect
+from flask import Flask, send_from_directory, redirect, url_for
 from flask_login import LoginManager
 from flask_session import Session
 
@@ -104,7 +104,7 @@ def load_user(user_id):
 
 @login_manager.unauthorized_handler
 def unauthorized_access_callback():
-    return redirect("/login", code=303)
+    return redirect(url_for('login_bp.login'), code=303)
 
 
 @app.route("/favicon.ico")
