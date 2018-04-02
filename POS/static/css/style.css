@@ -1,0 +1,355 @@
+@font-face {
+	font-family: "Avenir Next";
+	src: url("fonts/avenir-next/AvenirNextLTPro-Regular.otf");
+}
+
+#accounts-area {
+	margin-top: 5%;
+}
+
+.add-accounts:hover {
+	cursor: pointer;
+}
+
+.app-logic-box img {
+	width: 60%;
+	margin-bottom: 5%;
+}
+
+.app-logic-box, .lipa-less-logo,
+.business-information, .user-information,
+.login-information, #select-business-form,
+.select-business-box, .dashboard-link, .add-accounts,
+#accounts-area {
+	border: 1px solid #bfbfbf;
+}
+
+.app-logic-box {
+	padding: 5%;
+	margin-bottom: 2%;
+	box-shadow: 1px 1px 1px #6c757d;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+/* Mobile device */
+@media (max-width:768px) {
+	.app-logic-box {
+		width: 100%;
+	}
+}
+
+/*Desktop*/
+@media (min-width:768px) {
+	.app-logic-box {
+		width: 60%;
+		color: red !important;
+	}
+}
+
+body {
+	font-family: "Avenir Next", sans-serif;
+	height: inherit;
+}
+
+.body {
+	height: 100% !important;
+}
+
+.business-information {
+	margin-top: 1%;
+}
+
+.business-information, .user-information,
+.login-information {
+	padding-left: 4%;
+	padding-right: 4%;
+}
+
+.business-information .row,
+.user-information .row,
+.login-information .row {
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+.business-information p,
+.user-information p {
+	color: #a8a8a8 !important;
+	margin-left: 2%;
+}
+
+.business-information label,
+.user-information label,
+.login-information label {
+	font-weight: bold;
+}
+
+.clear-btn {
+	padding: 2% 4%;
+}
+
+#create-business-btn {
+	width: inherit;
+	padding: 1% 6%;
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
+#confirm-password-mismatch {
+	color: #ff3c41 !important;
+}
+
+@media (min-height: 768px) {
+    .content {
+        height: inherit;
+    }
+}
+
+.dashboard-link {
+	padding: 1%;
+}
+
+.form-btn-area {
+	margin-top: 10% !important;
+	text-align: center;
+}
+
+.form-btn-area input {
+	margin-bottom: 5% !important;
+}
+
+h3 {
+	font-weight: bold;
+}
+
+.header, .side-nav-bar {
+	background-color: #303133;
+	padding: 1%;
+}
+
+.header p, span {
+	color: white;
+}
+
+#homepage-logo {
+	width: 100%;
+}
+
+html {
+	height: 100%;
+}
+
+input {
+	width: inherit;
+}
+
+.lipa-less-btn {
+	text-decoration: none !important;
+	background-color: #00b39c;
+	color: white;
+	border: none;
+	padding: 1% 4%;
+	border-radius: 4px;
+}
+
+.lipa-less-btn:hover {
+	color: white;
+	cursor: pointer;
+}
+
+/*General*/
+.lipa-less-logo {
+    width: inherit;
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* Mobile device */
+@media (max-width:768px) {
+    .lipa-less-logo {
+	    width: 10%;
+        height: inherit;
+    }
+}
+
+/* Desktop */
+@media (min-width:768px) {
+    .lipa-less-logo {
+	    margin-bottom: 30%;
+    }
+}
+
+#login-btn {
+	padding: 1.5%;
+}
+
+.login-information {
+	padding: 5%;
+}
+
+#login-form {
+	margin-top: 10%;
+}
+
+.main-content {
+	padding: 2%;
+	overflow-y: scroll;
+}
+
+/*Desktop*/
+@media (min-width:768px) {
+	.main-content {
+		height: 100vh;
+		text-align: center;
+	}
+}
+
+.main-content p {
+	color: black;
+}
+
+.modal-content {
+	padding: 1%;
+}
+
+.navbar-nav li {
+	margin-bottom: 2%;
+}
+
+.user-information {
+	margin-top: 3%;
+}
+
+p {
+    color: #406e84;
+}
+
+.main-content .row {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.nav-links-area {
+    margin-top: 10%;
+}
+
+.navbar {
+	align-items: unset;
+}
+
+.navbar-brand a {
+	width: inherit;
+}
+
+.navbar-nav {
+	display: block;
+}
+
+.navbar-toggler {
+	float: right;
+}
+
+.navbar-toggler-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.select-business-box {
+	margin-top: 2%;
+	margin-bottom: 2%;
+	text-align: left;
+}
+
+.select-business-box img {
+	width:60%;
+	padding-top: 5%;
+	padding-bottom: 5%;
+}
+
+#select-business-btn {
+	margin: 2%;
+	width: 100%;
+}
+
+#server-responses {
+	color: #0c5460 !important;
+	border: 1px solid #0c5460;
+}
+
+.side-nav-bar {
+	position: sticky;
+	left: 0;
+	top: 0;
+	z-index: 1;
+}
+
+.side-nav-bar .nav-link, .navbar-nav p {
+    width: inherit !important;
+    color: white;
+    font-size: 110%;
+}
+
+.side-nav-bar .nav-link:hover {
+    text-decoration: unset;
+    background-color: white;
+    color: #303133;
+}
+
+@media (max-width: 768px) {
+    .side-nav-bar {
+        height: max-content;
+    }
+
+    .side-nav-bar a {
+        padding: 1%;
+    }
+}
+
+@media (min-width: 768px) {
+    .side-nav-bar {
+        height: inherit;
+    }
+
+    .side-nav-bar .nav-link {
+        padding: 5%;
+		border: 1px solid white;
+    	border-radius: 4px;
+    }
+}
+
+#sign-up-btn {
+	padding: 1.5% 7%;
+	text-align: center;
+}
+
+#signup-call-to-action {
+	width: 100%;
+}
+
+#signup-form,
+#login-form {
+	text-align: left;
+}
+
+.login-information input,
+#signup-form input {
+	width: inherit;
+}
+
+#sign-up-btn, .clear-btn {
+	border: None;
+}
+
+.sticky {
+	position: sticky;
+	left: 0;
+	top: 0;
+	z-index: 1;
+}
+
+#welcome-message {
+	text-align: center;
+	color: #303133;
+	font-size: 23px;
+}

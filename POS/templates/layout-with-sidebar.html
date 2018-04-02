@@ -1,0 +1,16 @@
+{% include "header.html" %}
+
+    <div class="container-fluid body">
+        <div class="row content">
+
+            {% include "navigation.html" %}
+
+            <div class="main-content col-md-10 col-12">
+                {% block body %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+{% include "footer.html" %}

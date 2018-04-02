@@ -1,11 +1,14 @@
 from flask import render_template, Blueprint
 from flask.views import MethodView
 
+from ..constants import APP_NAME
+
 
 class Home(MethodView):
     @staticmethod
     def get():
-        return render_template("homepage.html")
+        # noinspection PyUnresolvedReferences
+        return render_template("homepage.html", title=APP_NAME)
 
 
 # Create view

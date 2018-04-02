@@ -1,0 +1,40 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="row">
+        <div class="col-md-11 col-12">
+            <h3>DASHBOARD</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="row">
+                {% if session.role == OWNER_ROLE_NAME or session.role == ADMIN_ROLE_NAME %}
+                <a href="{{ url_for('manage_accounts_bp.manage_accounts') }}">
+                <div id="dashboard-manage-accounts" class="dashboard-link col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/UserAccountIcon.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Manage Accounts</p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!--Include the JS files (lazy loading)-->
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('dashboard_bp.static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

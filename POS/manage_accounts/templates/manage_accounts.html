@@ -1,0 +1,240 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="row">
+        <div class="col-md-11 col-12">
+            <h3>ACCOUNT MANAGEMENT</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <!--Add new admin-->
+        <div class="col-md-3">
+            <div class="row">
+                <div id="add-admin-box" class="add-accounts col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/AdminIcon.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>New admin</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Add new cashier-->
+        <div class="col-md-3">
+            <div class="row">
+                <div id="add-cashier-box" class="add-accounts col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/CashierIcon.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>New Cashier</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div id="accounts-area" class="container-fluid">
+                <!-- Accounts column title -->
+                <div id="accounts-title-bar" class="row">
+                    <div class="col-4">
+                        <h5>Role</h5>
+                    </div>
+                    <div class="col-4">
+                        <h5>Name</h5>
+                    </div>
+                    <div class="col-4">
+                        <h5>Deactivated</h5>
+                    </div>
+                </div>
+
+                <!-- Accounts list -->
+                <div id="accounts-list-area" class="row">
+                    <form id="modify-roles-form" class="container-fluid">
+                        <div class="row">
+                            <div id="accounts-list-items" class="container-fluid">
+                                {% if not accounts %}
+                                    <div class="account row">
+                                        <div class="col-12">
+                                            <p>No other users in your business</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% for account in accounts %}
+                                    <div class="account row">
+                                        <div class="col-4">
+                                            <select name="role">
+                                                {% for role in roles %}
+                                                <option value="{{ role.name }}"
+                                                        {% if role.name == account.role %} selected {% endif %}>
+                                                    {{ role.name }}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-4">
+                                            <label id="{{ account.id }}">{{ account.name }}</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input name="deactivated"
+                                                   value="{{ account.deactivated }}"
+                                                   type="checkbox" {% if account.deactivated %} checked {% endif %}>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        <hr>
+
+                        {% if accounts %}
+                            <div class="row">
+                                <div class="offset-md-10 col-md-2 col-12">
+                                    <input id="modify-roles-btn" class="lipa-less-btn" type="submit" value="Save">
+                                </div>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add admin modal -->
+    <div class="modal fade" id="add-admin-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Admin
+                    </h4>
+                </div>
+
+                <form id="add-admin-form" class="container-fluid"
+                      method="POST"
+                      action="#">
+                    <!--Server response section-->
+                    <div class="row">
+                        <p id="admin-server-responses"></p>
+                    </div>
+
+                    <!--Email section-->
+                    <div class="row">
+                        <div class="email-area col-md-12 col-12">
+                            <!--admin email-->
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    <label>
+                                        Email
+                                    </label>
+                                </div>
+                                <div class="col-md-9 col-12">
+                                    <input name="admin-email"
+                                           type="email"
+                                           pattern=".*@.*\..*"
+                                           title="e.g. johndoe@gmail.com" required>
+                                </div>
+                            </div>
+
+                            <!--Add admin and Clear-->
+                            <div class="form-btn-area row">
+                                <div class="col-md-6">
+                                    <input id="add-admin-btn"
+                                           class="lipa-less-btn"
+                                           value="ADD"
+                                           type="submit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="clear-btn" type="reset" value="Clear" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+    <!-- Add cashier modal -->
+    <div class="modal fade" id="add-cashier-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Admin
+                    </h4>
+                </div>
+
+                <form id="add-cashier-form" class="container-fluid"
+                      method="POST"
+                      action="#">
+                    <!--Server response section-->
+                    <div class="row">
+                        <p id="cashier-server-responses"></p>
+                    </div>
+
+                    <!--Email section-->
+                    <div class="row">
+                        <div class="email-area col-md-12 col-12">
+                            <!--admin email-->
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <label>
+                                        Email
+                                    </label>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <input name="cashier-email"
+                                           type="email"
+                                           pattern=".*@.*\..*"
+                                           title="e.g. johndoe@gmail.com"
+                                           required>
+                                </div>
+                            </div>
+
+                            <!--Add admin and Clear-->
+                            <div class="form-btn-area row">
+                                <div class="col-md-6">
+                                    <input id="add-cashier-btn"
+                                           class="lipa-less-btn"
+                                           value="ADD"
+                                           type="submit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="clear-btn" type="reset" value="Clear" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+
+    <!--Include the JS files (lazy loading)-->
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('manage_accounts_bp.static', filename='js/manageAccounts.js') }}"></script>
+{% endblock %}

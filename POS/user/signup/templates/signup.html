@@ -1,0 +1,106 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <!--suppress HtmlUnknownTarget, HtmlFormInputWithoutLabel -->
+    <div class="row">
+        <div class="col-md-11 col-12">
+            <h3>SIGN UP</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="offset-md-2 col-md-8 col-12">
+            <div style="text-align: left" class="col-md-12">
+                <p>
+                    Already have an account? <a href="{{ url_for('login_bp.login') }}">Login</a>
+                </p>
+            </div>
+
+            <form id="signup-form" class="container-fluid">
+                <!--User information section-->
+                <div class="row">
+                    <div class="user-information col-md-12">
+                        <div class="row">
+                            <p>User information</p>
+                        </div>
+
+                        <div class="row">
+                            <p id="server-responses"></p>
+                        </div>
+
+                        <!--User name-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    Name
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input name="name" type="text" required>
+                            </div>
+                        </div>
+
+                        <!--User email-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    Email
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input name="email"
+                                       type="email"
+                                       pattern=".*@.*\..*"
+                                       title="e.g. johndoe@gmail.com" required>
+                            </div>
+                        </div>
+
+                        <!--User password-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p id="confirm-password-mismatch"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <label>
+                                    Password
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input name="password" type="password" required>
+                            </div>
+                        </div>
+
+                        <!--Confirm password-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    Confirm password
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input name="confirm-password" type="password" required>
+                            </div>
+                        </div>
+
+                        <!--Signup and Clear-->
+                        <div class="form-btn-area row">
+                            <div class="col-md-6">
+                                <input id="sign-up-btn" class="lipa-less-btn"
+                                       value="SIGN UP"
+                                       type="submit">
+                            </div>
+
+                            <div class="col-md-6">
+                                <input class="clear-btn" type="reset" value="Clear" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Include the JS files (lazy loading)-->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <script src="{{ url_for('signup_bp.static', filename='js/signup.js') }}"></script>
+{% endblock %}

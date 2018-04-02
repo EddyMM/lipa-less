@@ -1,0 +1,9 @@
+role_1:
+    name: owner
+    description: Overall manager of the business
+role_2:
+    name: admin
+    description: Oversees stock management, generates simple reports and manages cashier accounts
+role_3:
+    name: cashier
+    description: Involved in daily POS transactions

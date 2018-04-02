@@ -1,0 +1,51 @@
+<nav class="side-nav-bar navbar navbar-expand-md col-md-2 col-12">
+    <div class="col-md-12 col-12">
+        <div class="row">
+            <div class="navbar-brand col-12">
+                <!--suppress HtmlUnknownTarget -->
+                <a href="/">
+                    <img class="lipa-less-logo"
+                        src="{{ url_for('static', filename='imgs/icons/LipaLess.png') }}">
+                </a>
+
+                <button class="navbar-toggler" type="button"
+                        data-toggle="collapse" data-target="#navbar-dropdown"
+                        aria-controls="navbar-dropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-dark navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div id="navbar-dropdown" class="col-12 collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    {% if current_user.is_authenticated %}
+                        <li>
+                            {% if session.business_name %}
+                                <p>Business: {{ session.business_name }}</p>
+                            {% endif %}
+                            <p>
+                                Logged in as {{ current_user.name }}
+                                {% if session.role %}
+                                    <span>({{ session.role }})</span>
+                                {% endif %}
+                            </p>
+                        </li>
+                        {% if session.business_id %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/dashboard">Dashboard</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
