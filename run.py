@@ -1,3 +1,5 @@
+import os
+
 from POS import app
 
 # Bind to $PORT if defined, otherwise default to 5000.
