@@ -1,3 +1,6 @@
+# Flask session
+flask_session/
+
 # Pycharm files
 .idea/workspace.xml
 .idea/markdown-*
