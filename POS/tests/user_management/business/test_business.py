@@ -1,8 +1,8 @@
 import unittest
 
 from POS.models.base_model import AppDB
-from POS.models.business import Business
-from POS.models.user import User
+from POS.models.user_management.business import Business
+from POS.models.user_management.user import User
 
 from POS.tests.user_management.base.base_test_case import BaseTestCase
 
@@ -20,7 +20,7 @@ class TestBusiness(BaseTestCase):
         AppDB.BaseModel.metadata.drop_all()
         AppDB.BaseModel.metadata.create_all()
 
-        from POS.models.role import Role
+        from POS.models.user_management.role import Role
         AppDB.load_default_roles(Role)
 
         # Business details

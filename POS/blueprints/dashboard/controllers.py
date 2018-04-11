@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template
 from flask_login import login_required
 
-from POS.base.app_view import AppView
+from POS.blueprints.base.app_view import AppView
 
 from POS.utils import selected_business
 from POS.constants import APP_NAME

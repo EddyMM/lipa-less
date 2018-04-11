@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint
 from flask.views import MethodView
 
-from ..constants import APP_NAME
+from POS.constants import APP_NAME
 
 
 class Home(MethodView):

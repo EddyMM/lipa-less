@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
-from .base_model import AppDB
+from POS.models.base_model import AppDB
 
 
 class Business(AppDB.BaseModel):
@@ -15,8 +15,14 @@ class Business(AppDB.BaseModel):
     name = Column(String)
     contact_number = Column(String)
 
+    # Relationships
     users = relationship(
         "UserBusiness",
+        back_populates="business"
+    )
+
+    products = relationship(
+        "Product",
         back_populates="business"
     )
 

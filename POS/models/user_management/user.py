@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from flask import session
 from flask_login import UserMixin
 
-from .base_model import AppDB
+from POS.models.base_model import AppDB
 from .user_business import UserBusiness
 
 

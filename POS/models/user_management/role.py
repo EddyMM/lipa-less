@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from flask import logging
 
 from POS.models.base_model import AppDB
-from ..constants import ROLES_YAML_ENV_VAR, CASHIER_ROLE_NAME
+from POS.constants import ROLES_YAML_ENV_VAR, CASHIER_ROLE_NAME
 
 
 class Role(AppDB.BaseModel):

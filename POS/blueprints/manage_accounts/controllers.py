@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, session
 from flask_login import login_required, current_user
 
-from POS.base.app_view import AppView
+from POS.blueprints.base.app_view import AppView
 from POS.models.base_model import AppDB
-from POS.models.user import User
-from POS.models.business import Business
-from POS.models.role import Role
-from POS.models.user_business import UserBusiness
+from POS.models.user_management.user import User
+from POS.models.user_management.business import Business
+from POS.models.user_management.role import Role
+from POS.models.user_management.user_business import UserBusiness
 
 from POS.constants import APP_NAME, OWNER_ROLE_NAME, ADMIN_ROLE_NAME
 from POS.utils import selected_business, is_admin

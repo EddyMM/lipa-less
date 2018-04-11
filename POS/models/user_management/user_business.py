@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
-from .base_model import AppDB
+from POS.models.base_model import AppDB
 
 
 class UserBusiness(AppDB.BaseModel):
