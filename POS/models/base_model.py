@@ -9,25 +9,26 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from ..constants import DATABASE_URL_ENV_NAME
-
 
 class AppDB(object):
     # Create the BaseModel model through which all other models will be declared
     BaseModel = declarative_base()
     db_session = None
 
+    # noinspection PyUnresolvedReferences
     @staticmethod
     def init_db():
         # Import the various models
-        # noinspection PyUnresolvedReferences
-        from .user import User
-        # noinspection PyUnresolvedReferences
-        from .business import Business
-        # noinspection PyUnresolvedReferences
-        from .role import Role
-        # noinspection PyUnresolvedReferences
-        from .user_business import UserBusiness
+        from POS.models.user_management.user import User
+        from POS.models.user_management.business import Business
+        from POS.models.user_management.role import Role
+        from POS.models.user_management.user_business import UserBusiness
+        from POS.models.stock_management.category import Category
+        from POS.models.stock_management.supplier import Supplier
+        from POS.models.stock_management.manufacturer import Manufacturer
+        from POS.models.stock_management.product import Product
+        from POS.models.stock_management.supplier_manufacturer import SupplierManufacturer
+        from POS.models.stock_management.business_category import BusinessCategory
 
         try:
             db_engine = create_engine(current_app.config["SQLALCHEMY_DATABASE_URI"])
@@ -44,7 +45,7 @@ class AppDB(object):
             AppDB.db_session = Session()
 
             # Create all structures
-            # AppDB.BaseModel.metadata.drop_all()
+            AppDB.BaseModel.metadata.drop_all()
             AppDB.BaseModel.metadata.create_all()
 
             # Load default user roles

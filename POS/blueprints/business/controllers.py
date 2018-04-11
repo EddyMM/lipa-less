@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, request, logging, redirect, url_for, session
 from flask_login import login_required, current_user
 
-from ..constants import APP_NAME, OWNER_ROLE_NAME
+from POS.constants import APP_NAME, OWNER_ROLE_NAME
 
-from ..base.app_view import AppView
+from POS.blueprints.base.app_view import AppView
 
-from ..models.base_model import AppDB
-from ..models.business import Business
-from ..models.role import Role
-from ..models.user_business import UserBusiness
+from POS.models.base_model import AppDB
+from POS.models.user_management.business import Business
+from POS.models.user_management.role import Role
+from POS.models.user_management.user_business import UserBusiness
 
 
 class BusinessAPI(AppView):

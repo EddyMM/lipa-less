@@ -6,16 +6,17 @@ from flask import Flask, send_from_directory, redirect, url_for, render_template
 from flask_login import LoginManager
 from flask_session import Session
 
-from .home.controllers import home_bp
-from .user.signup.controllers import signup_bp
-from .user.login.controllers import login_bp
-from .business.controllers import business_bp
-from .dashboard.controllers import dashboard_bp
-from .user.logout.controllers import logout_bp
-from .manage_accounts.controllers import manage_accounts_bp
+from POS.blueprints.home.controllers import home_bp
+from POS.blueprints.user.signup.controllers import signup_bp
+from POS.blueprints.user.login.controllers import login_bp
+from POS.blueprints.business.controllers import business_bp
+from POS.blueprints.dashboard.controllers import dashboard_bp
+from POS.blueprints.user.logout.controllers import logout_bp
+from POS.blueprints.manage_accounts.controllers import manage_accounts_bp
+from POS.blueprints.product.controllers import product_bp
 
-from .models.base_model import  AppDB
-from .models.user import User
+from POS.models.base_model import AppDB
+from POS.models.user_management.user import User
 
 from .utils import get_config_type
 from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR,\
@@ -142,10 +143,21 @@ def error_500(error):
 
 
 # Register blueprints
-app.register_blueprint(home_bp)
-app.register_blueprint(signup_bp)
-app.register_blueprint(login_bp)
-app.register_blueprint(logout_bp)
-app.register_blueprint(business_bp)
-app.register_blueprint(dashboard_bp)
-app.register_blueprint(manage_accounts_bp)
+def register_blueprints(blueprints):
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
+
+
+app_blueprints = (
+    home_bp,
+    signup_bp,
+    login_bp,
+    logout_bp,
+    business_bp,
+    dashboard_bp,
+    manage_accounts_bp,
+    product_bp
+)
+
+register_blueprints(app_blueprints)
+

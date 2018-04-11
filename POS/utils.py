@@ -4,8 +4,8 @@ from flask import session, redirect, url_for
 from flask_login import current_user
 
 from POS.models.base_model import AppDB
-from POS.models.user_business import UserBusiness
-from POS.models.role import Role
+from POS.models.user_management.user_business import UserBusiness
+from POS.models.user_management.role import Role
 
 from .constants import APP_CONFIG_ENV_VAR, DEV_CONFIG_VAR, OWNER_ROLE_NAME, ADMIN_ROLE_NAME, CASHIER_ROLE_NAME
 

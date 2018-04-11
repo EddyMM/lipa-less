@@ -1,8 +1,7 @@
 import unittest
-import json
 
 from POS.models.base_model import AppDB
-from POS.models.user import User
+from POS.models.user_management.user import User
 from POS.user.signup.controllers import SignUp
 
 from POS.tests.user_management.base.base_test_case import BaseTestCase

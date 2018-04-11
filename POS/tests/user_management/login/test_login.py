@@ -1,5 +1,4 @@
 import unittest
-import json
 
 from POS.models.base_model import AppDB
 
@@ -28,7 +27,7 @@ class TestLogin(BaseTestCase):
         assert b"LOG IN" in rv.data
 
     def test_post(self):
-        from POS.models.user import User
+        from POS.models.user_management.user import User
 
         test_name = "lipaless"
         test_email = "lipaless@gmail.com"

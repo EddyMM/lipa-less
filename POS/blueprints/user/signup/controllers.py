@@ -1,10 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, url_for, logging
+from flask import Blueprint, render_template, request, logging
 from flask_login import login_user
 
-from ...base.app_view import AppView
-from ...constants import APP_NAME
-from ...models.base_model import AppDB
-from ...models.user import User
+from POS.blueprints.base.app_view import AppView
+from POS.constants import APP_NAME
+from POS.models.base_model import AppDB
+from POS.models.user_management.user import User
 
 
 class SignUp(AppView):
