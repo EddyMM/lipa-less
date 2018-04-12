@@ -28,7 +28,6 @@ class AppDB(object):
         from POS.models.stock_management.manufacturer import Manufacturer
         from POS.models.stock_management.product import Product
         from POS.models.stock_management.supplier_manufacturer import SupplierManufacturer
-        from POS.models.stock_management.business_category import BusinessCategory
 
         try:
             db_engine = create_engine(current_app.config["SQLALCHEMY_DATABASE_URI"])

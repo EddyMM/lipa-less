@@ -10,7 +10,7 @@ class ProductAPI(AppView):
 
     @staticmethod
     def post():
-        new_products_request = request.get_json()
+        new_products_request = request.get_json(silent=True)
 
         # Ensure request is structured properly
         if not new_products_request:
@@ -25,6 +25,8 @@ class ProductAPI(AppView):
                 status=400
             )
 
+
+
         return "Add new product(s)"
 
     @staticmethod
@@ -37,13 +39,18 @@ class ProductAPI(AppView):
 
     @staticmethod
     def validate_new_products_request(new_products_request):
-        products = new_products_request["products"]
-        if products and \
-                products["name"] not in ("", None) and \
-                products["buying_price"] not in ("", None) and \
-                products["selling_price"] not in ("", None) and \
-                products["quantity"] not in ("", None):
-            return True
+        if "products" in new_products_request:
+            products = new_products_request["products"]
+            if products and \
+                    "name" in products and \
+                    "buying_price" in products and \
+                    "selling_price" in products and \
+                    "quantity" in products and \
+                    products["name"] not in ("", None) and \
+                    products["buying_price"] not in ("", None) and \
+                    products["selling_price"] not in ("", None) and \
+                    products["quantity"] not in ("", None):
+                return True
         return False
 
 

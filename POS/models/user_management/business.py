@@ -16,15 +16,9 @@ class Business(AppDB.BaseModel):
     contact_number = Column(String)
 
     # Relationships
-    users = relationship(
-        "UserBusiness",
-        back_populates="business"
-    )
-
-    products = relationship(
-        "Product",
-        back_populates="business"
-    )
+    users = relationship("UserBusiness", back_populates="business")
+    products = relationship("Product", back_populates="business")
+    categories = relationship("Category", back_populates="business")
 
     def __init__(self, name, contact_no):
         self.name = name
