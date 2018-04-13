@@ -31,3 +31,11 @@ class UserBusiness(AppDB.BaseModel):
     def __init__(self, role_id, is_deactivated=False):
         self.role_id = role_id
         self.is_deactivated = is_deactivated
+
+    def __repr__(self):
+        return "UserBusiness<emp_id={0}, business_id={1}, role_id={2}, is_deactivated={3}>".format(
+            self.emp_id,
+            self.business_id,
+            self.role_id,
+            self.is_deactivated
+        )

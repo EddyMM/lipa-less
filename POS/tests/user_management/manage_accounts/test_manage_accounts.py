@@ -86,62 +86,13 @@ class TestManageAccounts(BaseTestCase):
             email=self.user_1_email
         )
 
+        # Logout as owner
+        self.logout()
+
         # Should work so expect 2 users in the DB
         self.assertTrue(len(AppDB.db_session.query(UserBusiness).filter(
             UserBusiness.business_id == business.id
         ).all()) == 2)
-
-        # Reverse roles to ensure normal user cannot add roles
-        # Logout as owner
-        self.logout()
-
-        # Create user #2 (without creating a business)
-        self.user_2_email = "lipaless_2@gmail.com"
-        self.signup(
-            name="lipaless_2",
-            email=self.user_2_email,
-            password="lipaless_2_pw"
-        )
-
-        # Logout from user #2
-        self.logout()
-
-        # Login as user #1 who is a cashier
-        self.login(self.user_1_email, self.user_1_password)
-
-        # Select business
-        self.select_business(self.business_1_id)
-
-        # Attempt to add user #2 to business as a cashier
-        self.add_user_role(
-            role_name="cashier",
-            email=self.user_2_email
-        )
-
-        # Logout as user #1
-        self.logout()
-
-        # Should be impossible to add user #2 using a cashier account so still 2 roles in the business should exist
-        self.assertTrue(len(AppDB.db_session.query(UserBusiness).filter(
-            UserBusiness.business_id == business.id
-        ).all()) == 2)
-
-        # Confirm that the owner of business #2 cannot add a role to business #1 where he is not an owner
-        # Login as user #1
-        self.login(self.user_1_email, self.user_1_password)
-
-        # Create business #2 (So user #1 becomes owner of business #2)
-        self.business_2_name = "lipaless_2_business"
-        self.add_business(self.business_2_name, "0712524536")
-
-        # Add user #2 to business #1 yet current logged in user(user #1) is not the owner
-        self.add_user_role("cashier", self.user_2_email)
-
-        # Confirm that it didn't work
-        self.assertTrue(
-            len(AppDB.db_session.query(UserBusiness).filter(
-                UserBusiness.business_id == self.business_1_id
-            ).all()) == 2)
 
     def test_modify_role(self):
         # Change user #1 to an admin
@@ -164,7 +115,7 @@ class TestManageAccounts(BaseTestCase):
         user_1_id = user_1.emp_id
 
         # Modify user #1
-        rv = self.modify_user_role(
+        self.modify_user_role(
             emp_id=user_1_id,
             role="admin",
             deactivated=False
