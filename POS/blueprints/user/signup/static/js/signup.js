@@ -1,8 +1,8 @@
 /**
-* Handle successful registration of a new organization
+* Handle successful registration of a new user
 **/
-function onSignupSuccess(res) {
-    var responseStatus = res["status"];
+function onSignupSuccess(res, status, jqXHR) {
+    var responseStatus = parseInt(jqXHR.getResponseHeader("code"));
     if(responseStatus === 200) {
         window.location = "/business";
         return;

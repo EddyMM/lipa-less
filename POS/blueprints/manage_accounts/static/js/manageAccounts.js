@@ -1,8 +1,8 @@
 /**
 * Handle successful addition of an admin
 **/
-function onAddAdminSuccess(res) {
-    var responseStatus = res["status"];
+function onAddAdminSuccess(res, status, jqXHR) {
+    var responseStatus = parseInt(jqXHR.getResponseHeader("code"));
     if(responseStatus === 200) {
         console.log(res["msg"]);
         $("#add-admin-modal").modal("hide");
@@ -30,8 +30,8 @@ function onAddAdminError(res) {
 /**
 * Handle successful addition of a cashier
 **/
-function onAddCashierSuccess(res) {
-    var responseStatus = res["status"];
+function onAddCashierSuccess(res, status, jqXHR) {
+    var responseStatus = parseInt(jqXHR.getResponseHeader("code"));
     if(responseStatus === 200) {
         console.log(res["msg"]);
         $("#add-cashier-modal").modal("hide");

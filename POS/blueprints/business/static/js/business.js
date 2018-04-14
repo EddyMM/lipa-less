@@ -1,8 +1,8 @@
 /**
 * Handle successful registration of a new business
 **/
-function onAddBusinessSuccess(res) {
-    var responseStatus = res["status"];
+function onAddBusinessSuccess(res, status, jqXHR) {
+    var responseStatus = parseInt(jqXHR.getResponseHeader("code"));
     if(responseStatus === 200) {
         window.location = "/dashboard";
     } else {

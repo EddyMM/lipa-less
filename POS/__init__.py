@@ -15,6 +15,7 @@ from POS.blueprints.user.logout.controllers import logout_bp
 from POS.blueprints.manage_accounts.controllers import manage_accounts_bp
 from POS.blueprints.product.controllers import product_bp
 from POS.blueprints.category.controllers import category_bp
+from POS.blueprints.manufacturer.controllers import manufacturer_bp
 
 from POS.models.base_model import AppDB
 from POS.models.user_management.user import User
@@ -158,7 +159,8 @@ app_blueprints = (
     dashboard_bp,
     manage_accounts_bp,
     product_bp,
-    category_bp
+    category_bp,
+    manufacturer_bp
 )
 
 register_blueprints(app_blueprints)

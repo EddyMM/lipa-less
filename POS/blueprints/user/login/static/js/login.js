@@ -1,8 +1,8 @@
 /**
 * Handle successful login
 **/
-function onLoginSuccess(res) {
-    var responseStatus = res["status"];
+function onLoginSuccess(res, code, jqXHR) {
+    var responseStatus = parseInt(jqXHR.getResponseHeader("code"));
     console.log("Response: " + JSON.stringify(res));
     if(responseStatus === 200) {
         window.location = "/business";

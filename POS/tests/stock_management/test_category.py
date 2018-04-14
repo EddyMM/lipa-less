@@ -22,7 +22,7 @@ class TestCategory(BaseTestCase):
         # Get categories
         rv = self.test_app.get("/category")
 
-        self.assertIn(b"200", rv.data)
+        self.assertIn("200", rv.headers["code"])
 
     def test_add_category(self):
         # Login as an admin

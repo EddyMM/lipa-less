@@ -125,10 +125,10 @@ class TestBusiness(BaseTestCase):
 
         rv = self.select_business(business.id)
 
-        print(rv.data)
+        print("response type: %s" % type(rv.headers["code"]))
 
         # Check if it returns a 403 (Forbidden) response status
-        self.assertIn(b"403", rv.data)
+        self.assertEqual("403", rv.headers["code"])
 
 
 if __name__ == "__main__":
