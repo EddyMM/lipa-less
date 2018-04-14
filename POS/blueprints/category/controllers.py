@@ -31,17 +31,11 @@ class CategoryAPI(AppView):
         new_categories_request = request.get_json(silent=True)
 
         if not new_categories_request:
-            return CategoryAPI.send_response(
-                msg="Problem with request type or structure",
-                status=400
-            )
+            return CategoryAPI.error_in_request_response()
 
         # Ensure request has all fiends filled
         if not CategoryAPI.validate_new_categories_request(new_categories_request):
-            return CategoryAPI.send_response(
-                msg="Missing fields or values",
-                status=400
-            )
+            return CategoryAPI.validation_error_response()
 
         # Fetch the info
         name = new_categories_request["name"].strip().lower()

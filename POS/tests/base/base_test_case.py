@@ -145,6 +145,25 @@ class BaseTestCase(unittest.TestCase):
         # Logout as owner
         self.logout()
 
+    def login_as_admin(self):
+        # Login as an admin
+        self.login(
+            email=self.admin_email,
+            password=self.admin_password
+        )
+
+        # Select business
+        self.select_business(self.business_id)
+
+    def login_as_cashier(self):
+        self.login(
+            self.cashier_email,
+            self.cashier_password
+        )
+
+        # Select business
+        self.select_business(self.business_id)
+
     def init_test_app(self):
         """
             Create the application test client

@@ -11,13 +11,7 @@ class TestCategory(BaseTestCase):
 
     def test_get_categories(self):
         # Login as cashier
-        self.login(
-            self.cashier_email,
-            self.cashier_password,
-        )
-
-        # Select business
-        self.select_business(self.business_id)
+        self.login_as_cashier()
 
         # Get categories
         rv = self.test_app.get("/category")
@@ -85,16 +79,6 @@ class TestCategory(BaseTestCase):
 
         # Check if category was removed
         self.assertEqual(AppDB.db_session.query(Category).count(), 0)
-
-    def login_as_admin(self):
-        # Login as an admin
-        self.login(
-            email=self.admin_email,
-            password=self.admin_password
-        )
-
-        # Select business
-        self.select_business(self.business_id)
 
     def add_category(self):
         # Category info

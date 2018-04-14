@@ -19,3 +19,17 @@ class AppView(MethodView):
         response.headers["code"] = status
 
         return response
+
+    @staticmethod
+    def error_in_request_response():
+        return AppView.send_response(
+            msg="Problem with request type or structure",
+            status=400
+        )
+
+    @staticmethod
+    def validation_error_response():
+        return AppView.send_response(
+            msg="Missing fields or values",
+            status=400
+        )
