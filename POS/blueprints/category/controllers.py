@@ -15,7 +15,6 @@ from POS.utils import is_admin
 class CategoryAPI(AppView):
     @staticmethod
     @login_required
-    @is_admin
     def get():
         # Get full lists of categories
         categories = CategoryAPI.get_all_categories()

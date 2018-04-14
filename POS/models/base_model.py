@@ -44,7 +44,7 @@ class AppDB(object):
             AppDB.db_session = Session()
 
             # Create all structures
-            AppDB.BaseModel.metadata.drop_all()
+            # AppDB.BaseModel.metadata.drop_all()
             AppDB.BaseModel.metadata.create_all()
 
             # Load default user roles

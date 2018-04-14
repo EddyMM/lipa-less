@@ -71,7 +71,7 @@ class BusinessAPI(AppView):
 
         # Business info
         business_name = business_request["name"].strip().lower()
-        contact_number = business_request["contact-number"].strip().lower()
+        contact_number = business_request["contact_number"].strip().lower()
 
         # Create business data object
         business = Business(
@@ -114,9 +114,9 @@ class BusinessAPI(AppView):
         :return: True if exists and are filled, False otherwise
         """
         return ("name" in client_request.keys() and
-                "contact-number" in client_request.keys()) and \
+                "contact_number" in client_request.keys()) and \
                (client_request["name"] not in ["", None]) and \
-               (client_request["contact-number"] not in ["", None])
+               (client_request["contact_number"] not in ["", None])
 
     @staticmethod
     def business_exists(name):

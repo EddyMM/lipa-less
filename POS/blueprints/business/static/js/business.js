@@ -45,11 +45,11 @@ $(document).ready(function (){
 
         // Package the data into an object
         var name = $("input[name='name']").val();
-        var contactNumber = $("input[name='contact-number']").val();
+        var contactNumber = $("input[name='contact_number']").val();
 
         var businessInfo = {
             "name": name,
-            "contact-number": contactNumber
+            "contact_number": contactNumber
         };
 
         // Make AJAX API call

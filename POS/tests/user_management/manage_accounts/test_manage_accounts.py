@@ -5,7 +5,7 @@ from POS.models.user_management.business import Business
 from POS.models.user_management.user import User
 from POS.models.user_management.role import Role
 from POS.models.user_management.user_business import UserBusiness
-from POS.tests.user_management.base.base_test_case import BaseTestCase
+from POS.tests.base.base_test_case import BaseTestCase
 
 
 class TestManageAccounts(BaseTestCase):

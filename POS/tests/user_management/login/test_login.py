@@ -2,7 +2,7 @@ import unittest
 
 from POS.models.base_model import AppDB
 
-from POS.tests.user_management.base.base_test_case import BaseTestCase
+from POS.tests.base.base_test_case import BaseTestCase
 
 
 class TestLogin(BaseTestCase):
