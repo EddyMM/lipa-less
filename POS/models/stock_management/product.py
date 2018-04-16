@@ -27,7 +27,8 @@ class Product(AppDB.BaseModel):
     supplier = relationship("Supplier", back_populates="products")
     manufacturer = relationship("Manufacturer", back_populates="products")
 
-    def __init__(self, name, description, buying_price, selling_price, reorder_level, expiration_date, quantity):
+    def __init__(self, name, description, buying_price, selling_price, reorder_level,
+                 expiration_date, quantity):
         self.name = name
         self.description = description
         self.buying_price = buying_price

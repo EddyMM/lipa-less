@@ -1,14 +1,34 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
+from flask_login import login_required
 
 from POS.blueprints.base.app_view import AppView
+
+from POS.models.base_model import AppDB
+from POS.models.stock_management.product import Product
+from POS.models.stock_management.supplier import Supplier
+from POS.models.stock_management.manufacturer import Manufacturer
+from POS.models.stock_management.category import Category
+from POS.models.user_management.business import Business
+
+from POS.utils import is_cashier, is_admin
 
 
 class ProductAPI(AppView):
     @staticmethod
+    @login_required
+    @is_cashier
     def get():
-        return "Get product(s)"
+        # Get all products within business
+        products = ProductAPI.get_all_products()
+
+        return ProductAPI.send_response(
+            msg=products,
+            status=200
+        )
 
     @staticmethod
+    @login_required
+    @is_admin
     def post():
         new_products_request = request.get_json(silent=True)
 
@@ -19,39 +39,215 @@ class ProductAPI(AppView):
                 status=400
             )
 
-        if not ProductAPI.validate_new_products_request(new_products_request):
+        if not ProductAPI.validate_new_product_request(new_products_request):
             return ProductAPI.send_response(
                 msg="Missing fields or missing values",
                 status=400
             )
 
+        # Get info
+        name = new_products_request["name"]
+        buying_price = new_products_request["buying_price"]
+        selling_price = new_products_request["selling_price"]
+        quantity = new_products_request["quantity"]
+        reorder_level = new_products_request.get("reorder_level", 0)
+        description = new_products_request.get("description", None)
+        expiration_date = new_products_request.get("expiration_date", None)
+        category_id = new_products_request.get("category_id", None)
+        supplier_id = new_products_request.get("supplier_id", None)
+        manufacturer_id = new_products_request.get("manufacturer_id", None)
 
+        # Create product
+        product = Product(
+            name=name,
+            buying_price=buying_price,
+            selling_price=selling_price,
+            quantity=quantity,
+            description=description,
+            expiration_date=expiration_date,
+            reorder_level=reorder_level
+        )
 
-        return "Add new product(s)"
+        # Relationships
+        if supplier_id:
+            product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
+        if manufacturer_id:
+            product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
+        if category_id:
+            product.category = AppDB.db_session.query(Category).get(category_id)
+
+        product.business = AppDB.db_session.query(Business).get(session["business_id"])
+
+        AppDB.db_session.add(product)
+        AppDB.db_session.commit()
+
+        # Get updated list of products
+        products = ProductAPI.get_all_products()
+
+        return ProductAPI.send_response(
+            msg=products,
+            status=200
+        )
 
     @staticmethod
+    @login_required
+    @is_admin
     def put():
-        return "Modify product(s)"
+        modify_products_request = request.get_json(silent=True)
+
+        # Ensure request is structured properly
+        if not modify_products_request:
+            return ProductAPI.send_response(
+                msg="Problem with structure of new products request",
+                status=400
+            )
+
+        if not ProductAPI.validate_modify_product_request(modify_products_request):
+            return ProductAPI.send_response(
+                msg="Missing fields or missing values",
+                status=400
+            )
+
+        # Get info
+        product_id = modify_products_request["id"]
+        name = modify_products_request["name"]
+        buying_price = modify_products_request["buying_price"]
+        selling_price = modify_products_request["selling_price"]
+        quantity = modify_products_request["quantity"]
+        reorder_level = modify_products_request.get("reorder_level", 0)
+        description = modify_products_request.get("description", None)
+        expiration_date = modify_products_request.get("expiration_date", None)
+        category_id = modify_products_request.get("category_id", None)
+        supplier_id = modify_products_request.get("supplier_id", None)
+        manufacturer_id = modify_products_request.get("manufacturer_id", None)
+
+        # Get product
+        product = AppDB.db_session.query(Product).get(product_id)
+
+        if not product:
+            return ProductAPI.send_response(
+                msg="No product by that description",
+                status=404
+            )
+
+        product.name = name,
+        product.buying_price = buying_price,
+        product.selling_price = selling_price,
+        product.quantity = quantity,
+        product.description = description,
+        product.expiration_date = expiration_date,
+        product.reorder_level = reorder_level
+
+        # Relationships
+        if supplier_id:
+            product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
+        if manufacturer_id:
+            product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
+        if category_id:
+            product.category = AppDB.db_session.query(Category).get(category_id)
+
+        product.business = AppDB.db_session.query(Business).get(session["business_id"])
+
+        AppDB.db_session.commit()
+
+        # Get updated list of products
+        products = ProductAPI.get_all_products()
+
+        return ProductAPI.send_response(
+            msg=products,
+            status=200
+        )
 
     @staticmethod
+    @login_required
+    @is_admin
     def delete():
-        return "Delete product(s)"
+        delete_product_request = request.get_json(silent=True)
+
+        # Ensure request is structured properly
+        if not delete_product_request:
+            return ProductAPI.send_response(
+                msg="Problem with structure of new products request",
+                status=400
+            )
+
+        if not ProductAPI.validate_delete_product_request(delete_product_request):
+            return ProductAPI.send_response(
+                msg="Missing fields or missing values",
+                status=400
+            )
+
+        # Get info
+        product_id = delete_product_request["id"]
+
+        # Get product
+        product = AppDB.db_session.query(Product).get(product_id)
+
+        if not product:
+            return ProductAPI.send_response(
+                msg="No product by that description",
+                status=404
+            )
+
+        AppDB.db_session.delete(product)
+        AppDB.db_session.commit()
+
+        # Get updated list of products
+        products = ProductAPI.get_all_products()
+
+        return ProductAPI.send_response(
+            msg=products,
+            status=200
+        )
 
     @staticmethod
-    def validate_new_products_request(new_products_request):
-        if "products" in new_products_request:
-            products = new_products_request["products"]
-            if products and \
-                    "name" in products and \
-                    "buying_price" in products and \
-                    "selling_price" in products and \
-                    "quantity" in products and \
-                    products["name"] not in ("", None) and \
-                    products["buying_price"] not in ("", None) and \
-                    products["selling_price"] not in ("", None) and \
-                    products["quantity"] not in ("", None):
-                return True
+    def validate_new_product_request(new_product_request):
+        if "name" in new_product_request and \
+                "buying_price" in new_product_request and \
+                "selling_price" in new_product_request and \
+                "quantity" in new_product_request and \
+                new_product_request["name"] not in ("", None) and \
+                new_product_request["buying_price"] not in ("", None) and \
+                new_product_request["selling_price"] not in ("", None) and \
+                new_product_request["quantity"] not in ("", None):
+            return True
         return False
+
+    @staticmethod
+    def validate_modify_product_request(modify_product_request):
+        if "id" in modify_product_request and \
+                "name" in modify_product_request and \
+                "buying_price" in modify_product_request and \
+                "selling_price" in modify_product_request and \
+                "quantity" in modify_product_request and \
+                modify_product_request["id"] not in ("", None) and \
+                modify_product_request["name"] not in ("", None) and \
+                modify_product_request["buying_price"] not in ("", None) and \
+                modify_product_request["selling_price"] not in ("", None) and \
+                modify_product_request["quantity"] not in ("", None):
+            return True
+        return False
+
+    @staticmethod
+    def validate_delete_product_request(delete_product_request):
+        if "id" in delete_product_request and \
+                delete_product_request["id"] not in ("", None):
+            return True
+        return False
+
+    @staticmethod
+    def get_all_products():
+        products = [dict(
+            id=product.id,
+            name=product.name,
+            buying_price=product.buying_price,
+            selling_price=product.selling_price,
+            description=product.description
+        ) for product in AppDB.db_session.query(Product).filter(
+            Product.business_id == session["business_id"]
+        ).all()]
+
+        return products
 
 
 # Create view
