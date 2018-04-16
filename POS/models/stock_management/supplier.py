@@ -9,7 +9,6 @@ class Supplier(AppDB.BaseModel):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    description = Column(String)
     contact_person = Column(String)
     contact_no = Column(String)
 
@@ -17,9 +16,8 @@ class Supplier(AppDB.BaseModel):
     products = relationship("Product", back_populates="supplier")
     manufacturers = relationship("SupplierManufacturer", back_populates="supplier")
 
-    def __init__(self, name, description, contact_person, contact_no):
+    def __init__(self, name, contact_person, contact_no):
         self.name = name
-        self.description = description
         self.contact_person = contact_person
         self.contact_no = contact_no
 
