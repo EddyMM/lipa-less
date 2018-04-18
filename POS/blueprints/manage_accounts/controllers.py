@@ -15,7 +15,6 @@ from POS.utils import selected_business, is_admin
 class ManageAccountsAPI(AppView):
     @staticmethod
     @login_required
-    @selected_business
     @is_admin
     def get():
         # Get a list of all the user accounts in the business
@@ -81,7 +80,6 @@ class ManageAccountsAPI(AppView):
 class UserRoleAPI(AppView):
     @staticmethod
     @login_required
-    @selected_business
     @is_admin
     def put():
         role_assignment_request = request.get_json()
@@ -166,7 +164,6 @@ class UserRoleAPI(AppView):
 
     @staticmethod
     @login_required
-    @selected_business
     @is_admin
     def post():
         role_addition_request = request.get_json()

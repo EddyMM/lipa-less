@@ -35,6 +35,8 @@ def is_owner(owner_restricted_func):
     :param owner_restricted_func:
     :return:
     """
+
+    @selected_business
     def wrapper():
         # Check if current user os an owner of the current business
         # First get the owner role id
@@ -65,6 +67,7 @@ def is_admin(admin_restricted_func):
         :return:
         """
 
+    @selected_business
     def wrapper():
         # Check if current user is an admin or owner of the current business
         # (since what an admin can do, an owner can as well)
@@ -110,6 +113,7 @@ def is_cashier(cashier_restricted_func):
             :return:
             """
 
+    @selected_business
     def wrapper():
         # Check if current user is an admin or owner of the current business
         # (since what an admin can do, an owner can as well)
