@@ -3,7 +3,7 @@ import os
 import yaml
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from flask import logging
+from flask import logging, current_app
 
 from POS.models.base_model import AppDB
 from POS.constants import ROLES_YAML_ENV_VAR, CASHIER_ROLE_NAME
@@ -41,8 +41,7 @@ class Role(AppDB.BaseModel):
         roles = Role.get_dict_from_yaml(local_roles_yaml_path)
 
         if not roles:
-            logging.getLogger().log(
-                logging.ERROR,
+            current_app.logger.warning(
                 "ROLES_YAML_PATH not specified, trying to load from in-app config"
             )
 

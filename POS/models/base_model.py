@@ -51,11 +51,7 @@ class AppDB(object):
             AppDB.load_default_roles(Role)
 
         except AttributeError:
-            logger = logging.getLogger()
-            logger.log(
-                logging.ERROR,
-                "Database URL attribute not found or provided"
-            )
+            current_app.logger.error("Database URL attribute not found or provided")
             raise
 
     # noinspection PyPep8Naming

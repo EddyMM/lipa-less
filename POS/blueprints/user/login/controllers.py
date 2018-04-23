@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, logging
+from flask import Blueprint, render_template, request, current_app
 from flask_login import login_user
 
 from POS.constants import APP_NAME
@@ -28,10 +28,7 @@ class Login(AppView):
 
         if not user_request:
             error = "Request mime type for JSON not specified"
-            logging.getLogger().log(
-                logging.ERROR,
-                error
-            )
+            current_app.logger.warning(error)
             return Login.send_response(
                 msg=error,
                 status=404

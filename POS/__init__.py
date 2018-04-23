@@ -6,6 +6,10 @@ from flask import Flask, send_from_directory, redirect, url_for, render_template
 from flask_login import LoginManager
 from flask_session import Session
 
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
+
+from raven.contrib.flask import Sentry
+
 from POS.blueprints.home.controllers import home_bp
 from POS.blueprints.user.signup.controllers import signup_bp
 from POS.blueprints.user.login.controllers import login_bp
@@ -62,6 +66,16 @@ def set_up_logging(app_instance):
     """
     Establish logging techniques for the app when in production
     """
+    file_logging(app_instance)
+    sentry_logging(app_instance)
+
+
+def file_logging(app_instance):
+    """
+        Log WARNING level events in the app log file
+    :param app_instance: flask app instance
+    :return:
+    """
     app_instance.logger.setLevel(logging.DEBUG)
 
     handler = RotatingFileHandler(APP_NAME + ".log")
@@ -69,6 +83,19 @@ def set_up_logging(app_instance):
     handler.setFormatter(logging.Formatter("[%(asctime)s][%(levelname)s]: %(message)s"))
 
     app_instance.logger.addHandler(handler)
+
+
+def sentry_logging(app_instance):
+    """
+        Log ERROR level events using sentry.
+        Such errors will be forwarded to admins email (mwendaeddy@gmail.com)
+        Sentry requires a DSN(Data Source Name) url to send the logs to.
+        The DNS is specified using the SENTRY_DSN environment variable
+    :param app_instance:
+    :return:
+    """
+    if not app_instance.debug:
+        sentry.init_app(app_instance, logging=True, level=logging.ERROR)
 
 
 def init_app(app_instance):
@@ -85,6 +112,8 @@ def init_app(app_instance):
 
 
 app = Flask(__name__)
+sentry = Sentry()
+
 init_app(app)
 
 # Initialize the DB
@@ -134,15 +163,19 @@ def inject_roles():
     )
 
 
-@app.errorhandler(400)
+@app.errorhandler(NotFound)
+def error_404(error):
+    return render_template("404-error.html")
+
+
+@app.errorhandler(BadRequest)
 def error_400(error):
     return render_template("400-error.html")
 
 
-@app.errorhandler(500)
+@app.errorhandler(InternalServerError)
 def error_500(error):
-    if error >= 500:
-        return render_template("500-error.html")
+    return render_template("500-error.html")
 
 
 # Register blueprints

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, logging, redirect, url_for, session
+from flask import Blueprint, render_template, request, current_app, redirect, url_for, session
 from flask_login import login_required, current_user
 
 from POS.constants import APP_NAME, OWNER_ROLE_NAME
@@ -49,10 +49,7 @@ class BusinessAPI(AppView):
 
         if not business_request:
             error = "Request mime type for JSON not specified"
-            logging.getLogger().log(
-                logging.ERROR,
-                error
-            )
+            current_app.logger.warning(error)
             return BusinessAPI.send_response(
                 msg=error,
                 status=400

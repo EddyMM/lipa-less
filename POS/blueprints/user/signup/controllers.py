@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, logging
+from flask import Blueprint, render_template, request, logging, current_app
 from flask_login import login_user
 
 from POS.blueprints.base.app_view import AppView
@@ -42,10 +42,7 @@ class SignUp(AppView):
                 AppDB.db_session.commit()
 
                 # Log event
-                logger = logging.getLogger()
-                logger.setLevel(logging.DEBUG)
-                logger.log(
-                    logging.DEBUG,
+                current_app.logger.info(
                     "User(%s), Email(%s) created" % (
                         user.name,
                         user.email
@@ -66,10 +63,7 @@ class SignUp(AppView):
                 )
         else:
             error = "Request mime type for JSON not specified"
-            logging.getLogger().log(
-                logging.ERROR,
-                error
-            )
+            current_app.logger.warning(error)
             return SignUp.send_response(
                 msg=error,
                 status=400
