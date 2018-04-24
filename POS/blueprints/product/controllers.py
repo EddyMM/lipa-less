@@ -1,5 +1,7 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, current_app
 from flask_login import login_required
+
+from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
 
@@ -18,13 +20,19 @@ class ProductAPI(AppView):
     @login_required
     @is_cashier
     def get():
-        # Get all products within business
-        products = ProductAPI.get_all_products()
+        try:
+            # Get all products within business
+            products = ProductAPI.get_all_products()
 
-        return ProductAPI.send_response(
-            msg=products,
-            status=200
-        )
+            return ProductAPI.send_response(
+                msg=products,
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ProductAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -57,37 +65,44 @@ class ProductAPI(AppView):
         supplier_id = new_products_request.get("supplier_id", None)
         manufacturer_id = new_products_request.get("manufacturer_id", None)
 
-        # Create product
-        product = Product(
-            name=name,
-            buying_price=buying_price,
-            selling_price=selling_price,
-            quantity=quantity,
-            description=description,
-            expiration_date=expiration_date,
-            reorder_level=reorder_level
-        )
 
-        # Relationships
-        if supplier_id:
-            product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
-        if manufacturer_id:
-            product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
-        if category_id:
-            product.category = AppDB.db_session.query(Category).get(category_id)
+        try:
+            # Create product
+            product = Product(
+                name=name,
+                buying_price=buying_price,
+                selling_price=selling_price,
+                quantity=quantity,
+                description=description,
+                expiration_date=expiration_date,
+                reorder_level=reorder_level
+            )
 
-        product.business = AppDB.db_session.query(Business).get(session["business_id"])
+            # Relationships
+            if supplier_id:
+                product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
+            if manufacturer_id:
+                product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
+            if category_id:
+                product.category = AppDB.db_session.query(Category).get(category_id)
 
-        AppDB.db_session.add(product)
-        AppDB.db_session.commit()
+            product.business = AppDB.db_session.query(Business).get(session["business_id"])
 
-        # Get updated list of products
-        products = ProductAPI.get_all_products()
+            AppDB.db_session.add(product)
+            AppDB.db_session.commit()
 
-        return ProductAPI.send_response(
-            msg=products,
-            status=200
-        )
+            # Get updated list of products
+            products = ProductAPI.get_all_products()
+
+            return ProductAPI.send_response(
+                msg=products,
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ProductAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -121,42 +136,48 @@ class ProductAPI(AppView):
         supplier_id = modify_products_request.get("supplier_id", None)
         manufacturer_id = modify_products_request.get("manufacturer_id", None)
 
-        # Get product
-        product = AppDB.db_session.query(Product).get(product_id)
+        try:
+            # Get product
+            product = AppDB.db_session.query(Product).get(product_id)
 
-        if not product:
+            if not product:
+                return ProductAPI.send_response(
+                    msg="No product by that description",
+                    status=404
+                )
+
+            product.name = name,
+            product.buying_price = buying_price,
+            product.selling_price = selling_price,
+            product.quantity = quantity,
+            product.description = description,
+            product.expiration_date = expiration_date,
+            product.reorder_level = reorder_level
+
+            # Relationships
+            if supplier_id:
+                product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
+            if manufacturer_id:
+                product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
+            if category_id:
+                product.category = AppDB.db_session.query(Category).get(category_id)
+
+            product.business = AppDB.db_session.query(Business).get(session["business_id"])
+
+            AppDB.db_session.commit()
+
+            # Get updated list of products
+            products = ProductAPI.get_all_products()
+
             return ProductAPI.send_response(
-                msg="No product by that description",
-                status=404
+                msg=products,
+                status=200
             )
-
-        product.name = name,
-        product.buying_price = buying_price,
-        product.selling_price = selling_price,
-        product.quantity = quantity,
-        product.description = description,
-        product.expiration_date = expiration_date,
-        product.reorder_level = reorder_level
-
-        # Relationships
-        if supplier_id:
-            product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
-        if manufacturer_id:
-            product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
-        if category_id:
-            product.category = AppDB.db_session.query(Category).get(category_id)
-
-        product.business = AppDB.db_session.query(Business).get(session["business_id"])
-
-        AppDB.db_session.commit()
-
-        # Get updated list of products
-        products = ProductAPI.get_all_products()
-
-        return ProductAPI.send_response(
-            msg=products,
-            status=200
-        )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ProductAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -180,25 +201,31 @@ class ProductAPI(AppView):
         # Get info
         product_id = delete_product_request["id"]
 
-        # Get product
-        product = AppDB.db_session.query(Product).get(product_id)
+        try:
+            # Get product
+            product = AppDB.db_session.query(Product).get(product_id)
 
-        if not product:
+            if not product:
+                return ProductAPI.send_response(
+                    msg="No product by that description",
+                    status=404
+                )
+
+            AppDB.db_session.delete(product)
+            AppDB.db_session.commit()
+
+            # Get updated list of products
+            products = ProductAPI.get_all_products()
+
             return ProductAPI.send_response(
-                msg="No product by that description",
-                status=404
+                msg=products,
+                status=200
             )
-
-        AppDB.db_session.delete(product)
-        AppDB.db_session.commit()
-
-        # Get updated list of products
-        products = ProductAPI.get_all_products()
-
-        return ProductAPI.send_response(
-            msg=products,
-            status=200
-        )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ProductAPI.error_in_processing_request()
 
     @staticmethod
     def validate_new_product_request(new_product_request):

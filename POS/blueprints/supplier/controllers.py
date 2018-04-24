@@ -1,4 +1,6 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, current_app
+
+from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
 from POS.models.base_model import AppDB
@@ -8,12 +10,18 @@ from POS.models.stock_management.supplier import Supplier
 class SupplierAPI(AppView):
     @staticmethod
     def get():
-        suppliers = SupplierAPI.get_all_suppliers()
+        try:
+            suppliers = SupplierAPI.get_all_suppliers()
 
-        return SupplierAPI.send_response(
-            msg=suppliers,
-            status=200
-        )
+            return SupplierAPI.send_response(
+                msg=suppliers,
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return SupplierAPI.error_in_processing_request()
 
     @staticmethod
     def post():
@@ -32,24 +40,30 @@ class SupplierAPI(AppView):
         contact_person = supplier_addition_request["contact_person"]
         contact_number = supplier_addition_request["contact_number"]
 
-        # Model the supplier
-        supplier = Supplier(
-            name=name,
-            contact_person=contact_person,
-            contact_no=contact_number
-        )
+        try:
+            # Model the supplier
+            supplier = Supplier(
+                name=name,
+                contact_person=contact_person,
+                contact_no=contact_number
+            )
 
-        # Add supplier
-        AppDB.db_session.add(supplier)
-        AppDB.db_session.commit()
+            # Add supplier
+            AppDB.db_session.add(supplier)
+            AppDB.db_session.commit()
 
-        # Get update list of suppliers
-        suppliers = SupplierAPI.get_all_suppliers()
+            # Get update list of suppliers
+            suppliers = SupplierAPI.get_all_suppliers()
 
-        return SupplierAPI.send_response(
-            msg=suppliers,
-            status=200
-        )
+            return SupplierAPI.send_response(
+                msg=suppliers,
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return SupplierAPI.error_in_processing_request()
 
     @staticmethod
     def put():
@@ -69,31 +83,37 @@ class SupplierAPI(AppView):
         contact_person = supplier_modification_request["contact_person"]
         contact_number = supplier_modification_request["contact_number"]
 
-        # Get the supplier
-        supplier = AppDB.db_session.query(Supplier).filter(
-            Supplier.id == supplier_id
-        ).first()
+        try:
+            # Get the supplier
+            supplier = AppDB.db_session.query(Supplier).filter(
+                Supplier.id == supplier_id
+            ).first()
 
-        if not supplier:
+            if not supplier:
+                return SupplierAPI.send_response(
+                    msg="No supplier by that description",
+                    status=404
+                )
+
+            supplier.name = name
+            supplier.contact_person = contact_person
+            supplier.contact_no = contact_number
+
+            # Commit changes
+            AppDB.db_session.commit()
+
+            # Get update list of suppliers
+            suppliers = SupplierAPI.get_all_suppliers()
+
             return SupplierAPI.send_response(
-                msg="No supplier by that description",
-                status=404
+                msg=suppliers,
+                status=200
             )
-        
-        supplier.name = name
-        supplier.contact_person = contact_person
-        supplier.contact_no = contact_number
-
-        # Commit changes
-        AppDB.db_session.commit()
-
-        # Get update list of suppliers
-        suppliers = SupplierAPI.get_all_suppliers()
-
-        return SupplierAPI.send_response(
-            msg=suppliers,
-            status=200
-        )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return SupplierAPI.error_in_processing_request()
 
     @staticmethod
     def delete():
@@ -111,24 +131,30 @@ class SupplierAPI(AppView):
         supplier_id = supplier_deletion_request["id"]
         supplier = AppDB.db_session.query(Supplier).get(supplier_id)
 
-        # Check if supplier exists
-        if not supplier:
+        try:
+            # Check if supplier exists
+            if not supplier:
+                return SupplierAPI.send_response(
+                    msg="No supplier by that description",
+                    status=404
+                )
+
+            # Remove supplier
+            AppDB.db_session.delete(supplier)
+            AppDB.db_session.commit()
+
+            # Get the update list of suppliers
+            suppliers = SupplierAPI.get_all_suppliers()
+
             return SupplierAPI.send_response(
-                msg="No supplier by that description",
-                status=404
+                msg=suppliers,
+                status=200
             )
-
-        # Remove supplier
-        AppDB.db_session.delete(supplier)
-        AppDB.db_session.commit()
-
-        # Get the update list of suppliers
-        suppliers = SupplierAPI.get_all_suppliers()
-
-        return SupplierAPI.send_response(
-            msg=suppliers,
-            status=200
-        )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return SupplierAPI.error_in_processing_request()
 
     @staticmethod
     def validate_supplier_addition_request(supplier_addition_request):

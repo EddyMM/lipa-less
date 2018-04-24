@@ -33,3 +33,10 @@ class AppView(MethodView):
             msg="Missing fields or values",
             status=400
         )
+
+    @staticmethod
+    def error_in_processing_request():
+        return AppView.send_response(
+            msg="Problem processing your request, we will fix it soon, kindly be patient",
+            status=500
+        )

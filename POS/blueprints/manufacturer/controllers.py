@@ -1,5 +1,7 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, current_app
 from flask_login import login_required
+
+from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
 
@@ -13,13 +15,19 @@ class ManufacturerAPI(AppView):
     @staticmethod
     @login_required
     def get():
-        # Get list of all manufacturers
-        manufacturers = ManufacturerAPI.get_all_manufacturers()
+        try:
+            # Get list of all manufacturers
+            manufacturers = ManufacturerAPI.get_all_manufacturers()
 
-        return ManufacturerAPI.send_response(
-            msg=manufacturers,
-            status=200
-        )
+            return ManufacturerAPI.send_response(
+                msg=manufacturers,
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ManufacturerAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -38,19 +46,25 @@ class ManufacturerAPI(AppView):
         # Extract info
         name = manufacturer_addition_request["name"]
 
-        # Add manufacturer
-        manufacturer = Manufacturer(name=name)
+        try:
+            # Add manufacturer
+            manufacturer = Manufacturer(name=name)
 
-        AppDB.db_session.add(manufacturer)
-        AppDB.db_session.commit()
+            AppDB.db_session.add(manufacturer)
+            AppDB.db_session.commit()
 
-        # Get updated list of manufacturers
-        manufacturers = ManufacturerAPI.get_all_manufacturers()
+            # Get updated list of manufacturers
+            manufacturers = ManufacturerAPI.get_all_manufacturers()
 
-        return ManufacturerAPI.send_response(
-            msg=manufacturers,
-            status=200
-        )
+            return ManufacturerAPI.send_response(
+                msg=manufacturers,
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ManufacturerAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -70,26 +84,32 @@ class ManufacturerAPI(AppView):
         manufacturer_id = manufacturer_edit_request["id"]
         new_name = manufacturer_edit_request["name"]
 
-        # Get manufacturer
-        manufacturer = AppDB.db_session.query(Manufacturer).filter(
-            Manufacturer.id == manufacturer_id
-        ).first()
+        try:
+            # Get manufacturer
+            manufacturer = AppDB.db_session.query(Manufacturer).filter(
+                Manufacturer.id == manufacturer_id
+            ).first()
 
-        if not manufacturer:
-            return ManufacturerAPI.manufacturer_not_found_response()
+            if not manufacturer:
+                return ManufacturerAPI.manufacturer_not_found_response()
 
-        # Edit manufacturer
-        manufacturer.name = new_name
+            # Edit manufacturer
+            manufacturer.name = new_name
 
-        AppDB.db_session.commit()
+            AppDB.db_session.commit()
 
-        # Get updated list of manufacturers
-        manufacturers = ManufacturerAPI.get_all_manufacturers()
+            # Get updated list of manufacturers
+            manufacturers = ManufacturerAPI.get_all_manufacturers()
 
-        return ManufacturerAPI.send_response(
-            msg=manufacturers,
-            status=200
-        )
+            return ManufacturerAPI.send_response(
+                msg=manufacturers,
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ManufacturerAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -108,25 +128,31 @@ class ManufacturerAPI(AppView):
         # Extract info
         manufacturer_id = manufacturer_delete_request["id"]
 
-        # Get manufacturer
-        manufacturer = AppDB.db_session.query(Manufacturer).filter(
-            Manufacturer.id == manufacturer_id
-        ).first()
+        try:
+            # Get manufacturer
+            manufacturer = AppDB.db_session.query(Manufacturer).filter(
+                Manufacturer.id == manufacturer_id
+            ).first()
 
-        if not manufacturer:
-            return ManufacturerAPI.manufacturer_not_found_response()
+            if not manufacturer:
+                return ManufacturerAPI.manufacturer_not_found_response()
 
-        # Delete manufacturer
-        AppDB.db_session.delete(manufacturer)
-        AppDB.db_session.commit()
+            # Delete manufacturer
+            AppDB.db_session.delete(manufacturer)
+            AppDB.db_session.commit()
 
-        # Get updated list of manufacturers
-        manufacturers = ManufacturerAPI.get_all_manufacturers()
+            # Get updated list of manufacturers
+            manufacturers = ManufacturerAPI.get_all_manufacturers()
 
-        return ManufacturerAPI.send_response(
-            msg=manufacturers,
-            status=200
-        )
+            return ManufacturerAPI.send_response(
+                msg=manufacturers,
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ManufacturerAPI.error_in_processing_request()
 
     @staticmethod
     def validate_manufacturer_addition_request(manufacturer_addition_request):

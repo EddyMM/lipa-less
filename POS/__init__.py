@@ -95,7 +95,7 @@ def sentry_logging(app_instance):
     :return:
     """
     if not app_instance.debug:
-        sentry.init_app(app_instance, logging=True, level=logging.ERROR)
+        app.sentry.init_app(app_instance, logging=True, level=logging.ERROR)
 
 
 def init_app(app_instance):
@@ -112,7 +112,7 @@ def init_app(app_instance):
 
 
 app = Flask(__name__)
-sentry = Sentry()
+app.sentry = Sentry()
 
 init_app(app)
 

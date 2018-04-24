@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, current_app
 from flask_login import login_required, current_user
+
+from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
 from POS.models.base_model import AppDB
@@ -9,7 +11,7 @@ from POS.models.user_management.role import Role
 from POS.models.user_management.user_business import UserBusiness
 
 from POS.constants import APP_NAME, OWNER_ROLE_NAME, ADMIN_ROLE_NAME
-from POS.utils import selected_business, is_admin
+from POS.utils import is_admin
 
 
 class ManageAccountsAPI(AppView):
@@ -17,20 +19,26 @@ class ManageAccountsAPI(AppView):
     @login_required
     @is_admin
     def get():
-        # Get a list of all the user accounts in the business
-        accounts = ManageAccountsAPI.get_all_accounts()
+        try:
+            # Get a list of all the user accounts in the business
+            accounts = ManageAccountsAPI.get_all_accounts()
 
-        # Get a list of all possible roles in the business so
-        # that the owner or admin can select from a variety or roles
-        roles = ManageAccountsAPI.get_all_roles()
+            # Get a list of all possible roles in the business so
+            # that the owner or admin can select from a variety or roles
+            roles = ManageAccountsAPI.get_all_roles()
 
-        # noinspection PyUnresolvedReferences
-        return render_template(
-            template_name_or_list="manage_accounts.html",
-            title="%s: %s" % (APP_NAME, "Accounts"),
-            accounts=accounts,
-            roles=roles
-        )
+            # noinspection PyUnresolvedReferences
+            return render_template(
+                template_name_or_list="manage_accounts.html",
+                title="%s: %s" % (APP_NAME, "Accounts"),
+                accounts=accounts,
+                roles=roles
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ManageAccountsAPI.error_in_processing_request()
 
     @staticmethod
     def get_all_accounts():
@@ -99,60 +107,65 @@ class UserRoleAPI(AppView):
             )
 
         for role in role_assignment_request["roles"]:
-            # Confirm existence of the role
-            role_name = role["role"].strip().lower()
-            role_id = Role.get_role_id(role_name)
-            if not role_id:
-                print("No role with that name")
-                continue
+            try:
+                # Confirm existence of the role
+                role_name = role["role"].strip().lower()
+                role_id = Role.get_role_id(role_name)
+                if not role_id:
+                    print("No role with that name")
+                    continue
 
-            # Confirm that as an admin, you can perform this role change
-            if session["role"] == ADMIN_ROLE_NAME and role_name == OWNER_ROLE_NAME:
-                # An admin cannot change the role to owner
-                print("You don't have privilege to change anything about an owner")
-                continue
+                # Confirm that as an admin, you can perform this role change
+                if session["role"] == ADMIN_ROLE_NAME and role_name == OWNER_ROLE_NAME:
+                    # An admin cannot change the role to owner
+                    print("You don't have privilege to change anything about an owner")
+                    continue
 
-            # Confirm existence of employee
-            emp_id = role["emp_id"]
-            user = AppDB.db_session.query(User).filter(
-                User.emp_id == emp_id
-            ).first()
-            if not user:
-                print("No user by that description")
-                continue
+                # Confirm existence of employee
+                emp_id = role["emp_id"]
+                user = AppDB.db_session.query(User).filter(
+                    User.emp_id == emp_id
+                ).first()
+                if not user:
+                    print("No user by that description")
+                    continue
 
-            # User and role exist, go ahead and find the record
-            user_business = AppDB.db_session.query(UserBusiness).filter(
-                UserBusiness.emp_id == emp_id,
-                UserBusiness.business_id == session.get("business_id"),
-            ).first()
+                # User and role exist, go ahead and find the record
+                user_business = AppDB.db_session.query(UserBusiness).filter(
+                    UserBusiness.emp_id == emp_id,
+                    UserBusiness.business_id == session.get("business_id"),
+                ).first()
 
-            # Confirm that an admin is not altering an owner
-            if session["role"] == ADMIN_ROLE_NAME and user_business.role_id == Role.get_role_id(OWNER_ROLE_NAME):
-                print("You cannot alter an owner's details")
-                continue
+                # Confirm that an admin is not altering an owner
+                if session["role"] == ADMIN_ROLE_NAME and user_business.role_id == Role.get_role_id(OWNER_ROLE_NAME):
+                    print("You cannot alter an owner's details")
+                    continue
 
-            if not user_business:
-                print("That user does not work for you")
-                continue
+                if not user_business:
+                    print("That user does not work for you")
+                    continue
 
-            # Prevent owner from deactivating or demoting himself
-            if current_user.emp_id == user_business.emp_id and \
-                    user_business.role_id == Role.get_role_id(OWNER_ROLE_NAME):
-                print("Cannot demote or deactivate yourself(%s, %s | Owner of(%s))" % (
-                    current_user.name,
-                    current_user.email,
-                    session["business_name"]
-                ))
-                continue
+                # Prevent owner from deactivating or demoting himself
+                if current_user.emp_id == user_business.emp_id and \
+                        user_business.role_id == Role.get_role_id(OWNER_ROLE_NAME):
+                    print("Cannot demote or deactivate yourself(%s, %s | Owner of(%s))" % (
+                        current_user.name,
+                        current_user.email,
+                        session["business_name"]
+                    ))
+                    continue
 
-            # Change the user's role in the business
-            user_business.role_id = role_id
+                # Change the user's role in the business
+                user_business.role_id = role_id
 
-            # Update user's deactivation status
-            user_business.is_deactivated = role["deactivated"]
+                # Update user's deactivation status
+                user_business.is_deactivated = role["deactivated"]
 
-            AppDB.db_session.commit()
+                AppDB.db_session.commit()
+            except SQLAlchemyError as e:
+                AppDB.db_session.rollback()
+                current_app.logger.error(e)
+                current_app.sentry.captureException()
 
         return ManageAccountsAPI.send_response(
             msg=dict(
@@ -181,69 +194,74 @@ class UserRoleAPI(AppView):
                 msg="Fill in all details",
                 status=400
             )
+        try:
+            # Confirm existence of the role
+            role_name = role_addition_request["role"].strip().lower()
+            role_id = Role.get_role_id(role_name)
+            if not role_id:
+                return UserRoleAPI.send_response(
+                    msg="No role with that name",
+                    status=404
+                )
 
-        # Confirm existence of the role
-        role_name = role_addition_request["role"].strip().lower()
-        role_id = Role.get_role_id(role_name)
-        if not role_id:
-            return UserRoleAPI.send_response(
-                msg="No role with that name",
-                status=404
+            # Confirm that as an admin, you can perform this role change
+            if session["role"] == ADMIN_ROLE_NAME and role_name == OWNER_ROLE_NAME:
+                # An admin cannot change the role to owner
+                return UserRoleAPI.send_response(
+                    msg="You don't have permission to do this",
+                    status=400
+                )
+
+            # Confirm existence of email
+            email_address = role_addition_request["email"].strip().lower()
+            user = AppDB.db_session.query(User).filter(
+                User.email == email_address
+            ).first()
+            if not user:
+                return UserRoleAPI.send_response(
+                    msg="No user by that email",
+                    status=404
+                )
+
+            # Confirm role hasn't already been assigned
+            user_business = AppDB.db_session.query(UserBusiness).filter(
+                UserBusiness.emp_id == user.emp_id,
+                UserBusiness.business_id == session.get("business_id"),
+            ).first()
+
+            if user_business:
+                return UserRoleAPI.send_response(
+                    msg="User by that email already assigned a role in the business",
+                    status=400
+                )
+
+            # Add the user's role in the business
+            # First get the current business
+            business = AppDB.db_session.query(Business).get(
+                session.get("business_id")
             )
 
-        # Confirm that as an admin, you can perform this role change
-        if session["role"] == ADMIN_ROLE_NAME and role_name == OWNER_ROLE_NAME:
-            # An admin cannot change the role to owner
-            return UserRoleAPI.send_response(
-                msg="You don't have permission to do this",
-                status=400
+            # Then go ahead and create the user's role in the business
+            user_business = UserBusiness(
+                role_id=role_id
             )
+            user_business.business = business
+            user_business.user = user
+            AppDB.db_session.add(user_business)
+            AppDB.db_session.commit()
 
-        # Confirm existence of email
-        email_address = role_addition_request["email"].strip().lower()
-        user = AppDB.db_session.query(User).filter(
-            User.email == email_address
-        ).first()
-        if not user:
-            return UserRoleAPI.send_response(
-                msg="No user by that email",
-                status=404
+            return ManageAccountsAPI.send_response(
+                msg=dict(
+                        accounts=ManageAccountsAPI.get_all_accounts(),
+                        roles=ManageAccountsAPI.get_all_roles()
+                    ),
+                status=200
             )
-
-        # Confirm role hasn't already been assigned
-        user_business = AppDB.db_session.query(UserBusiness).filter(
-            UserBusiness.emp_id == user.emp_id,
-            UserBusiness.business_id == session.get("business_id"),
-        ).first()
-
-        if user_business:
-            return UserRoleAPI.send_response(
-                msg="User by that email already assigned a role in the business",
-                status=400
-            )
-
-        # Add the user's role in the business
-        # First get the current business
-        business = AppDB.db_session.query(Business).get(
-            session.get("business_id")
-        )
-
-        # Then go ahead and create the user's role in the business
-        user_business = UserBusiness(
-            role_id=role_id
-        )
-        user_business.business = business
-        user_business.user = user
-        AppDB.db_session.add(user_business)
-        AppDB.db_session.commit()
-
-        return ManageAccountsAPI.send_response(
-            msg=dict(
-                    accounts=ManageAccountsAPI.get_all_accounts(),
-                    roles=ManageAccountsAPI.get_all_roles()
-                ),
-            status=200
-        )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return ManageAccountsAPI.error_in_processing_request()
 
     @staticmethod
     def validate_role_assignment_request(role_assignment_request):

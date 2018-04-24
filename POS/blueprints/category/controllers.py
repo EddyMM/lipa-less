@@ -1,5 +1,7 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, current_app
 from flask_login import login_required
+
+from sqlalchemy.exc import SQLAlchemyError
 
 from typing import List
 
@@ -16,13 +18,19 @@ class CategoryAPI(AppView):
     @staticmethod
     @login_required
     def get():
-        # Get full lists of categories
-        categories = CategoryAPI.get_all_categories()
+        try:
+            # Get full lists of categories
+            categories = CategoryAPI.get_all_categories()
 
-        return CategoryAPI.send_response(
-            msg=dict(categories=categories),
-            status=200
-        )
+            return CategoryAPI.send_response(
+                msg=dict(categories=categories),
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return CategoryAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -41,24 +49,30 @@ class CategoryAPI(AppView):
         name = new_categories_request["name"].strip().lower()
         description = new_categories_request["description"].strip().lower()
 
-        # Create category instance
-        category = Category(name, description)
+        try:
+            # Create category instance
+            category = Category(name, description)
 
-        # Associate the category with the business
-        business = AppDB.db_session.query(Business).get(session["business_id"])
-        category.business = business
+            # Associate the category with the business
+            business = AppDB.db_session.query(Business).get(session["business_id"])
+            category.business = business
 
-        # Add and commit instance
-        AppDB.db_session.add(category)
-        AppDB.db_session.commit()
+            # Add and commit instance
+            AppDB.db_session.add(category)
+            AppDB.db_session.commit()
 
-        # Get full lists of categories
-        categories = CategoryAPI.get_all_categories()
+            # Get full lists of categories
+            categories = CategoryAPI.get_all_categories()
 
-        return CategoryAPI.send_response(
-            msg=dict(categories=categories),
-            status=200
-        )
+            return CategoryAPI.send_response(
+                msg=dict(categories=categories),
+                status=200
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return CategoryAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -84,29 +98,35 @@ class CategoryAPI(AppView):
         name = new_categories_request["name"].strip().lower()
         description = new_categories_request["description"].strip().lower()
 
-        # Get category
-        category = CategoryAPI.get_category_within_business(category_id)
+        try:
+            # Get category
+            category = CategoryAPI.get_category_within_business(category_id)
 
-        if not category:
+            if not category:
+                return CategoryAPI.send_response(
+                    msg="No category by that description",
+                    status=404
+                )
+
+            # Edit the fields
+            category.name = name
+            category.description = description
+
+            # Commit changes
+            AppDB.db_session.commit()
+
+            # Get updated list of categories
+            categories = CategoryAPI.get_all_categories()
+
             return CategoryAPI.send_response(
-                msg="No category by that description",
-                status=404
+                msg=dict(categories=categories),
+                status=200
             )
-
-        # Edit the fields
-        category.name = name
-        category.description = description
-
-        # Commit changes
-        AppDB.db_session.commit()
-
-        # Get updated list of categories
-        categories = CategoryAPI.get_all_categories()
-
-        return CategoryAPI.send_response(
-            msg=dict(categories=categories),
-            status=200
-        )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return CategoryAPI.error_in_processing_request()
 
     @staticmethod
     @login_required
@@ -130,26 +150,32 @@ class CategoryAPI(AppView):
         # Get info
         category_id = new_categories_request["id"]
 
-        # Get the category to delete
-        category = CategoryAPI.get_category_within_business(category_id)
+        try:
+            # Get the category to delete
+            category = CategoryAPI.get_category_within_business(category_id)
 
-        if not category:
+            if not category:
+                return CategoryAPI.send_response(
+                    msg="No category by that description",
+                    status=404
+                )
+
+            # Delete the category
+            AppDB.db_session.delete(category)
+            AppDB.db_session.commit()
+
+            # Get updated list of categories
+            categories = CategoryAPI.get_all_categories()
+
             return CategoryAPI.send_response(
-                msg="No category by that description",
-                status=404
+                msg=dict(categories=categories),
+                status=200
             )
-
-        # Delete the category
-        AppDB.db_session.delete(category)
-        AppDB.db_session.commit()
-
-        # Get updated list of categories
-        categories = CategoryAPI.get_all_categories()
-
-        return CategoryAPI.send_response(
-            msg=dict(categories=categories),
-            status=200
-        )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return CategoryAPI.error_in_processing_request()
 
     @staticmethod
     def validate_delete_category_request(new_categories_request: request) -> bool:

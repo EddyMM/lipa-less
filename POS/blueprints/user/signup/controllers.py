@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, logging, current_app
 from flask_login import login_user
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from POS.blueprints.base.app_view import AppView
 from POS.constants import APP_NAME
 from POS.models.base_model import AppDB
@@ -19,43 +21,49 @@ class SignUp(AppView):
 
         if user_request:
             if SignUp.request_is_filled(user_request):
-                if SignUp.user_exists(user_request["email"]):
+                try:
+                    if SignUp.user_exists(user_request["email"]):
+                        return SignUp.send_response(
+                            msg="User by that email already exists",
+                            status=409
+                        )
+
+                    # User info
+                    name = user_request["name"].strip().lower()
+                    email = user_request["email"].strip().lower()
+                    password = user_request["password"].strip().lower()
+
+                    # Create user data object
+                    user = User(
+                        name=name,
+                        email=email,
+                        password=password
+                    )
+
+                    # Add user to the database
+                    AppDB.db_session.add(user)
+                    AppDB.db_session.commit()
+
+                    # Log event
+                    current_app.logger.info(
+                        "User(%s), Email(%s) created" % (
+                            user.name,
+                            user.email
+                        )
+                    )
+
+                    # log the user in
+                    login_user(user)
+
                     return SignUp.send_response(
-                        msg="User by that email already exists",
-                        status=409
+                        msg="User created",
+                        status=200
                     )
-
-                # User info
-                name = user_request["name"].strip().lower()
-                email = user_request["email"].strip().lower()
-                password = user_request["password"].strip().lower()
-
-                # Create user data object
-                user = User(
-                    name=name,
-                    email=email,
-                    password=password
-                )
-
-                # Add user to the database
-                AppDB.db_session.add(user)
-                AppDB.db_session.commit()
-
-                # Log event
-                current_app.logger.info(
-                    "User(%s), Email(%s) created" % (
-                        user.name,
-                        user.email
-                    )
-                )
-
-                # log the user in
-                login_user(user)
-
-                return SignUp.send_response(
-                    msg="User created",
-                    status=200
-                )
+                except SQLAlchemyError as e:
+                    AppDB.db_session.rollback()
+                    current_app.logger.error(e)
+                    current_app.sentry.captureException()
+                    return SignUp.error_in_processing_request()
             else:
                 return SignUp.send_response(
                     msg="Fill in all details",
