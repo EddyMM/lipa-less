@@ -7,9 +7,8 @@
         </div>
 
         <div class="offset-8 col-4" style="margin-bottom: 1%">
-            <p id="add-new-product-btn" class="lipa-less-btn">
-                <a href="{{ url_for('product_bp.product') }}">Add product</a>
-            </p>
+            <a id="add-new-product-btn" class="lipa-less-btn"
+               href="{{ url_for('product_bp.product') }}">Add product</a>
         </div>
 
         <!-- List of products -->
@@ -85,9 +84,4 @@
             </div><!-- /.modal-dialog -->
         </div>
     </div>
-
-    <!--suppress HtmlUnknownTarget -->
-    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
-    <!--Include the JS files (lazy loading)-->
-    <script src="{{ url_for('product_bp.static', filename='js/products.js') }}"></script>
 {% endblock %}

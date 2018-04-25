@@ -200,7 +200,7 @@ class SupplierAPI(AppView):
 
 
 # Supplier view
-supplier_view = SupplierAPI.as_view(name="supplier_bp")
+supplier_view = SupplierAPI.as_view(name="supplier")
 
 # Supplier blueprint
 supplier_bp = Blueprint(

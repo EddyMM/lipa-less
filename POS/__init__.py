@@ -201,4 +201,3 @@ app_blueprints = (
 )
 
 register_blueprints(app_blueprints)
-print("URL map: %s" % app.url_map)

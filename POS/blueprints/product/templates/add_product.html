@@ -22,7 +22,7 @@
                     <div id="product-information" class="col-md-12 col-12">
                         <!--Product name -->
                         <div class="row">
-                            <div class="col-md-3 col-12">
+                            <div class="col-md-2 col-12">
                                 <label>
                                     Product name
                                 </label>
@@ -34,79 +34,75 @@
 
                         <!--Product description -->
                         <div class="row">
-                            <div class="col-md-3 col-12">
+                            <div class="col-md-2 col-12">
                                 <label>
                                     Description
                                 </label>
                             </div>
                             <div class="col-md-8 col-12">
-                                <input name="description" type="text" required>
+                                <textarea name="description" type="text"
+                                          style="width: inherit" required>
+                                </textarea>
                             </div>
                         </div>
 
-                        <!-- Product buying price -->
+                        <!-- Product buying price and selling price -->
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2 col-12">
                                 <label>
                                     Buying price
                                 </label>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-3 col-12">
                                 <input name="buying_price" type="number" required>
                             </div>
-                        </div>
 
-                        <!-- Product selling price -->
-                        <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2 col-12">
                                 <label>
                                     Selling price
                                 </label>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-3 col-12">
                                 <input name="selling_price" type="number" required>
                             </div>
                         </div>
 
-                        <!-- Quantity -->
+                        <!-- Quantity and Reorder level-->
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2 col-12">
                                 <label>
                                     Quantity
                                 </label>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-3">
                                 <input name="quantity" type="number" required>
                             </div>
-                        </div>
 
-                        <!-- Reorder level -->
-                        <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label>
                                     Reorder level
                                 </label>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-3">
                                 <input name="reorder_level" type="number" required>
                             </div>
                         </div>
 
                         <!-- Expiration date -->
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label>
                                     Expires on
                                 </label>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-4">
                                 <input name="expiration_date" type="date" required>
                             </div>
                         </div>
 
                         <!-- Category -->
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label>
                                     Category
                                 </label>
@@ -121,10 +117,21 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p>>> create a new category?
+                                    <span>
+                                        <a href="{{ url_for('category_bp.category') }}">
+                                            New category
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
 
                         <!-- Supplier -->
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label>
                                     Supplier
                                 </label>
@@ -139,10 +146,21 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p>>> create a new supplier?
+                                    <span>
+                                        <a href="{{ url_for('supplier_bp.supplier') }}">
+                                            New supplier
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
 
                         <!-- Manufacturer -->
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label>
                                     Manufacturer
                                 </label>
@@ -157,17 +175,28 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p>>> create a new manufacturer?
+                                    <span>
+                                        <a href="{{ url_for('manufacturer_bp.manufacturer') }}">
+                                            New manufacturer
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
 
                         <!--Add product and Clear-->
                         <div class="form-btn-area row">
-                            <div class="offset-6 col-md-3">
+                            <div class="offset-md-6 col-md-3 col-12">
                                 <input id="add-product-btn"
                                        class="lipa-less-btn"
                                        value="ADD"
                                        type="submit">
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-12">
                                 <input class="clear-btn" type="reset" value="Clear" required>
                             </div>
                         </div>
@@ -177,4 +206,9 @@
             </form>
         </div>
     </div>
+
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <!--Include the JS files (lazy loading)-->
+    <script src="{{ url_for('product_bp.static', filename='js/products.js') }}"></script>
 {% endblock %}

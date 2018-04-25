@@ -154,12 +154,10 @@ class ProductsAPI(AppView):
 
     @staticmethod
     def validate_modify_product_request(modify_product_request):
-        if "id" in modify_product_request and \
-                "name" in modify_product_request and \
+        if "name" in modify_product_request and \
                 "buying_price" in modify_product_request and \
                 "selling_price" in modify_product_request and \
                 "quantity" in modify_product_request and \
-                modify_product_request["id"] not in ("", None) and \
                 modify_product_request["name"] not in ("", None) and \
                 modify_product_request["buying_price"] not in ("", None) and \
                 modify_product_request["selling_price"] not in ("", None) and \
