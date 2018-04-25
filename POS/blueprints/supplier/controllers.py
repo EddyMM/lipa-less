@@ -36,8 +36,8 @@ class SupplierAPI(AppView):
             return SupplierAPI.validation_error_response()
 
         # Get info
-        name = supplier_addition_request["name"]
-        contact_person = supplier_addition_request["contact_person"]
+        name = supplier_addition_request["name"].strip().lower()
+        contact_person = supplier_addition_request["contact_person"].strip().lower()
         contact_number = supplier_addition_request["contact_number"]
 
         try:
@@ -79,8 +79,8 @@ class SupplierAPI(AppView):
 
         # Get info
         supplier_id = supplier_modification_request["id"]
-        name = supplier_modification_request["name"]
-        contact_person = supplier_modification_request["contact_person"]
+        name = supplier_modification_request["name"].strip().lower()
+        contact_person = supplier_modification_request["contact_person"].strip().lower()
         contact_number = supplier_modification_request["contact_number"]
 
         try:

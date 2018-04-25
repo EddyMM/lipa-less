@@ -1,0 +1,258 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h3>PRODUCTS</h3>
+        </div>
+
+        <div class="offset-8 col-4" style="margin-bottom: 1%">
+            <button id="add-new-product-btn" class="lipa-less-btn">Add product</button>
+        </div>
+
+        <!-- List of products -->
+        <div class="col-12">
+            <div id="products-container" class="container">
+                <div class="row">
+                    <div id="products-box" class="offset-1 col-10">
+                        {% if products %}
+                            <!-- Labels -->
+                            <div id="products-labels" class="row">
+                                <div class="col-2">
+                                    <label>Name</label>
+                                </div>
+                                <div class="col-2">
+                                    <label>Category</label>
+                                </div>
+                                <div class="col-2">
+                                    <label>Quantity</label>
+                                </div>
+                                <div class="col-2">
+                                    <label>Price</label>
+                                </div>
+                                <div class="col-2">
+                                    <label>Edit</label>
+                                </div>
+                            </div>
+
+                            <!-- Products -->
+                            {% for product in products %}
+                                <div class="product-row row">
+                                    <div class="col-2">
+                                        <p>{{ product.name }}</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <p>{{ product.category_id }}</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <p>{{ product.quantity }}</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <p>{{ product.price }}</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <button class="lipa-less-btn">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <hr />
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>Sorry, no products exist</p>
+                            <p>Consider adding some</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add product modal -->
+            <div class="modal fade" id="add-product-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">
+                                Add Product
+                            </h4>
+                        </div>
+
+                        <form id="add-product-form" class="container-fluid"
+                              method="POST"
+                              action="#">
+                            <!--Server response section-->
+                            <div class="row">
+                                <p id="server-responses"></p>
+                            </div>
+
+                            <!-- Product Information section -->
+                            <div class="row">
+                                <div class="product-information col-md-12 col-12">
+                                    <!--Product name -->
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <label>
+                                                Product name
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <input name="name" type="text" required>
+                                        </div>
+                                    </div>
+
+                                    <!--Product description -->
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <label>
+                                                Description
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <input name="description" type="text" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Product buying price -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Buying price
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="buying_price" type="number" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Product selling price -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Selling price
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="selling_price" type="number" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quantity -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Quantity
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="quantity" type="number" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Reorder level -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Reorder level
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="reorder_level" type="number" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Expiration date -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Expires on
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="expiration_date" type="date" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Category -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Category
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <select name="category">
+                                                {% for category in categories %}
+                                                    <option name="{{ category.id }}">
+                                                        {{ category.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Supplier -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Supplier
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <select name="supplier">
+                                                {% for supplier in suppliers %}
+                                                    <option name="{{ supplier.id }}">
+                                                        {{ supplier.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Manufacturer -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Manufacturer
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <select name="manufacturer">
+                                                {% for manufacturer in manufacturers %}
+                                                    <option name="{{ manufacturer.id }}">
+                                                        {{ manufacturer.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!--Add product and Clear-->
+                                    <div class="form-btn-area row">
+                                        <div class="col-md-6">
+                                            <input id="add-product-btn"
+                                                   class="lipa-less-btn"
+                                                   value="ADD"
+                                                   type="submit">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <input class="clear-btn" type="reset" value="Clear" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End of Product Information section-->
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    </div>
+
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <!--Include the JS files (lazy loading)-->
+    <script src="{{ url_for('product_bp.static', filename='js/products.js') }}"></script>
+{% endblock %}

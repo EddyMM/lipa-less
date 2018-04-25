@@ -1,9 +1,12 @@
-from flask import Blueprint, request, session, current_app
+from flask import Blueprint, request, session, current_app, render_template
 from flask_login import login_required
 
 from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
+from POS.blueprints.category.controllers import CategoryAPI
+from POS.blueprints.manufacturer.controllers import ManufacturerAPI
+from POS.blueprints.supplier.controllers import SupplierAPI
 
 from POS.models.base_model import AppDB
 from POS.models.stock_management.product import Product
@@ -23,10 +26,16 @@ class ProductAPI(AppView):
         try:
             # Get all products within business
             products = ProductAPI.get_all_products()
+            categories = CategoryAPI.get_all_categories()
+            suppliers = SupplierAPI.get_all_suppliers()
+            manufacturers = ManufacturerAPI.get_all_manufacturers()
 
-            return ProductAPI.send_response(
-                msg=products,
-                status=200
+            return render_template(
+                template_name_or_list="products.html",
+                products=products,
+                categories=categories,
+                suppliers=suppliers,
+                manufacturers=manufacturers
             )
         except SQLAlchemyError as e:
             AppDB.db_session.rollback()
@@ -64,7 +73,6 @@ class ProductAPI(AppView):
         category_id = new_products_request.get("category_id", None)
         supplier_id = new_products_request.get("supplier_id", None)
         manufacturer_id = new_products_request.get("manufacturer_id", None)
-
 
         try:
             # Create product
@@ -267,8 +275,9 @@ class ProductAPI(AppView):
         products = [dict(
             id=product.id,
             name=product.name,
-            buying_price=product.buying_price,
-            selling_price=product.selling_price,
+            quantity=product.quantity,
+            category_id=Category.get_category_name(product.category_id),
+            price=product.selling_price,
             description=product.description
         ) for product in AppDB.db_session.query(Product).filter(
             Product.business_id == session["business_id"]
@@ -284,6 +293,8 @@ product_view = ProductAPI.as_view("product")
 product_bp = Blueprint(
     name="product_bp",
     import_name=__name__,
+    template_folder="templates",
+    static_folder="static",
     url_prefix="/product"
 )
 

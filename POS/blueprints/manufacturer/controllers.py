@@ -44,7 +44,7 @@ class ManufacturerAPI(AppView):
             return ManufacturerAPI.validation_error_response()
 
         # Extract info
-        name = manufacturer_addition_request["name"]
+        name = manufacturer_addition_request["name"].strip().lower()
 
         try:
             # Add manufacturer
@@ -82,7 +82,7 @@ class ManufacturerAPI(AppView):
 
         # Extract info
         manufacturer_id = manufacturer_edit_request["id"]
-        new_name = manufacturer_edit_request["name"]
+        new_name = manufacturer_edit_request["name"].strip().lower()
 
         try:
             # Get manufacturer

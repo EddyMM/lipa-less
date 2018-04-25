@@ -26,3 +26,11 @@ class Category(AppDB.BaseModel):
         return "Category<name={}>".format(
             self.name,
         )
+
+    @staticmethod
+    def get_category_name(category_id):
+        if category_id:
+            category = AppDB.db_session.query(Category).get(category_id)
+            if category:
+                return category.name
+        return None
