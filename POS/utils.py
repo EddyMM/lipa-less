@@ -19,13 +19,13 @@ def selected_business(business_dependent_func):
         Decorator function that checks if the user has already selected a business
     :return:
     """
-    def wrapper():
+    def wrapper(*args, **kwargs):
         if not session.get("business_id"):
             return redirect(
                 location=url_for("business_bp.business"),
                 code=303
             )
-        return business_dependent_func()
+        return business_dependent_func(*args, **kwargs)
     return wrapper
 
 
@@ -68,7 +68,7 @@ def is_admin(admin_restricted_func):
         """
 
     @selected_business
-    def wrapper():
+    def wrapper(*args, **kwargs):
         # Check if current user is an admin or owner of the current business
         # (since what an admin can do, an owner can as well)
         # N/B: I know that the above statement looks like inheritance but
@@ -101,7 +101,7 @@ def is_admin(admin_restricted_func):
                 location=url_for("business_bp.business"),
                 code=303
             )
-        return admin_restricted_func()
+        return admin_restricted_func(*args, **kwargs)
 
     return wrapper
 

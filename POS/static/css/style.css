@@ -269,6 +269,15 @@ p {
 	margin-top: 1%;
 }
 
+#product-information .row {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+#product-information {
+    text-align: left;
+}
+
 .select-business-box {
 	margin-top: 2%;
 	margin-bottom: 2%;

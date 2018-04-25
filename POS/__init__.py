@@ -18,6 +18,7 @@ from POS.blueprints.dashboard.controllers import dashboard_bp
 from POS.blueprints.user.logout.controllers import logout_bp
 from POS.blueprints.manage_accounts.controllers import manage_accounts_bp
 from POS.blueprints.product.controllers import product_bp
+from POS.blueprints.product.controllers import products_bp
 from POS.blueprints.category.controllers import category_bp
 from POS.blueprints.manufacturer.controllers import manufacturer_bp
 from POS.blueprints.supplier.controllers import supplier_bp
@@ -193,10 +194,11 @@ app_blueprints = (
     dashboard_bp,
     manage_accounts_bp,
     product_bp,
+    products_bp,
     category_bp,
     manufacturer_bp,
     supplier_bp
 )
 
 register_blueprints(app_blueprints)
-
+print("URL map: %s" % app.url_map)
