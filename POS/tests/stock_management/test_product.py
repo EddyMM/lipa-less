@@ -19,9 +19,9 @@ class TestProduct(BaseTestCase):
         self.login_as_cashier()
 
         # Get products
-        rv = self.test_app.get("/product")
+        rv = self.test_app.get("/products")
 
-        self.assertEqual("200", rv.headers["code"])
+        self.assertIn("200", rv.status)
 
     def test_add_product(self):
         # Login as admin
@@ -44,7 +44,6 @@ class TestProduct(BaseTestCase):
         product = AppDB.db_session.query(Product).first()
 
         # New info
-        product_id = product.id
         new_product_name = TestProduct.product_name + "more stuff"
         new_product_buying_price = TestProduct.product_buying_price + 10
         new_product_selling_price = TestProduct.product_selling_price + 10
@@ -52,8 +51,7 @@ class TestProduct(BaseTestCase):
 
         # Modify product
         self.send_json_put(
-            endpoint="/product",
-            id=product_id,
+            endpoint="/products/{0}".format(product.id),
             name=new_product_name,
             buying_price=new_product_buying_price,
             selling_price=new_product_selling_price,
@@ -81,8 +79,7 @@ class TestProduct(BaseTestCase):
 
         # Remove the product
         self.send_json_delete(
-            endpoint="/product",
-            id=product.id
+            endpoint="/products/{0}".format(product.id)
         )
 
         # Check if it has been removed
