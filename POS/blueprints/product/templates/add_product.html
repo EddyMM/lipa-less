@@ -14,7 +14,7 @@
                   action="#">
                 <!--Server response section-->
                 <div class="row">
-                    <p id="server-responses"></p>
+                    <p id="product-server-responses"></p>
                 </div>
 
                 <!-- Product Information section -->
@@ -28,7 +28,7 @@
                                 </label>
                             </div>
                             <div class="col-md-8 col-12">
-                                <input name="name" type="text" required>
+                                <input name="product-name" type="text" required>
                             </div>
                         </div>
 
@@ -40,7 +40,7 @@
                                 </label>
                             </div>
                             <div class="col-md-8 col-12">
-                                <textarea name="description" type="text"
+                                <textarea name="product-description" type="text"
                                           style="width: inherit" required>
                                 </textarea>
                             </div>
@@ -120,10 +120,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <p>>> create a new category?
-                                    <span>
-                                        <a href="{{ url_for('category_bp.category') }}">
-                                            New category
-                                        </a>
+                                    <span id="create-category-btn" class="create-link">
+                                        New category
                                     </span>
                                 </p>
                             </div>
@@ -149,10 +147,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <p>>> create a new supplier?
-                                    <span>
-                                        <a href="{{ url_for('supplier_bp.supplier') }}">
-                                            New supplier
-                                        </a>
+                                    <span id="create-supplier-btn" class="create-link">
+                                        New supplier
                                     </span>
                                 </p>
                             </div>
@@ -178,10 +174,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <p>>> create a new manufacturer?
-                                    <span>
-                                        <a href="{{ url_for('manufacturer_bp.manufacturer') }}">
-                                            New manufacturer
-                                        </a>
+                                    <span id="create-manufacturer-btn" class="create-link">
+                                        New manufacturer
                                     </span>
                                 </p>
                             </div>
@@ -206,6 +200,79 @@
             </form>
         </div>
     </div>
+
+    <!--Add category Modal -->
+    <div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Category
+                    </h4>
+                </div>
+
+                <form id="add-category-form" class="container-fluid"
+                      method="POST"
+                      action="#">
+                    <!--Server response section-->
+                    <div class="row">
+                        <p id="category-server-responses"></p>
+                    </div>
+
+                    <!-- Category Information section-->
+                    <div class="row">
+                        <div class="category-information col-md-12 col-12">
+                            <!-- Category name-->
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    <label>
+                                        Name
+                                    </label>
+                                </div>
+                                <div class="col-md-9 col-12">
+                                    <input name="category-name" type="text" required>
+                                </div>
+                            </div>
+
+                            <!-- Category description-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>
+                                                Description
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <textarea name="category-description"
+                                              style="width: inherit" required>
+                                    </textarea>
+                                </div>
+                            </div>
+
+                            <!--Add category or clear-->
+                            <div class="form-btn-area row">
+                                <div class="col-md-6">
+                                    <input id="add-category-btn"
+                                           class="lipa-less-btn"
+                                           value="Create category"
+                                           type="submit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="clear-btn" type="reset" value="Clear" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of category Information section-->
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 
     <!--suppress HtmlUnknownTarget -->
     <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>

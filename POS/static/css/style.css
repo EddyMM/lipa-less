@@ -52,6 +52,7 @@ body {
 	font-family: "Avenir Next", sans-serif;
 	height: inherit;
 	--lipaless-grey: #a8a8a8;
+	--modal-link: #007bff;
 }
 
 .body {
@@ -91,6 +92,10 @@ body {
 	padding: 2% 4%;
 }
 
+#confirm-password-mismatch {
+	color: #ff3c41 !important;
+}
+
 #create-business-btn {
 	width: inherit;
 	padding: 1% 6%;
@@ -98,14 +103,18 @@ body {
 	margin-bottom: 5%;
 }
 
-#confirm-password-mismatch {
-	color: #ff3c41 !important;
-}
-
 @media (min-height: 768px) {
     .content {
         height: inherit;
     }
+}
+
+.create-link {
+	color: var(--modal-link);
+}
+
+.create-link:hover {
+	cursor: pointer;
 }
 
 .dashboard-link {
