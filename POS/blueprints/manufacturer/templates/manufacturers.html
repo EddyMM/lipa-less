@@ -1,0 +1,69 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h3>MANUFACTURERS</h3>
+        </div>
+
+        <div class="offset-8 col-4" style="margin-bottom: 1%">
+            <a id="add-new-manufacturer-btn" class="lipa-less-btn"
+               href="{{ url_for('manufacturer_bp.manufacturer') }}">Add manufacturer</a>
+        </div>
+
+        <!-- List of manufacturers -->
+        <div class="col-12">
+            <div id="manufacturers-container" class="container">
+                <div class="row">
+                    <div class="offset-1 col-10 list-box">
+                        {% if manufacturers %}
+                            <!-- Labels -->
+                            <div class="row box-labels">
+                                <div class="col-9">
+                                    <label>Name</label>
+                                </div>
+                                <div class="col-3">
+                                    <label>Edit</label>
+                                </div>
+                            </div>
+
+                            <!-- Manufacturers -->
+                            {% for manufacturer in manufacturers %}
+                                <div class="box-row row">
+                                    <div class="col-9">
+                                        <p>{{ manufacturer.name }}</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="lipa-less-btn">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <hr />
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>Sorry, no manufacturers exist</p>
+                            <p>Consider adding some</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add manufacturer modal -->
+            <div class="modal fade" id="add-manufacturer-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">
+                                Add Manufacturer
+                            </h4>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    </div>
+{% endblock %}

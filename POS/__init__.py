@@ -3,6 +3,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask, send_from_directory, redirect, url_for, render_template
+from flask_jsglue import JSGlue
 from flask_login import LoginManager
 from flask_session import Session
 
@@ -21,7 +22,9 @@ from POS.blueprints.product.controllers import product_bp
 from POS.blueprints.product.controllers import products_bp
 from POS.blueprints.category.controllers import category_bp
 from POS.blueprints.manufacturer.controllers import manufacturer_bp
+from POS.blueprints.manufacturer.controllers import manufacturers_bp
 from POS.blueprints.supplier.controllers import supplier_bp
+from POS.blueprints.supplier.controllers import suppliers_bp
 
 from POS.models.base_model import AppDB
 from POS.models.user_management.user import User
@@ -130,6 +133,10 @@ login_manager.login_view = "login_bp.login"
 ses = Session()
 ses.init_app(app)
 
+# Associate with JSGlue
+js_glue = JSGlue()
+js_glue.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -165,17 +172,17 @@ def inject_roles():
 
 
 @app.errorhandler(NotFound)
-def error_404(error):
+def error_404():
     return render_template("404-error.html")
 
 
 @app.errorhandler(BadRequest)
-def error_400(error):
+def error_400():
     return render_template("400-error.html")
 
 
 @app.errorhandler(InternalServerError)
-def error_500(error):
+def error_500():
     return render_template("500-error.html")
 
 
@@ -197,6 +204,8 @@ app_blueprints = (
     products_bp,
     category_bp,
     manufacturer_bp,
+    manufacturers_bp,
+    suppliers_bp,
     supplier_bp
 )
 

@@ -5,8 +5,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
 from POS.blueprints.category.controllers import CategoryAPI
-from POS.blueprints.manufacturer.controllers import ManufacturerAPI
-from POS.blueprints.supplier.controllers import SupplierAPI
+from POS.blueprints.manufacturer.controllers import ManufacturersAPI
+from POS.blueprints.supplier.controllers import SuppliersAPI
 
 from POS.models.base_model import AppDB
 from POS.models.stock_management.product import Product
@@ -187,8 +187,8 @@ class ProductAPI(AppView):
     @is_cashier
     def get():
         categories = CategoryAPI.get_all_categories()
-        suppliers = SupplierAPI.get_all_suppliers()
-        manufacturers = ManufacturerAPI.get_all_manufacturers()
+        suppliers = SuppliersAPI.get_all_suppliers()
+        manufacturers = ManufacturersAPI.get_all_manufacturers()
 
         return render_template(
             template_name_or_list="add_product.html",

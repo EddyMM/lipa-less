@@ -3,55 +3,49 @@
 {% block body %}
     <div class="row">
         <div class="col-12">
-            <h3>PRODUCTS</h3>
+            <h3>SUPPLIERS</h3>
         </div>
 
         <div class="offset-8 col-4" style="margin-bottom: 1%">
-            <a id="add-new-product-btn" class="lipa-less-btn"
-               href="{{ url_for('product_bp.product') }}">Add product</a>
+            <a id="add-new-supplier-btn" class="lipa-less-btn"
+               href="{{ url_for('supplier_bp.supplier') }}">Add supplier</a>
         </div>
 
-        <!-- List of products -->
+        <!-- List of suppliers -->
         <div class="col-12">
-            <div id="products-container" class="container">
+            <div id="suppliers-container" class="container">
                 <div class="row">
-                    <div class="list-box offset-1 col-10">
-                        {% if products %}
+                    <div class="offset-1 col-10 list-box">
+                        {% if suppliers %}
                             <!-- Labels -->
                             <div class="row box-labels">
-                                <div class="col-2">
+                                <div class="col-3">
                                     <label>Name</label>
                                 </div>
-                                <div class="col-2">
-                                    <label>Category</label>
+                                <div class="col-3">
+                                    <label>Contact Person</label>
                                 </div>
-                                <div class="col-2">
-                                    <label>Quantity</label>
+                                <div class="col-3">
+                                    <label>Contact Number</label>
                                 </div>
-                                <div class="col-2">
-                                    <label>Price</label>
-                                </div>
-                                <div class="col-2">
+                                <div class="col-3">
                                     <label>Edit</label>
                                 </div>
                             </div>
 
                             <!-- Products -->
-                            {% for product in products %}
+                            {% for supplier in suppliers %}
                                 <div class="box-row row">
-                                    <div class="col-2">
-                                        <p>{{ product.name }}</p>
+                                    <div class="col-3">
+                                        <p>{{ supplier.name }}</p>
                                     </div>
-                                    <div class="col-2">
-                                        <p>{{ product.category_id }}</p>
+                                    <div class="col-3">
+                                        <p>{{ supplier.contact_person }}</p>
                                     </div>
-                                    <div class="col-2">
-                                        <p>{{ product.quantity }}</p>
+                                    <div class="col-3">
+                                        <p>{{ supplier.contact_number }}</p>
                                     </div>
-                                    <div class="col-2">
-                                        <p>{{ product.price }}</p>
-                                    </div>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <button class="lipa-less-btn">Edit</button>
                                     </div>
                                 </div>
@@ -62,15 +56,15 @@
                                 </div>
                             {% endfor %}
                         {% else %}
-                            <p>Sorry, no products exist</p>
+                            <p>Sorry, no suppliers exist</p>
                             <p>Consider adding some</p>
                         {% endif %}
                     </div>
                 </div>
             </div>
 
-            <!-- Add product modal -->
-            <div class="modal fade" id="add-product-modal" tabindex="-1" role="dialog"
+            <!-- Add supplier modal -->
+            <div class="modal fade" id="add-supplier-modal" tabindex="-1" role="dialog"
         aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">

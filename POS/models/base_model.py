@@ -3,7 +3,7 @@
     and exposes a database session object to be used by the app
 """
 
-from flask import logging, current_app
+from flask import current_app
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base

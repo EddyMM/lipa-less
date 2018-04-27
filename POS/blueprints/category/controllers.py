@@ -206,10 +206,12 @@ class CategoryAPI(AppView):
 
     @staticmethod
     def get_all_categories() -> List[dict]:
-        return [dict(id=category.id, name=category.name, description=category.description)
-                for category in AppDB.db_session.query(Category).filter(
-                    Category.business_id == session["business_id"]
-                ).all()]
+        categories = [dict(id=category.id, name=category.name, description=category.description)
+                      for category in AppDB.db_session.query(Category).filter(
+                Category.business_id == session["business_id"]
+        ).all()]
+
+        return categories
 
     @staticmethod
     def get_category_within_business(category_id: int) -> Category:

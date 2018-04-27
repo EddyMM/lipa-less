@@ -28,7 +28,7 @@
                                 </label>
                             </div>
                             <div class="col-md-8 col-12">
-                                <input name="product-name" type="text" required>
+                                <input name="product-name" type="text" title="Name of the new product" required>
                             </div>
                         </div>
 
@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-md-8 col-12">
                                 <textarea name="product-description" type="text"
-                                          style="width: inherit" required>
+                                          style="width: inherit" title="Short description the new product" required>
                                 </textarea>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                 </label>
                             </div>
                             <div class="col-md-3 col-12">
-                                <input name="buying_price" type="number" required>
+                                <input name="buying-price" type="number" title="Buying price of the new product" required>
                             </div>
 
                             <div class="col-md-2 col-12">
@@ -63,7 +63,8 @@
                                 </label>
                             </div>
                             <div class="col-md-3 col-12">
-                                <input name="selling_price" type="number" required>
+                                <input name="selling-price" type="number"
+                                       title="Selling price of the new product" required>
                             </div>
                         </div>
 
@@ -75,7 +76,8 @@
                                 </label>
                             </div>
                             <div class="col-md-3">
-                                <input name="quantity" type="number" required>
+                                <input name="quantity" type="number"
+                                       title="Number of units of the new product" required>
                             </div>
 
                             <div class="col-md-2">
@@ -84,7 +86,10 @@
                                 </label>
                             </div>
                             <div class="col-md-3">
-                                <input name="reorder_level" type="number" required>
+                                <input name="reorder-level" type="number"
+                                       title="Minimum amout that should be in stock before sending
+                                       'running out of stock' notification"
+                                       required>
                             </div>
                         </div>
 
@@ -96,7 +101,8 @@
                                 </label>
                             </div>
                             <div class="col-md-4">
-                                <input name="expiration_date" type="date" required>
+                                <input name="expiration-date" type="date"
+                                       title="Expiry date of the new product" required>
                             </div>
                         </div>
 
@@ -108,9 +114,9 @@
                                 </label>
                             </div>
                             <div class="col-md-8">
-                                <select name="category">
+                                <select id="category-options" name="category" title="Classification of the new product">
                                     {% for category in categories %}
-                                        <option name="{{ category.id }}">
+                                        <option value="{{ category.id }}">
                                             {{ category.name }}
                                         </option>
                                     {% endfor %}
@@ -135,9 +141,9 @@
                                 </label>
                             </div>
                             <div class="col-md-8">
-                                <select name="supplier">
+                                <select id="supplier-options" name="supplier" title="Who suppliers the product?">
                                     {% for supplier in suppliers %}
-                                        <option name="{{ supplier.id }}">
+                                        <option value="{{ supplier.id }}">
                                             {{ supplier.name }}
                                         </option>
                                     {% endfor %}
@@ -162,9 +168,9 @@
                                 </label>
                             </div>
                             <div class="col-md-8">
-                                <select name="manufacturer">
+                                <select id="manufacturer-options" name="manufacturer" title="Who manufactures the product?">
                                     {% for manufacturer in manufacturers %}
-                                        <option name="{{ manufacturer.id }}">
+                                        <option value="{{ manufacturer.id }}">
                                             {{ manufacturer.name }}
                                         </option>
                                     {% endfor %}
@@ -186,7 +192,7 @@
                             <div class="offset-md-6 col-md-3 col-12">
                                 <input id="add-product-btn"
                                        class="lipa-less-btn"
-                                       value="ADD"
+                                       value="Add product"
                                        type="submit">
                             </div>
 
@@ -231,7 +237,8 @@
                                     </label>
                                 </div>
                                 <div class="col-md-9 col-12">
-                                    <input name="category-name" type="text" required>
+                                    <input name="category-name" type="text"
+                                           title="Name of the category" required>
                                 </div>
                             </div>
 
@@ -248,6 +255,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <textarea name="category-description"
+                                              title="Short description of the category"
                                               style="width: inherit" required>
                                     </textarea>
                                 </div>
@@ -269,6 +277,168 @@
                         </div>
                     </div>
                     <!--End of category Information section-->
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+    <!--Add supplier Modal -->
+    <div class="modal fade" id="add-supplier-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Supplier
+                    </h4>
+                </div>
+
+                <form id="add-supplier-form" class="container-fluid"
+                      method="POST"
+                      action="#">
+                    <!--Server response section-->
+                    <div class="row">
+                        <p id="supplier-server-responses"></p>
+                    </div>
+
+                    <!-- Supplier Information section-->
+                    <div class="row">
+                        <div class="supplier-information col-md-12 col-12">
+                            <!-- Supplier name-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-3 col-12">
+                                            <label>
+                                                Name
+                                            </label>
+                                        </div>
+                                        <div class="col-md-9 col-12">
+                                            <input name="supplier-name" type="text"
+                                                   title="Name of the supplier" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Supplier contact person -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>
+                                                Contact Person
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input name="supplier-contact-person" type="text"
+                                                   title="Supplier's main contact person's name" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Supplier contact number -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>
+                                                Contact Number
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input name="supplier-contact-number" type="number"
+                                                   title="Main contact person's phone number" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Add supplier or clear-->
+                            <div class="form-btn-area row">
+                                <div class="col-md-6">
+                                    <input id="add-supplier-btn"
+                                           class="lipa-less-btn"
+                                           value="Create supplier"
+                                           type="submit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="clear-btn" type="reset" value="Clear" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of supplier Information section-->
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+    <!--Add manufacturer Modal -->
+    <div class="modal fade" id="add-manufacturer-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Manufacturer
+                    </h4>
+                </div>
+
+                <form id="add-manufacturer-form" class="container-fluid"
+                      method="POST"
+                      action="#">
+                    <!--Server response section-->
+                    <div class="row">
+                        <p id="manufacturer-server-responses"></p>
+                    </div>
+
+                    <!-- Manufacturer Information section-->
+                    <div class="row">
+                        <div class="manufacturer-information col-md-12 col-12">
+                            <!-- Manufacturer name-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-3 col-12">
+                                            <label>
+                                                Name
+                                            </label>
+                                        </div>
+                                        <div class="col-md-9 col-12">
+                                            <input name="manufacturer-name" type="text"
+                                                   title="Name of the manufacturer" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Add manufacturer or clear-->
+                            <div class="form-btn-area row">
+                                <div class="col-md-6">
+                                    <input id="add-manufacturer-btn"
+                                           class="lipa-less-btn"
+                                           value="Create manufacturer"
+                                           type="submit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="clear-btn" type="reset" value="Clear" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of manufacturer Information section-->
                 </form>
             </div>
         </div><!-- /.modal-content -->
