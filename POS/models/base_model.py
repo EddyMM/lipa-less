@@ -32,7 +32,7 @@ class AppDB(object):
         try:
             db_engine = create_engine(
                 current_app.config["SQLALCHEMY_DATABASE_URI"],
-                isolation_level='SERIALIZABLE'
+                isolation_level='READ COMMITTED'
             )
 
             # Bind the engine to the models
