@@ -259,8 +259,9 @@ function onAddProductSuccess(res, status, jqXHR) {
         console.log("res: " + res);
         console.log("msg: " + res["msg"]);
 
+        // noinspection JSUnresolvedFunction
         // noinspection JSUnresolvedVariable
-        window.location = Flask.url_for = 'products_bp.products';
+        window.location = Flask.url_for('products_bp.products');
 
     } else {
         if((res["msg"]!==undefined) || (res["msg"]!==null)) {
@@ -280,7 +281,7 @@ function updateCategories(newCategories) {
     var categoryOptions = "";
         newCategories.forEach(function(category) {
             categoryOptions +=
-                "<option name"+ category.id +">"
+                "<option value="+ category.id +">"
                     + category["name"] +
                 "</option>";
         });
@@ -301,7 +302,7 @@ function updateSuppliers(newSuppliers) {
     var supplierOptions = "";
         newSuppliers.forEach(function(supplier) {
             supplierOptions +=
-                "<option name"+ supplier.id +">"
+                "<option value="+ supplier.id +">"
                     + supplier["name"] +
                 "</option>";
         });
@@ -322,7 +323,7 @@ function updateManufacturers(newManufacturers) {
     var manufacturerOptions = "";
         newManufacturers.forEach(function(manufacturer) {
             manufacturerOptions +=
-                "<option name"+ manufacturer.id +">"
+                "<option value="+ manufacturer.id +">"
                     + manufacturer["name"] +
                 "</option>";
         });

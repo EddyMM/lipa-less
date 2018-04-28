@@ -14,10 +14,13 @@ class TestManufacturer(BaseTestCase):
         self.login_as_cashier()
 
         # Get list of manufacturers
-        rv = self.test_app.get("/manufacturer")
+        rv = self.test_app.get("/manufacturers")
+
+        if rv.headers:
+            print("rv.headers: %s, rv.status: %s" % (rv.headers, rv.status))
 
         # Check if it succeeded
-        self.assertEqual("200", rv.headers["code"])
+        self.assertIn("200", rv.status)
 
     def test_manufacturer_addition(self):
         # Login as admin
@@ -42,8 +45,7 @@ class TestManufacturer(BaseTestCase):
         # Edit details
         new_name = self.manufacturer_name + "more stuff"
         self.send_json_put(
-            endpoint="/manufacturer",
-            id=manufacturer.id,
+            endpoint="/manufacturers/{0}".format(manufacturer.id),
             name=new_name
         )
 
@@ -64,11 +66,10 @@ class TestManufacturer(BaseTestCase):
 
         # Delete manufacturer
         self.send_json_delete(
-            endpoint="/manufacturer",
-            id=manufacturer.id
+            endpoint="/manufacturers/{0}".format(manufacturer.id)
         )
 
-        # Confirm manufacturer wsa removed
+        # Confirm manufacturer was removed
         self.assertEqual(AppDB.db_session.query(Manufacturer).count(), 0)
 
     def add_manufacturer(self):

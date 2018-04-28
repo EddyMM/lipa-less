@@ -99,7 +99,8 @@ def sentry_logging(app_instance):
     :return:
     """
     if not app_instance.debug:
-        app.sentry.init_app(app_instance, logging=True, level=logging.ERROR)
+        app_instance.sentry = Sentry()
+        app_instance.sentry.init_app(app_instance, logging=True, level=logging.ERROR)
 
 
 def init_app(app_instance):
@@ -116,7 +117,6 @@ def init_app(app_instance):
 
 
 app = Flask(__name__)
-app.sentry = Sentry()
 
 init_app(app)
 
@@ -172,17 +172,17 @@ def inject_roles():
 
 
 @app.errorhandler(NotFound)
-def error_404():
+def error_404(error):
     return render_template("404-error.html")
 
 
 @app.errorhandler(BadRequest)
-def error_400():
+def error_400(error):
     return render_template("400-error.html")
 
 
 @app.errorhandler(InternalServerError)
-def error_500():
+def error_500(error):
     return render_template("500-error.html")
 
 

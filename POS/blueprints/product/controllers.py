@@ -263,7 +263,9 @@ class ProductAPI(AppView):
         except SQLAlchemyError as e:
             AppDB.db_session.rollback()
             current_app.logger.error(e)
-            current_app.sentry.captureException()
+            print("App Configs: %s" % current_app.config)
+            if "sentry" in current_app.config:
+                current_app.sentry.captureException()
             return ProductsAPI.error_in_processing_request()
 
     @staticmethod
@@ -283,7 +285,6 @@ class ProductAPI(AppView):
 # Create product API URL endpoints
 product_view = ProductAPI.as_view("product")
 
-# Create blueprints
 product_bp = Blueprint(
     name="product_bp",
     import_name=__name__,

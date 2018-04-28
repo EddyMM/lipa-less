@@ -18,9 +18,9 @@ class TestSupplier(BaseTestCase):
         self.login_as_cashier()
 
         # Get suppliers
-        rv = self.test_app.get("/supplier")
+        rv = self.test_app.get("/suppliers")
 
-        self.assertIn("200", rv.headers["code"])
+        self.assertIn("200", rv.status)
 
     def test_add_supplier(self):
         # Login as admin
@@ -47,8 +47,7 @@ class TestSupplier(BaseTestCase):
         supplier = AppDB.db_session.query(Supplier).first()
 
         self.send_json_put(
-            endpoint="/supplier",
-            id=supplier.id,
+            endpoint="/suppliers/{0}".format(supplier.id),
             name=new_supplier_name,
             contact_person=new_supplier_contact_person,
             contact_number=new_supplier_contact_number
