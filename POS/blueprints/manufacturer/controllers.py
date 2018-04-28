@@ -134,7 +134,7 @@ class ManufacturersAPI(AppView):
             .all()
 
         return [dict(
-            num=num,
+            num=num+1,
             id=manufacturer.id,
             name=manufacturer.name
         ) for num, manufacturer in enumerate(manufacturers)]

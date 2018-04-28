@@ -4,7 +4,7 @@ from flask_login import login_required
 from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
-from POS.blueprints.category.controllers import CategoryAPI
+from POS.blueprints.category.controllers import CategoriesAPI
 from POS.blueprints.manufacturer.controllers import ManufacturersAPI
 from POS.blueprints.supplier.controllers import SuppliersAPI
 
@@ -187,7 +187,7 @@ class ProductAPI(AppView):
     @login_required
     @is_cashier
     def get():
-        categories = CategoryAPI.get_all_categories()
+        categories = CategoriesAPI.get_all_categories()
         suppliers = SuppliersAPI.get_all_suppliers()
         manufacturers = ManufacturersAPI.get_all_manufacturers()
 

@@ -1,0 +1,53 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h3>CATEGORIES</h3>
+        </div>
+
+        <div class="offset-md-8 col-md-4 col-12" style="margin-bottom: 1%">
+            <a id="add-new-categories-btn" class="lipa-less-btn"
+               href="{{ url_for('category_bp.category') }}">Add Category</a>
+        </div>
+
+        <!-- List of categories -->
+        <div class="col-12 table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-head">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Suppliers -->
+                    {% for category in categories %}
+                        <tr>
+                            <th scope="row">{{ category.num }}</th>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.description }}</td>
+                            <td><button class="lipa-less-btn">Edit</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Add category modal -->
+            <div class="modal fade" id="add-supplier-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">
+                                Add category
+                            </h4>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    </div>
+{% endblock %}

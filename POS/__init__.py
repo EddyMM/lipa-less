@@ -21,6 +21,7 @@ from POS.blueprints.manage_accounts.controllers import manage_accounts_bp
 from POS.blueprints.product.controllers import product_bp
 from POS.blueprints.product.controllers import products_bp
 from POS.blueprints.category.controllers import category_bp
+from POS.blueprints.category.controllers import categories_bp
 from POS.blueprints.manufacturer.controllers import manufacturer_bp
 from POS.blueprints.manufacturer.controllers import manufacturers_bp
 from POS.blueprints.supplier.controllers import supplier_bp
@@ -203,6 +204,7 @@ app_blueprints = (
     product_bp,
     products_bp,
     category_bp,
+    categories_bp,
     manufacturer_bp,
     manufacturers_bp,
     suppliers_bp,

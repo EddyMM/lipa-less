@@ -14,9 +14,9 @@ class TestCategory(BaseTestCase):
         self.login_as_cashier()
 
         # Get categories
-        rv = self.test_app.get("/category")
+        rv = self.test_app.get("/categories")
 
-        self.assertIn("200", rv.headers["code"])
+        self.assertIn("200", rv.status)
 
     def test_add_category(self):
         # Login as an admin
@@ -26,11 +26,13 @@ class TestCategory(BaseTestCase):
         name = "test_category"
         description = "Just a test_category"
 
-        self.send_json_post(
+        rv = self.send_json_post(
             endpoint="/category",
             name=name,
             description=description
         )
+
+        print("rv: {0}, rv.data: {1}".format(rv, rv.data))
 
         # Check if category has been added
         self.assertEqual(AppDB.db_session.query(Category).count(), 1)
@@ -49,8 +51,7 @@ class TestCategory(BaseTestCase):
         new_category_description = self.category_description + "more stuff"
 
         self.send_json_put(
-            endpoint="/category",
-            id=str(category.id),
+            endpoint="/categories/{}".format(category.id),
             name=new_category_name,
             description=new_category_description
         )
@@ -73,8 +74,7 @@ class TestCategory(BaseTestCase):
 
         # Delete category
         self.send_json_delete(
-            endpoint="/category",
-            id=str(category.id)
+            endpoint="/categories/{}".format(category.id),
         )
 
         # Check if category was removed

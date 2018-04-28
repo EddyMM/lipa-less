@@ -143,7 +143,7 @@ class SuppliersAPI(AppView):
 
         return [
             dict(
-                num=num,
+                num=num+1,
                 id=supplier.id,
                 name=supplier.name,
                 contact_person=supplier.contact_person,
