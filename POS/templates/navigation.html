@@ -1,7 +1,7 @@
 <nav class="side-nav-bar navbar navbar-expand-md col-md-2 col-12">
     <div class="col-md-12 col-12">
         <div class="row">
-            <div class="navbar-brand col-12">
+            <div class="navbar-brand offset-md-3 col-md-6 col-12">
                 <!--suppress HtmlUnknownTarget -->
                 <a href="/">
                     <img class="lipa-less-logo"
@@ -37,10 +37,25 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('products_bp.products') }}">
-                                    Products
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Stock
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="navBarDropdown">
+                                    <a class="dropdown-item" href="{{ url_for('products_bp.products') }}">
+                                        Products
+                                    </a>
+                                    <a class="dropdown-item" href="{{ url_for('products_bp.products') }}">
+                                        Categories
+                                    </a>
+                                    <a class="dropdown-item" href="{{ url_for('suppliers_bp.suppliers') }}">
+                                        Suppliers
+                                    </a>
+                                    <a class="dropdown-item" href="{{ url_for('manufacturers_bp.manufacturers') }}">
+                                        Manufacturers
+                                    </a>
+                                </div>
                             </li>
                         {% endif %}
                     {% endif %}
@@ -49,7 +64,7 @@
                     </li>
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="nav-link" href="{{ url_for('logout_bp.logout') }}">Logout</a>
                     </li>
                     {% endif %}
                 </ul>

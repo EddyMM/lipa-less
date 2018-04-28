@@ -168,15 +168,16 @@ class ProductsAPI(AppView):
     @staticmethod
     def get_all_products():
         products = [dict(
+            num=num+1,
             id=product.id,
             name=product.name,
             quantity=product.quantity,
-            category_id=Category.get_category_name(product.category_id),
+            category=Category.get_category_name(product.category_id),
             price=product.selling_price,
             description=product.description
-        ) for product in AppDB.db_session.query(Product).filter(
+        ) for num, product in enumerate(AppDB.db_session.query(Product).filter(
             Product.business_id == session["business_id"]
-        ).all()]
+        ).all())]
 
         return products
 

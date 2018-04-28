@@ -53,6 +53,7 @@ body {
 	height: inherit;
 	--lipaless-grey: #a8a8a8;
 	--modal-link: #007bff;
+	--lipaless-black: #303133;
 }
 
 .body {
@@ -126,6 +127,10 @@ body {
 
 .dashboard-link {
 	padding: 1%;
+}
+
+.dropdown-menu {
+	border: 1px solid var(--lipaless-grey);
 }
 
 .form-btn-area {
@@ -276,6 +281,13 @@ p {
 	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }
 
+@media(min-width: 768px)  {
+	.nav-link {
+		padding: 0 0 5% 5%;
+		border-bottom: 1px solid white;
+	}
+}
+
 .list-box {
 	border: 1px solid var(--lipaless-grey);
 	padding-left: 0;
@@ -346,12 +358,6 @@ p {
     .side-nav-bar {
         height: inherit;
     }
-
-    .side-nav-bar .nav-link {
-        padding: 5%;
-		border: 1px solid white;
-    	border-radius: 4px;
-    }
 }
 
 #sign-up-btn {
@@ -384,8 +390,17 @@ p {
 	z-index: 1;
 }
 
+.table {
+	text-align: left;
+}
+
+.table-head {
+	background-color: var(--lipaless-black);
+	color: white;
+}
+
 #welcome-message {
 	text-align: center;
-	color: #303133;
+	color: var(--lipaless-black);
 	font-size: 23px;
 }

@@ -1,12 +1,14 @@
-from flask import Blueprint, request, current_app, render_template
+from flask import Blueprint, request, current_app, render_template, session
 from flask_login import login_required
 
 from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
 
-from POS.models.stock_management.manufacturer import Manufacturer
 from POS.models.base_model import AppDB
+from POS.models.stock_management.manufacturer import Manufacturer
+from POS.models.stock_management.product import Product
+from POS.models.user_management.business import Business
 
 from POS.utils import is_admin
 
@@ -125,10 +127,17 @@ class ManufacturersAPI(AppView):
 
     @staticmethod
     def get_all_manufacturers():
+        manufacturers = AppDB.db_session.query(Manufacturer)\
+            .join(Product)\
+            .join(Business)\
+            .filter(session["business_id"] == Business.id)\
+            .all()
+
         return [dict(
+            num=num,
             id=manufacturer.id,
             name=manufacturer.name
-        ) for manufacturer in AppDB.db_session.query(Manufacturer).all()]
+        ) for num, manufacturer in enumerate(manufacturers)]
 
     @staticmethod
     def manufacturer_not_found_response():

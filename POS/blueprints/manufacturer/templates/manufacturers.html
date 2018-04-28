@@ -12,44 +12,26 @@
         </div>
 
         <!-- List of manufacturers -->
-        <div class="col-12">
-            <div id="manufacturers-container" class="container">
-                <div class="row">
-                    <div class="offset-1 col-10 list-box">
-                        {% if manufacturers %}
-                            <!-- Labels -->
-                            <div class="row box-labels">
-                                <div class="col-9">
-                                    <label>Name</label>
-                                </div>
-                                <div class="col-3">
-                                    <label>Edit</label>
-                                </div>
-                            </div>
-
-                            <!-- Manufacturers -->
-                            {% for manufacturer in manufacturers %}
-                                <div class="box-row row">
-                                    <div class="col-9">
-                                        <p>{{ manufacturer.name }}</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <button class="lipa-less-btn">Edit</button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <hr />
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p>Sorry, no manufacturers exist</p>
-                            <p>Consider adding some</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+        <div class="col-12 table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-head">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Manufacturers -->
+                    {% for manufacturer in manufacturers%}
+                        <tr>
+                            <th scope="row">{{ manufacturer.num }}</th>
+                            <td>{{ manufacturer.name }}</td>
+                            <td><button class="lipa-less-btn">Edit</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
             <!-- Add manufacturer modal -->
             <div class="modal fade" id="add-manufacturer-modal" tabindex="-1" role="dialog"

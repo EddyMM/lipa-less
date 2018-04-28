@@ -6,82 +6,52 @@
             <h3>PRODUCTS</h3>
         </div>
 
-        <div class="offset-8 col-4" style="margin-bottom: 1%">
+        <div class="offset-md-8 col-md-4 col-12" style="margin-bottom: 1%">
             <a id="add-new-product-btn" class="lipa-less-btn"
                href="{{ url_for('product_bp.product') }}">Add product</a>
         </div>
-
+    </div>
+    <div class="row">
         <!-- List of products -->
-        <div class="col-12">
-            <div id="products-container" class="container">
-                <div class="row">
-                    <div class="list-box offset-1 col-10">
-                        {% if products %}
-                            <!-- Labels -->
-                            <div class="row box-labels">
-                                <div class="col-2">
-                                    <label>Name</label>
-                                </div>
-                                <div class="col-2">
-                                    <label>Category</label>
-                                </div>
-                                <div class="col-2">
-                                    <label>Quantity</label>
-                                </div>
-                                <div class="col-2">
-                                    <label>Price</label>
-                                </div>
-                                <div class="col-2">
-                                    <label>Edit</label>
-                                </div>
-                            </div>
-
-                            <!-- Products -->
-                            {% for product in products %}
-                                <div class="box-row row">
-                                    <div class="col-2">
-                                        <p>{{ product.name }}</p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>{{ product.category_id }}</p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>{{ product.quantity }}</p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>{{ product.price }}</p>
-                                    </div>
-                                    <div class="col-2">
-                                        <button class="lipa-less-btn">Edit</button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <hr />
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p>Sorry, no products exist</p>
-                            <p>Consider adding some</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add product modal -->
-            <div class="modal fade" id="add-product-modal" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">
-                                Add Product
-                            </h4>
-                        </div>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
+        <div class="col-12 table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-head">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Products -->
+                    {% for product in products %}
+                        <tr>
+                            <th scope="row">{{ product.num }}</th>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>{{ product.quantity }}</td>
+                            <td>{{ product.price }}</td>
+                            <td><button class="lipa-less-btn">Edit</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
+    <!-- Add product modal -->
+    <div class="modal fade" id="add-product-modal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Product
+                    </h4>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 {% endblock %}

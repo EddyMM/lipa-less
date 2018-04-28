@@ -1,10 +1,12 @@
-from flask import Blueprint, request, current_app, render_template
+from flask import Blueprint, request, current_app, render_template, session
 
 from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
 from POS.models.base_model import AppDB
 from POS.models.stock_management.supplier import Supplier
+from POS.models.stock_management.product import Product
+from POS.models.user_management.business import Business
 
 
 class SuppliersAPI(AppView):
@@ -133,15 +135,20 @@ class SuppliersAPI(AppView):
 
     @staticmethod
     def get_all_suppliers():
-        suppliers = AppDB.db_session.query(Supplier).all()
+        suppliers = AppDB.db_session.query(Supplier)\
+            .join(Product)\
+            .join(Business).filter(
+                session["business_id"] == Business.id
+        ).all()
 
         return [
             dict(
+                num=num,
                 id=supplier.id,
                 name=supplier.name,
                 contact_person=supplier.contact_person,
                 contact_number=supplier.contact_no
-            )for supplier in suppliers
+            )for num, supplier in enumerate(suppliers)
         ]
 
 
@@ -218,7 +225,7 @@ supplier_bp.add_url_rule(rule="", view_func=supplier_view, methods=["GET", "POST
 
 
 # Suppliers blueprint
-suppliers_view = SuppliersAPI.as_view(name="supplier")
+suppliers_view = SuppliersAPI.as_view(name="suppliers")
 suppliers_bp = Blueprint(
     name="suppliers_bp",
     import_name=__name__,

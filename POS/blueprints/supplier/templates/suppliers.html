@@ -12,56 +12,30 @@
         </div>
 
         <!-- List of suppliers -->
-        <div class="col-12">
-            <div id="suppliers-container" class="container">
-                <div class="row">
-                    <div class="offset-1 col-10 list-box">
-                        {% if suppliers %}
-                            <!-- Labels -->
-                            <div class="row box-labels">
-                                <div class="col-3">
-                                    <label>Name</label>
-                                </div>
-                                <div class="col-3">
-                                    <label>Contact Person</label>
-                                </div>
-                                <div class="col-3">
-                                    <label>Contact Number</label>
-                                </div>
-                                <div class="col-3">
-                                    <label>Edit</label>
-                                </div>
-                            </div>
-
-                            <!-- Products -->
-                            {% for supplier in suppliers %}
-                                <div class="box-row row">
-                                    <div class="col-3">
-                                        <p>{{ supplier.name }}</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <p>{{ supplier.contact_person }}</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <p>{{ supplier.contact_number }}</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <button class="lipa-less-btn">Edit</button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <hr />
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p>Sorry, no suppliers exist</p>
-                            <p>Consider adding some</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+        <div class="col-12 table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-head">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Contact Person</th>
+                        <th scope="col">Contact Number</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Suppliers -->
+                    {% for supplier in suppliers %}
+                        <tr>
+                            <th scope="row">{{ supplier.num }}</th>
+                            <td>{{ supplier.name }}</td>
+                            <td>{{ supplier.contact_person }}</td>
+                            <td>{{ supplier.contact_number }}</td>
+                            <td><button class="lipa-less-btn">Edit</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
             <!-- Add supplier modal -->
             <div class="modal fade" id="add-supplier-modal" tabindex="-1" role="dialog"
