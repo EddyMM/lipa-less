@@ -186,6 +186,7 @@ function onAddProductClickHandler(e) {
     );
 }
 
+
 /**
 * Handle successful creation of a category
 **/

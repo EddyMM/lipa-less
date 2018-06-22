@@ -17,12 +17,6 @@ from POS.utils import is_admin, is_cashier
 class CategoryAPI(AppView):
     @staticmethod
     @login_required
-    @is_cashier
-    def get():
-        pass
-
-    @staticmethod
-    @login_required
     @is_admin
     def post():
         new_category_request = request.get_json(silent=True)
@@ -224,6 +218,7 @@ categories_bp = Blueprint(
     name="categories_bp",
     import_name=__name__,
     template_folder="templates",
+    static_folder="static",
     url_prefix="/categories"
 )
 
@@ -237,6 +232,7 @@ category_bp = Blueprint(
     name="category_bp",
     import_name=__name__,
     template_folder="templates",
+    static_folder="static",
     url_prefix="/category"
 )
 

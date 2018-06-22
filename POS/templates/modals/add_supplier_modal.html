@@ -1,0 +1,101 @@
+<!--Add supplier Modal -->
+<div class="modal fade" id="add-supplier-modal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    Add Supplier
+                </h4>
+            </div>
+
+            <form id="add-supplier-form" class="container-fluid"
+                  method="POST"
+                  action="#">
+                <!--Server response section-->
+                <div class="row">
+                    <p id="supplier-server-responses"></p>
+                </div>
+
+                <!-- Supplier Information section-->
+                <div class="row">
+                    <div class="supplier-information col-md-12 col-12">
+                        <!-- Supplier name-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3 col-12">
+                                        <label>
+                                            Name
+                                        </label>
+                                    </div>
+                                    <div class="col-md-9 col-12">
+                                        <input name="supplier-name" type="text"
+                                               title="Name of the supplier" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Supplier contact person -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>
+                                            Contact Person
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input name="supplier-contact-person" type="text"
+                                               title="Supplier's main contact person's name" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Supplier contact number -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>
+                                            Contact Number
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input name="supplier-contact-number" type="number"
+                                               title="Main contact person's phone number" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Add supplier or clear-->
+                        <div class="form-btn-area row">
+                            <div class="col-md-6">
+                                <input id="add-supplier-btn"
+                                       class="lipa-less-btn"
+                                       value="Create supplier"
+                                       type="submit">
+                            </div>
+
+                            <div class="col-md-6">
+                                <input class="clear-btn" type="reset" value="Clear" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End of supplier Information section-->
+            </form>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

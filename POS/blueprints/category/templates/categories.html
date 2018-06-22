@@ -7,8 +7,9 @@
         </div>
 
         <div class="offset-md-8 col-md-4 col-12" style="margin-bottom: 1%">
-            <a id="add-new-categories-btn" class="lipa-less-btn"
-               href="{{ url_for('category_bp.category') }}">Add Category</a>
+            <button id="create-new-category-btn" class="lipa-less-btn">
+                Add Category
+            </button>
         </div>
 
         <!-- List of categories -->
@@ -35,19 +36,13 @@
                 </tbody>
             </table>
 
-            <!-- Add category modal -->
-            <div class="modal fade" id="add-supplier-modal" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">
-                                Add category
-                            </h4>
-                        </div>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
+            {% include "modals/add_category_modal.html" %}
+
         </div>
     </div>
+
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <!--Include the JS files (lazy loading)-->
+    <script src="{{ url_for('category_bp.static', filename='js/category.js') }}"></script>
 {% endblock %}

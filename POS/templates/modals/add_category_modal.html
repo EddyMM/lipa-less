@@ -1,0 +1,73 @@
+<!--Add category Modal -->
+<div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    Add Category
+                </h4>
+            </div>
+
+            <form id="add-category-form" class="container-fluid"
+                  method="POST"
+                  action="#">
+                <!--Server response section-->
+                <div class="row">
+                    <p id="category-server-responses"></p>
+                </div>
+
+                <!-- Category Information section-->
+                <div class="row">
+                    <div class="category-information col-md-12 col-12">
+                        <!-- Category name-->
+                        <div class="row">
+                            <div class="col-md-3 col-12">
+                                <label>
+                                    Name
+                                </label>
+                            </div>
+                            <div class="col-md-9 col-12">
+                                <input name="category-name" type="text"
+                                       title="Name of the category" required>
+                            </div>
+                        </div>
+
+                        <!-- Category description-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>
+                                    Description
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <textarea name="category-description"
+                                          title="Short description of the category"
+                                          style="width: inherit" required></textarea>
+                            </div>
+                        </div>
+
+                        <!--Add category or clear-->
+                        <div class="form-btn-area row">
+                            <div class="col-md-6">
+                                <input id="add-category-btn"
+                                       class="lipa-less-btn"
+                                       value="Create category"
+                                       type="submit">
+                            </div>
+
+                            <div class="col-md-6">
+                                <input class="clear-btn" type="reset" value="Clear" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End of category Information section-->
+            </form>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+<script src="{{ url_for('static', filename='js/modals/add_category.js') }}"></script>

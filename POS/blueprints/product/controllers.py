@@ -21,7 +21,7 @@ from POS.utils import is_cashier, is_admin
 class ProductsAPI(AppView):
     @staticmethod
     @login_required
-    @is_cashier
+    @is_admin
     def get():
         try:
             # Get all products within business
