@@ -64,6 +64,10 @@
  */
 let loginApp = new Vue({
     el: '#login-form',
+    data: {
+        email: null,
+        password: null
+    },
     methods: {
         sendUserInfo: function () {
             // Validate fields
@@ -72,13 +76,9 @@ let loginApp = new Vue({
                 return;
             }
 
-            // Package the data into an object
-            let email = $("input[name='email']").val();
-            let password = $("input[name='password']").val();
-
             let loginInfo = {
-                "email": email,
-                "password": password
+                "email": this.email,
+                "password": this.password
             };
 
             // Use axios plugin to m ake POST request to server

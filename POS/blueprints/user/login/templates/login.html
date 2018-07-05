@@ -34,6 +34,7 @@
                                        type="email"
                                        title="e.g. jondoe@gmail.com"
                                        pattern=".*@.*\..*"
+                                       v-model="email"
                                        required>
                             </div>
                         </div>
@@ -46,7 +47,7 @@
                                 </label>
                             </div>
                             <div class="col-md-6">
-                                <input name="password" type="password" required>
+                                <input name="password" type="password" v-model="password" required>
                             </div>
                         </div>
 
