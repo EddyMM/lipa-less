@@ -2,7 +2,8 @@
 
 {% block body %}
     <!--suppress HtmlUnknownTarget, HtmlFormInputWithoutLabel -->
-    <div class="row">
+    <div class="row" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+         xmlns:v-on="http://www.w3.org/1999/xhtml">
         <div class="col-md-11 col-12">
             <h3>SELECT BUSINESS</h3>
         </div>
@@ -10,7 +11,7 @@
 
     <div class="row">
         <div class="offset-md-1 col-md-3 col-12">
-            <button id="create-business-btn" class="lipa-less-btn">
+            <button id="create-business-btn" onclick="showCreateBusinessModal()" class="lipa-less-btn">
                 <b>CREATE BUSINESS</b>
             </button>
         </div>
@@ -58,6 +59,7 @@
                     <div class="offset-md-9 col-md-3">
                         <input id="select-business-btn"
                                class="lipa-less-btn"
+                               v-on:click.prevent="selectBusiness"
                                type="submit"
                                value="Continue">
                     </div>
@@ -107,7 +109,7 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6 col-12">
-                                    <input name="name" type="text" required>
+                                    <input name="name" type="text" v-model="name" required>
                                 </div>
                             </div>
 
@@ -119,7 +121,7 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input name="contact_number" type="number" required>
+                                    <input name="contact_number" type="number" v-model="contactNumber" required>
                                 </div>
                             </div>
 
@@ -129,6 +131,7 @@
                                     <input id="add-business-btn"
                                            class="lipa-less-btn"
                                            value="ADD"
+                                           v-on:click.prevent="addBusiness"
                                            type="submit">
                                 </div>
 
