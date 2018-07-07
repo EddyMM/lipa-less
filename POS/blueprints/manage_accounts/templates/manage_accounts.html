@@ -12,7 +12,7 @@
         <!--Add new admin-->
         <div class="col-md-3">
             <div class="row">
-                <div id="add-admin-box" class="add-accounts col-md-11 col-12">
+                <div id="add-admin-box" onclick="addAdminModal()" class="add-accounts col-md-11 col-12">
                     <div class="row">
                         <div class="col-12">
                             <img style="width: inherit !important;"
@@ -31,7 +31,7 @@
         <!--Add new cashier-->
         <div class="col-md-3">
             <div class="row">
-                <div id="add-cashier-box" class="add-accounts col-md-11 col-12">
+                <div id="add-cashier-box" onclick="addCashierModal()" class="add-accounts col-md-11 col-12">
                     <div class="row">
                         <div class="col-12">
                             <img style="width: inherit !important;"
@@ -69,47 +69,49 @@
                     <form id="modify-roles-form" class="container-fluid">
                         <div class="row">
                             <div id="accounts-list-items" class="container-fluid">
-                                {% if not accounts %}
-                                    <div class="account row">
-                                        <div class="col-12">
-                                            <p>No other users in your business</p>
-                                        </div>
+                                <div v-if="accounts!=null && accounts.length <= 0" id="empty-accounts-list" class="account row">
+                                    <div class="col-12">
+                                        <p>No other users in your business</p>
                                     </div>
-                                {% endif %}
-                                {% for account in accounts %}
-                                    <div class="account row">
-                                        <div class="col-4">
-                                            <select name="role">
-                                                {% for role in roles %}
-                                                <option value="{{ role.name }}"
-                                                        {% if role.name == account.role %} selected {% endif %}>
-                                                    {{ role.name }}
-                                                </option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="col-4">
-                                            <label id="{{ account.id }}">{{ account.name }}</label>
-                                        </div>
-                                        <div class="col-4">
-                                            <input name="deactivated"
-                                                   value="{{ account.deactivated }}"
-                                                   type="checkbox" {% if account.deactivated %} checked {% endif %}>
-                                        </div>
-                                    </div>
-                                {% endfor %}
+                                </div>
 
+                                <div v-else id="filled-accounts-list" class="account row" v-for="account in accounts">
+                                    <div class="col-4">
+                                        <select name="role" v-model:role="account.role">
+                                            <option
+                                                v-for="role in roles"
+                                                v-bind:value="role.name">
+                                                [[ role.name ]]
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <label :id="[[ account.id ]]">[[ account.name ]]</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input v-if="account.deactivated" name="deactivated"
+                                               :value="[[ account.deactivated ]]"
+                                               v-model:deactivated="account.deactivated"
+                                               type="checkbox" checked>
+                                        <input v-else name="deactivated"
+                                               :value="[[ account.deactivated ]]"
+                                               v-model:deactivated="account.deactivated"
+                                               type="checkbox">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <hr>
 
-                        {% if accounts %}
-                            <div class="row">
-                                <div class="offset-md-10 col-md-2 col-12">
-                                    <input id="modify-roles-btn" class="lipa-less-btn" type="submit" value="Save">
-                                </div>
+                        <div class="row">
+                            <div class="offset-md-10 col-md-2 col-12">
+                                <input id="modify-roles-btn"
+                                       class="lipa-less-btn"
+                                       type="submit"
+                                       v-on:click.prevent="updateAccounts"
+                                       value="Save">
                             </div>
-                        {% endif %}
+                        </div>
                     </form>
                 </div>
             </div>
@@ -149,6 +151,7 @@
                                     <input name="admin-email"
                                            type="email"
                                            pattern=".*@.*\..*"
+                                           v-model="email"
                                            title="e.g. johndoe@gmail.com" required>
                                 </div>
                             </div>
@@ -159,6 +162,7 @@
                                     <input id="add-admin-btn"
                                            class="lipa-less-btn"
                                            value="ADD"
+                                           v-on:click.prevent="addAdmin"
                                            type="submit">
                                 </div>
 
@@ -180,7 +184,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">
-                        Add Admin
+                        Add Cashier
                     </h4>
                 </div>
 
@@ -207,16 +211,18 @@
                                            type="email"
                                            pattern=".*@.*\..*"
                                            title="e.g. johndoe@gmail.com"
+                                           v-model="email"
                                            required>
                                 </div>
                             </div>
 
-                            <!--Add admin and Clear-->
+                            <!--Add cashier and Clear-->
                             <div class="form-btn-area row">
                                 <div class="col-md-6">
                                     <input id="add-cashier-btn"
                                            class="lipa-less-btn"
                                            value="ADD"
+                                           v-on:click.prevent="addCashier"
                                            type="submit">
                                 </div>
 
