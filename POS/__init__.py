@@ -26,6 +26,7 @@ from POS.blueprints.manufacturer.controllers import manufacturer_bp
 from POS.blueprints.manufacturer.controllers import manufacturers_bp
 from POS.blueprints.supplier.controllers import supplier_bp
 from POS.blueprints.supplier.controllers import suppliers_bp
+from POS.blueprints.billing.controllers import billing_bp
 
 from POS.models.base_model import AppDB
 from POS.models.user_management.user import User
@@ -208,7 +209,8 @@ app_blueprints = (
     manufacturer_bp,
     manufacturers_bp,
     suppliers_bp,
-    supplier_bp
+    supplier_bp,
+    billing_bp
 )
 
 register_blueprints(app_blueprints)
