@@ -28,6 +28,8 @@ class AppDB(object):
         from POS.models.stock_management.manufacturer import Manufacturer
         from POS.models.stock_management.product import Product
         from POS.models.stock_management.supplier_manufacturer import SupplierManufacturer
+        from POS.models.billing.ewallet import EWallet
+        from POS.models.billing.billing_transaction import BillingTransaction
 
         try:
             db_engine = create_engine(

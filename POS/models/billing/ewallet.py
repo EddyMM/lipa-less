@@ -16,10 +16,11 @@ class EWallet(AppDB.BaseModel):
     # Attributes
     account_id = Column(Integer, primary_key=True)
     balance = Column(Integer)
-    business_id = Column(Integer, ForeignKey("business.id"), primary_key=True)
+    business_id = Column(Integer, ForeignKey("business.id"))
 
     # Relationships
     business = relationship("Business", back_populates="ewallet")
+    billing_transactions = relationship("BillingTransaction", back_populates="ewallet")
 
     def __init__(self, balance=0):
         # Keep generating random account IDs while making sure they are unique
@@ -43,3 +44,7 @@ class EWallet(AppDB.BaseModel):
         return AppDB.db_session.query(EWallet).filter(
             EWallet.account_id == account_id
         ).first()
+
+    @staticmethod
+    def get_ewallet_by_id(ewallet_id):
+        return AppDB.db_session.query(EWallet).get(ewallet_id)
