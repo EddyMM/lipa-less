@@ -16,6 +16,7 @@ class EWallet(AppDB.BaseModel):
     # Attributes
     account_id = Column(Integer, primary_key=True)
     balance = Column(Integer)
+
     business_id = Column(Integer, ForeignKey("business.id"))
 
     # Relationships
