@@ -8,6 +8,7 @@ from POS.constants import APP_NAME, OWNER_ROLE_NAME
 from POS.blueprints.base.app_view import AppView
 
 from POS.models.base_model import AppDB
+from POS.models.billing.ewallet import EWallet
 from POS.models.user_management.business import Business
 from POS.models.user_management.role import Role
 from POS.models.user_management.user_business import UserBusiness
@@ -100,6 +101,10 @@ class BusinessAPI(AppView):
             AppDB.db_session.add(business)
             # Add user role info to database
             AppDB.db_session.add(user_business)
+
+            # Create an e-wallet for the business
+            ewallet = EWallet()
+            ewallet.business = business
 
             AppDB.db_session.commit()
 
