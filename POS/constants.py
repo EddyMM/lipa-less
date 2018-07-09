@@ -20,4 +20,6 @@ OWNER_ROLE_NAME = "owner"
 ADMIN_ROLE_NAME = "admin"
 CASHIER_ROLE_NAME = "cashier"
 
-
+# Billing business
+MINIMUM_PAYMENT_ID = 100000
+MAXIMUM_PAYMENT_ID = 900000
