@@ -27,7 +27,7 @@ class BillingAPI(AppView):
             print("Product name: {0}".format(billing_request["productName"]))
             print("Value: {0}".format(billing_request["value"]))
 
-            value = float(billing_request["value"])
+            value = float(billing_request["value"][3:])
             client_account = int(billing_request["clientAccount"])
 
             if not (EWallet.exists(client_account)):
