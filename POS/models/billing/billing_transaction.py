@@ -8,7 +8,7 @@ from POS.models.base_model import AppDB
 
 class BillingTransaction(AppDB.BaseModel):
     """
-        Represents a Lipa Less Business
+        Represents a Lipa Less Business billing transaction
     """
     __tablename__ = "billing_transaction"
 
