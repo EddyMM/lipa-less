@@ -9,7 +9,7 @@ from POS.models.base_model import AppDB
 
 class EWallet(AppDB.BaseModel):
     """
-        Represents a Lipa Less Business
+        Represents a Lipa Less Business EWallet
     """
     __tablename__ = "ewallet"
 
