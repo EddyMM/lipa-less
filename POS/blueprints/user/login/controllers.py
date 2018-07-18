@@ -78,7 +78,7 @@ class Login(AppView):
             AppDB.db_session.rollback()
             current_app.logger.error(e)
             current_app.sentry.captureException()
-            return User.error_in_processing_request()
+            return Login.error_in_processing_request()
 
     @staticmethod
     def request_is_filled(client_request):

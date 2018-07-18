@@ -1,13 +1,35 @@
-from flask import request, make_response, Blueprint, current_app
+from flask import request, make_response, Blueprint, current_app, render_template, session
 from sqlalchemy.exc import SQLAlchemyError
 
 from POS.models.base_model import AppDB
 from POS.blueprints.base.app_view import AppView
+from POS.models.user_management.business import Business
 from POS.models.billing.billing_transaction import BillingTransaction
 from POS.models.billing.ewallet import EWallet
+from POS.utils import is_owner
 
 
 class BillingAPI(AppView):
+    @staticmethod
+    @is_owner
+    def get():
+        business_ewallet = AppDB.db_session.query(Business, EWallet).filter(
+            Business.id == EWallet.business_id,
+            session["business_id"] == Business.id
+        ).first()
+
+        business_billing_info = dict(
+                name=business_ewallet[0].name,
+                account_id=business_ewallet[1].account_id,
+                balance=business_ewallet[1].balance)
+
+        print(business_billing_info)
+
+        return render_template(
+            template_name_or_list="business_billing_info.html",
+            business_billing_info=business_billing_info
+        )
+
     @staticmethod
     def post():
         # AT payments callback contacted
@@ -78,4 +100,4 @@ billing_bp = Blueprint(
     url_prefix="/billing"
 )
 
-billing_bp.add_url_rule(rule="", view_func=billing_view, methods=["POST"])
+billing_bp.add_url_rule(rule="", view_func=billing_view, methods=["POST", "GET"])
