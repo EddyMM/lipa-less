@@ -1,6 +1,9 @@
 # Flask session
 flask_session/
 
+# Redis
+*.rdb
+
 # Pycharm files
 .idea/workspace.xml
 .idea/markdown-*
