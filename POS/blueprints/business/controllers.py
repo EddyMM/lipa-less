@@ -1,9 +1,13 @@
+import uuid
+
 from flask import Blueprint, render_template, request, current_app, redirect, url_for, session
 from flask_login import login_required, current_user
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from POS.constants import APP_NAME, OWNER_ROLE_NAME
+from POS import constants
+from POS.blueprints.billing.controllers import BillingAPI
+from POS.constants import APP_NAME, OWNER_ROLE_NAME, BILLING_INTERVAL_IN_SECONDS
 
 from POS.blueprints.base.app_view import AppView
 
@@ -193,6 +197,24 @@ class SelectBusinessAPI(AppView):
                 return SelectBusinessAPI.send_response(
                     msg="You are deactivated",
                     status=403
+                )
+
+            # Start billing user hourly
+            if session.get("billing_job_id"):
+                current_app.logger.info("Resuming billing for business: %s" % session["business_name"])
+                constants.BILLING_SCH.resume_job(session["billing_job_id"])
+            else:
+                current_app.logger.info("Starting billing job for business: %s" % session["business_name"])
+                billing_job_id = uuid.uuid4()
+                session["billing_job_id"] = str(billing_job_id)
+                current_app.logger.info("Using Job ID of: %s for business: %s" % (
+                    session["billing_job_id"], session["business_name"]))
+
+                constants.BILLING_SCH.add_job(
+                    lambda: BillingAPI.bill_user(business_id),
+                    "interval",
+                    seconds=BILLING_INTERVAL_IN_SECONDS,
+                    id=str(billing_job_id)
                 )
 
             # User belongs to this business, go ahead and redirect them to dashboard

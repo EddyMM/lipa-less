@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, current_app
-from flask_login import login_user
+from flask_login import login_user, current_user
 
 from sqlalchemy.exc import SQLAlchemyError
+
 
 from POS.constants import APP_NAME
 
@@ -62,8 +63,6 @@ class Login(AppView):
             if user.confirm_password(password):
                 # Register user with login manager
                 login_user(user)
-
-                # Update session object with current user name
 
                 return Login.send_response(
                     msg="Successful login",

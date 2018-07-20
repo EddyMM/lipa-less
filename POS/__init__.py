@@ -1,39 +1,37 @@
-import os
 import logging
+import os
+import shutil
 from logging.handlers import RotatingFileHandler
 
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, send_from_directory, redirect, url_for, render_template
 from flask_jsglue import JSGlue
 from flask_login import LoginManager
 from flask_session import Session
-
+from raven.contrib.flask import Sentry
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
-from raven.contrib.flask import Sentry
-
-from POS.blueprints.home.controllers import home_bp
-from POS.blueprints.user.signup.controllers import signup_bp
-from POS.blueprints.user.login.controllers import login_bp
+from POS.blueprints.billing.controllers import billing_bp
 from POS.blueprints.business.controllers import business_bp
-from POS.blueprints.dashboard.controllers import dashboard_bp
-from POS.blueprints.user.logout.controllers import logout_bp
-from POS.blueprints.manage_accounts.controllers import manage_accounts_bp
-from POS.blueprints.product.controllers import product_bp
-from POS.blueprints.product.controllers import products_bp
-from POS.blueprints.category.controllers import category_bp
 from POS.blueprints.category.controllers import categories_bp
+from POS.blueprints.category.controllers import category_bp
+from POS.blueprints.dashboard.controllers import dashboard_bp
+from POS.blueprints.home.controllers import home_bp
+from POS.blueprints.manage_accounts.controllers import manage_accounts_bp
 from POS.blueprints.manufacturer.controllers import manufacturer_bp
 from POS.blueprints.manufacturer.controllers import manufacturers_bp
+from POS.blueprints.product.controllers import product_bp
+from POS.blueprints.product.controllers import products_bp
 from POS.blueprints.supplier.controllers import supplier_bp
 from POS.blueprints.supplier.controllers import suppliers_bp
-from POS.blueprints.billing.controllers import billing_bp
-
+from POS.blueprints.user.login.controllers import login_bp
+from POS.blueprints.user.logout.controllers import logout_bp
+from POS.blueprints.user.signup.controllers import signup_bp
 from POS.models.base_model import AppDB
 from POS.models.user_management.user import User
-
-from .utils import get_config_type
-from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR,\
+from .constants import DEV_CONFIG_VAR, PROD_CONFIG_VAR, \
     TESTING_CONFIG_VAR, APP_NAME, OWNER_ROLE_NAME, ADMIN_ROLE_NAME, CASHIER_ROLE_NAME
+from .utils import get_config_type
 
 
 def config_app(app_instance):
@@ -105,22 +103,41 @@ def sentry_logging(app_instance):
         app_instance.sentry.init_app(app_instance, logging=True, level=logging.ERROR)
 
 
+def clear_all_sessions():
+    """
+        Clears all sessions in case up was restarted to ensure billing can start again
+    """
+    path_to_folder = "flask_session"
+    shutil.rmtree(path_to_folder)
+
+
 def init_app(app_instance):
     """
     Initialize the application (configuration, logging, ...)
     :param app_instance: Flask app instance
     :return:
     """
+
+    clear_all_sessions()
+
     # Configure the app
     config_app(app_instance)
 
     # Set up logging
     set_up_logging(app)
 
+    # Set up billing scheduler
+    constants.BILLING_SCH = BackgroundScheduler()
+    constants.BILLING_SCH.start()
+
 
 app = Flask(__name__)
 
 init_app(app)
+
+# Initialize the DB
+with app.app_context():
+    AppDB.init_db()
 
 # Initialize the DB
 with app.app_context():

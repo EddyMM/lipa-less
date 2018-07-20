@@ -1,6 +1,7 @@
 from flask import request, make_response, Blueprint, current_app, render_template, session
 from sqlalchemy.exc import SQLAlchemyError
 
+from POS import constants
 from POS.models.base_model import AppDB
 from POS.blueprints.base.app_view import AppView
 from POS.models.user_management.business import Business
@@ -87,6 +88,32 @@ class BillingAPI(AppView):
                 billing_request["value"] not in ("", None):
             return True
         return False
+
+    @staticmethod
+    def bill_user(business_id):
+        try:
+            # Get the current business EWallet account
+            business_ewallet = AppDB.db_session.query(EWallet).filter(
+                EWallet.business_id == business_id
+            ).first()
+
+            value = -constants.BILLING_AMOUNT_PER_INTERVAL_IN_SHILLINGS
+            # Create a new billing transaction
+            billing_transaction = BillingTransaction(value)
+            # Associate the transaction with the business ewallet
+            current_business_ewallet = EWallet.get_ewallet_by_id(business_ewallet.account_id)
+            current_business_ewallet.billing_transactions.append(billing_transaction)
+
+            # Increment ewallet with amount
+            current_business_ewallet.balance += value
+
+            AppDB.db_session.add(billing_transaction)
+            AppDB.db_session.commit()
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return BillingAPI.error_in_processing_request()
 
 
 # Create category blueprint

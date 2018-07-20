@@ -1,11 +1,15 @@
-from flask import Blueprint, render_template
+import uuid
+
+from flask import Blueprint, render_template, session, g
 from flask_login import login_required
 
+from apscheduler.schedulers.background import BackgroundScheduler
+
 from POS.blueprints.base.app_view import AppView
+from POS.blueprints.billing.controllers import BillingAPI
 
 from POS.utils import selected_business
-from POS.constants import APP_NAME
-
+from POS import constants
 
 class DashboardAPI(AppView):
     @staticmethod
@@ -14,7 +18,7 @@ class DashboardAPI(AppView):
     def get():
         return render_template(
             template_name_or_list="dashboard.html",
-            title="%s: %s" % (APP_NAME, "Dashboard"),
+            title="%s: %s" % (constants.APP_NAME, "Dashboard"),
         )
 
     @staticmethod
@@ -34,7 +38,6 @@ dashboard_bp = Blueprint(
     static_folder="static",
     template_folder="templates"
 )
-
 
 # Create URL endpoint
 dashboard_bp.add_url_rule(rule="", view_func=dashboard_view)
