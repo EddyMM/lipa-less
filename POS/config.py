@@ -2,7 +2,7 @@ import os
 
 import redis
 
-from .constants import APP_NAME, DATABASE_URL, TESTING_DATABASE_URL
+from .constants import APP_NAME, DATABASE_URL, TESTING_DATABASE_URL, REDIS_URL_ENV_VAR, LOCAL_REDIS_URL
 
 
 class BaseConfig(object):
@@ -10,7 +10,7 @@ class BaseConfig(object):
     SECRET_KEY = os.environ.get(APP_NAME + "_SECRET_KEY")
 
     SESSION_TYPE = "redis"
-    SESSION_REDIS = redis.from_url(os.environ.get("REDISCLOUD_URL", "127.0.0.1:6379"))
+    SESSION_REDIS = redis.from_url(os.environ.get(REDIS_URL_ENV_VAR, LOCAL_REDIS_URL))
     SESSION_PERMANENT = False
 
 
