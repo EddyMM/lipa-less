@@ -7,8 +7,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, send_from_directory, redirect, url_for, render_template
 from flask_jsglue import JSGlue
 from flask_login import LoginManager
-from flask_session import Session
+from flask_session import Session, RedisSessionInterface
 from raven.contrib.flask import Sentry
+from redis import Redis
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from POS.blueprints.billing.controllers import billing_bp
@@ -111,6 +112,10 @@ def clear_all_sessions():
     if os.path.exists(path_to_folder):
         shutil.rmtree(path_to_folder)
 
+    redis = Redis()
+    for key in redis.scan_iter("session:*"):
+        redis.delete(key)
+
 
 def init_app(app_instance):
     """
@@ -133,6 +138,10 @@ def init_app(app_instance):
 
 
 app = Flask(__name__)
+
+# Specify session storage mechanism
+redis = Redis()
+app.session_interface = RedisSessionInterface(redis, "session:")
 
 init_app(app)
 
