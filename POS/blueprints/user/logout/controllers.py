@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, url_for, session, current_app
-from flask_login import logout_user, current_user
+from flask_login import logout_user, current_user, login_required
 
 from ...base.app_view import AppView
 from POS import constants
@@ -7,6 +7,7 @@ from POS import constants
 
 class LogoutAPI(AppView):
     @staticmethod
+    @login_required
     def get():
         # Stop billing the user
         if current_user.is_authenticated and constants.BILLING_SCH:
