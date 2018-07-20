@@ -20,9 +20,9 @@ class LogoutAPI(AppView):
 
                 constants.BILLING_SCH.pause_job(session["billing_job_id"])
             else:
-                current_app.logger.warning("Billing Job: None for business: %s" % session["business_name"])
+                current_app.logger.warning("Billing Job: None for business: %s" % session.get("business_name"))
         else:
-            current_app.logger.warning("Billing Schedule(None) for business: %s" % session["business_name"])
+            current_app.logger.warning("Billing Schedule(None) for business: %s" % session.get("business_name"))
 
         logout_user()
 
