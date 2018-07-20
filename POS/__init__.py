@@ -108,7 +108,8 @@ def clear_all_sessions():
         Clears all sessions in case up was restarted to ensure billing can start again
     """
     path_to_folder = "flask_session"
-    shutil.rmtree(path_to_folder)
+    if os.path.exists(path_to_folder):
+        shutil.rmtree(path_to_folder)
 
 
 def init_app(app_instance):
