@@ -10,7 +10,7 @@ class LogoutAPI(AppView):
     def get():
         # Stop billing the user
         if current_user.is_authenticated and constants.BILLING_SCH:
-            if constants.BILLING_SCH.get_job(session["billing_job_id"]):
+            if session.get("billing_job_id") and constants.BILLING_SCH.get_job(session["billing_job_id"]):
                 billing_job = constants.BILLING_SCH.get_job(session["billing_job_id"])
 
                 current_app.logger.info("Current jobs: %s" % constants.BILLING_SCH.get_jobs())
