@@ -1,20 +1,17 @@
-import uuid
-
-from flask import Blueprint, render_template, session, g
+from flask import Blueprint, render_template
 from flask_login import login_required
 
-from apscheduler.schedulers.background import BackgroundScheduler
-
 from POS.blueprints.base.app_view import AppView
-from POS.blueprints.billing.controllers import BillingAPI
 
-from POS.utils import selected_business
+from POS.utils import selected_business, business_is_active
 from POS import constants
+
 
 class DashboardAPI(AppView):
     @staticmethod
     @login_required
     @selected_business
+    @business_is_active
     def get():
         return render_template(
             template_name_or_list="dashboard.html",

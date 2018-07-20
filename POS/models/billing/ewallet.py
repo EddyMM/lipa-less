@@ -23,7 +23,7 @@ class EWallet(AppDB.BaseModel):
     business = relationship("Business", back_populates="ewallet")
     billing_transactions = relationship("BillingTransaction", back_populates="ewallet")
 
-    def __init__(self, balance=0):
+    def __init__(self, balance=constants.BILLING_AMOUNT_PER_INTERVAL_IN_SHILLINGS):
         # Keep generating random account IDs while making sure they are unique
         unique_account_id = constants.MINIMUM_PAYMENT_ID + \
                           (random.random() * constants.MAXIMUM_PAYMENT_ID)

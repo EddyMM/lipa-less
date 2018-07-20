@@ -11,13 +11,14 @@ from POS.models.base_model import AppDB
 from POS.models.stock_management.category import Category
 from POS.models.user_management.business import Business
 
-from POS.utils import is_admin, is_cashier
+from POS.utils import is_admin, is_cashier, business_is_active
 
 
 class CategoryAPI(AppView):
     @staticmethod
     @login_required
     @is_admin
+    @business_is_active
     def post():
         new_category_request = request.get_json(silent=True)
 
@@ -71,6 +72,7 @@ class CategoriesAPI(AppView):
     @staticmethod
     @login_required
     @is_cashier
+    @business_is_active
     def get():
         try:
             # Get full lists of categories
@@ -147,6 +149,7 @@ class CategoriesAPI(AppView):
     @staticmethod
     @login_required
     @is_admin
+    @business_is_active
     def delete(category_id):
         if not category_id:
             return CategoriesAPI.send_response(
