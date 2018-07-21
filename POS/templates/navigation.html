@@ -48,15 +48,15 @@
                                     <a class="dropdown-item" href="{{ url_for('products_bp.products') }}">
                                         Products
                                     </a>
-                                    <a class="dropdown-item" href="{{ url_for('categories_bp.categories') }}">
+                                    <a class="dropdown-item" href="{{ url_for('categories_bp.manage_categories') }}">
                                         Categories
                                     </a>
-                                    <a class="dropdown-item" href="{{ url_for('suppliers_bp.suppliers') }}">
-                                        Suppliers
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url_for('manufacturers_bp.manufacturers') }}">
-                                        Manufacturers
-                                    </a>
+{#                                    <a class="dropdown-item" href="{{ url_for('suppliers_bp.manage_suppliers') }}">#}
+{#                                        Suppliers#}
+{#                                    </a>#}
+{#                                    <a class="dropdown-item" href="{{ url_for('manufacturers_bp.manufacturers') }}">#}
+{#                                        Manufacturers#}
+{#                                    </a>#}
                                 </div>
                             </li>
                         {% endif %}

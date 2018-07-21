@@ -14,6 +14,27 @@ from POS.models.user_management.business import Business
 from POS.utils import is_admin, is_cashier
 
 
+class ManageCategoriesAPI(AppView):
+    @staticmethod
+    @login_required
+    @is_cashier
+    def get():
+
+        try:
+            # Get full lists of categories
+            categories = CategoriesAPI.get_all_categories()
+
+            return render_template(
+                template_name_or_list="categories.html",
+                categories=categories
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return CategoriesAPI.error_in_processing_request()
+
+
 class CategoryAPI(AppView):
     @staticmethod
     @login_required
@@ -76,9 +97,9 @@ class CategoriesAPI(AppView):
             # Get full lists of categories
             categories = CategoriesAPI.get_all_categories()
 
-            return render_template(
-                template_name_or_list="categories.html",
-                categories=categories
+            return ManageCategoriesAPI.send_response(
+                msg=dict(categories=categories),
+                status=200
             )
         except SQLAlchemyError as e:
             AppDB.db_session.rollback()
@@ -213,6 +234,7 @@ class CategoriesAPI(AppView):
 
 # Create categories blueprint
 categories_view = CategoriesAPI.as_view("categories")
+manage_categories_view = ManageCategoriesAPI.as_view("manage_categories")
 
 categories_bp = Blueprint(
     name="categories_bp",
@@ -224,6 +246,7 @@ categories_bp = Blueprint(
 
 categories_bp.add_url_rule(rule="", view_func=categories_view, methods=["GET"])
 categories_bp.add_url_rule(rule="/<int:category_id>", view_func=categories_view, methods=["PUT", "DELETE"])
+categories_bp.add_url_rule(rule="/manage", view_func=manage_categories_view, methods=["GET"])
 
 # Create category blueprint
 category_view = CategoryAPI.as_view("category")

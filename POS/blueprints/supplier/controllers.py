@@ -9,7 +9,7 @@ from POS.models.stock_management.product import Product
 from POS.models.user_management.business import Business
 
 
-class SuppliersAPI(AppView):
+class ManageSuppliersAPI(AppView):
     @staticmethod
     def get():
         try:
@@ -18,6 +18,24 @@ class SuppliersAPI(AppView):
             return render_template(
                 template_name_or_list="suppliers.html",
                 suppliers=suppliers
+            )
+        except SQLAlchemyError as e:
+            AppDB.db_session.rollback()
+            current_app.logger.error(e)
+            current_app.sentry.captureException()
+            return SuppliersAPI.error_in_processing_request()
+
+
+class SuppliersAPI(AppView):
+    @staticmethod
+    def get():
+        try:
+            # Get update list of suppliers
+            suppliers = SuppliersAPI.get_all_suppliers()
+
+            return SupplierAPI.send_response(
+                msg=dict(suppliers=suppliers),
+                status=200
             )
         except SQLAlchemyError as e:
             AppDB.db_session.rollback()
@@ -138,8 +156,10 @@ class SuppliersAPI(AppView):
         suppliers = AppDB.db_session.query(Supplier)\
             .join(Product)\
             .join(Business).filter(
-                session["business_id"] == Business.id
+                Product.business_id == session["business_id"]
         ).all()
+
+        print("Suppliers: %s" % suppliers)
 
         return [
             dict(
@@ -216,6 +236,7 @@ class SupplierAPI(AppView):
 
 # Supplier blueprint
 supplier_view = SupplierAPI.as_view(name="supplier")
+
 supplier_bp = Blueprint(
     name="supplier_bp",
     import_name=__name__,
@@ -226,6 +247,8 @@ supplier_bp.add_url_rule(rule="", view_func=supplier_view, methods=["GET", "POST
 
 # Suppliers blueprint
 suppliers_view = SuppliersAPI.as_view(name="suppliers")
+manage_supplier_views = ManageSuppliersAPI.as_view(name="manage_suppliers")
+
 suppliers_bp = Blueprint(
     name="suppliers_bp",
     import_name=__name__,
@@ -235,3 +258,5 @@ suppliers_bp = Blueprint(
 )
 suppliers_bp.add_url_rule(rule="", view_func=suppliers_view, methods=["GET"])
 suppliers_bp.add_url_rule(rule="/<int:supplier_id>", view_func=suppliers_view, methods=["PUT", "DELETE"])
+
+suppliers_bp.add_url_rule(rule="/manage", view_func=manage_supplier_views, methods=["GET"])

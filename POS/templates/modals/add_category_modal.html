@@ -1,6 +1,6 @@
 <!--Add category Modal -->
 <div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
+     aria-labelledby="myModalLabel" aria-hidden="true" xmlns:v-on="http://www.w3.org/1999/xhtml">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -29,6 +29,7 @@
                             </div>
                             <div class="col-md-9 col-12">
                                 <input name="category-name" type="text"
+                                       v-model="category_name"
                                        title="Name of the category" required>
                             </div>
                         </div>
@@ -45,6 +46,7 @@
                             <div class="col-md-12">
                                 <textarea name="category-description"
                                           title="Short description of the category"
+                                          v-model="category_description"
                                           style="width: inherit" required></textarea>
                             </div>
                         </div>
@@ -55,6 +57,7 @@
                                 <input id="add-category-btn"
                                        class="lipa-less-btn"
                                        value="Create category"
+                                       v-on:click.prevent="addCategory"
                                        type="submit">
                             </div>
 
@@ -69,5 +72,3 @@
         </div>
     </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
-
-<script src="{{ url_for('static', filename='js/modals/add_category.js') }}"></script>

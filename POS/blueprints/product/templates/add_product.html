@@ -1,7 +1,8 @@
 {% extends "layout-with-sidebar.html" %}
 
 {% block body %}
-    <div class="row">
+    <div class="row" xmlns:v-model="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+         xmlns:v-on="http://www.w3.org/1999/xhtml">
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
@@ -24,11 +25,13 @@
                         <div class="row">
                             <div class="col-md-2 col-12">
                                 <label>
-                                    Product name
+                                    Product name *
                                 </label>
                             </div>
                             <div class="col-md-8 col-12">
-                                <input name="product-name" type="text" title="Name of the new product" required>
+                                <input name="product-name" type="text"
+                                       v-model="name"
+                                       title="Name of the new product" required>
                             </div>
                         </div>
 
@@ -41,7 +44,8 @@
                             </div>
                             <div class="col-md-8 col-12">
                                 <textarea name="product-description" type="text"
-                                          style="width: inherit" title="Short description the new product" required>
+                                          v-model="description"
+                                          style="width: inherit" title="Short description the new product">
                                 </textarea>
                             </div>
                         </div>
@@ -50,20 +54,23 @@
                         <div class="row">
                             <div class="col-md-2 col-12">
                                 <label>
-                                    Buying price
+                                    Buying price *
                                 </label>
                             </div>
                             <div class="col-md-3 col-12">
-                                <input name="buying-price" type="number" title="Buying price of the new product" required>
+                                <input name="buying-price" type="number"
+                                       v-model="buying_price"
+                                       title="Buying price of the new product" required>
                             </div>
 
                             <div class="col-md-2 col-12">
                                 <label>
-                                    Selling price
+                                    Selling price *
                                 </label>
                             </div>
                             <div class="col-md-3 col-12">
                                 <input name="selling-price" type="number"
+                                       v-model="selling_price"
                                        title="Selling price of the new product" required>
                             </div>
                         </div>
@@ -72,21 +79,23 @@
                         <div class="row">
                             <div class="col-md-2 col-12">
                                 <label>
-                                    Quantity
+                                    Quantity *
                                 </label>
                             </div>
                             <div class="col-md-3">
                                 <input name="quantity" type="number"
+                                       v-model="quantity"
                                        title="Number of units of the new product" required>
                             </div>
 
                             <div class="col-md-2">
                                 <label>
-                                    Reorder level
+                                    Reorder level *
                                 </label>
                             </div>
                             <div class="col-md-3">
                                 <input name="reorder-level" type="number"
+                                       v-model="reorder_level"
                                        title="Minimum amout that should be in stock before sending
                                        'running out of stock' notification"
                                        required>
@@ -97,11 +106,12 @@
                         <div class="row">
                             <div class="col-md-2">
                                 <label>
-                                    Expires on
+                                    Expires on *
                                 </label>
                             </div>
                             <div class="col-md-4">
                                 <input name="expiration-date" type="date"
+                                       v-model="expiration_date"
                                        title="Expiry date of the new product" required>
                             </div>
                         </div>
@@ -113,13 +123,15 @@
                                     Category
                                 </label>
                             </div>
-                            <div class="col-md-8">
-                                <select id="category-options" name="category" title="Classification of the new product">
-                                    {% for category in categories %}
-                                        <option value="{{ category.id }}">
-                                            {{ category.name }}
-                                        </option>
-                                    {% endfor %}
+                            <div id="categories-list" class="col-md-8">
+                                <select id="category-options" name="category"
+                                        v-model="category"
+                                        title="Classification of the new product">
+                                    <option
+                                        v-for="category in categories"
+                                        v-bind:value="category.name">
+                                        [[ category.name ]]
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -133,20 +145,21 @@
                             </div>
                         </div>
 
-                        <!-- Supplier -->
+                        <!-- Supplier
                         <div class="row">
                             <div class="col-md-2">
                                 <label>
                                     Supplier
                                 </label>
                             </div>
-                            <div class="col-md-8">
-                                <select id="supplier-options" name="supplier" title="Who suppliers the product?">
-                                    {% for supplier in suppliers %}
-                                        <option value="{{ supplier.id }}">
-                                            {{ supplier.name }}
-                                        </option>
-                                    {% endfor %}
+                            <div id="suppliers-list" class="col-md-8">
+                                <select id="supplier-options" name="supplier" title="Who suppliers the product?"
+                                        v-model="supplier">
+                                    <option
+                                        v-for="supplier in suppliers"
+                                        v-bind:value="supplier.name">
+                                        [[ supplier.name ]]
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -158,9 +171,9 @@
                                     </span>
                                 </p>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <!-- Manufacturer -->
+                        <!-- Manufacturer
                         <div class="row">
                             <div class="col-md-2">
                                 <label>
@@ -169,11 +182,11 @@
                             </div>
                             <div class="col-md-8">
                                 <select id="manufacturer-options" name="manufacturer" title="Who manufactures the product?">
-                                    {% for manufacturer in manufacturers %}
-                                        <option value="{{ manufacturer.id }}">
-                                            {{ manufacturer.name }}
-                                        </option>
-                                    {% endfor %}
+{#                                    {% for manufacturer in manufacturers %}#}
+{#                                        <option value="{{ manufacturer.id }}">#}
+{#                                            {{ manufacturer.name }}#}
+{#                                        </option>#}
+{#                                    {% endfor %}#}
                                 </select>
                             </div>
                         </div>
@@ -185,7 +198,7 @@
                                     </span>
                                 </p>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!--Add product and Clear-->
                         <div class="form-btn-area row">
@@ -193,6 +206,7 @@
                                 <input id="add-product-btn"
                                        class="lipa-less-btn"
                                        value="Add product"
+                                       v-on:click.prevent="addProduct"
                                        type="submit">
                             </div>
 
@@ -209,9 +223,9 @@
 
     {% include "modals/add_category_modal.html" %}
 
-    {% include "modals/add_supplier_modal.html" %}
-
-    {% include "modals/add_manufacturer_modal.html" %}
+{#    {% include "modals/add_supplier_modal.html" %}#}
+{##}
+{#    {% include "modals/add_manufacturer_modal.html" %}#}
 
     <!--suppress HtmlUnknownTarget -->
     <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>

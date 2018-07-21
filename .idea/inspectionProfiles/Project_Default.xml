@@ -4,7 +4,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="351">
+          <list size="352">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -356,6 +356,7 @@
             <item index="348" class="java.lang.String" itemvalue="v-bind:value" />
             <item index="349" class="java.lang.String" itemvalue="v-model:role" />
             <item index="350" class="java.lang.String" itemvalue="v-model:deactivated" />
+            <item index="351" class="java.lang.String" itemvalue="v-model:categories" />
           </list>
         </value>
       </option>

@@ -1,10 +1,46 @@
+/**
+ * Vue instance to manage category addition from products form
+ */
+let categoryAddition = new Vue({
+    el: '#add-category-modal',
+    delimiters: ['[[', ']]'],
+    data: {
+        category_name: null,
+        category_description: null
+    },
+    methods: {
+        addCategory: function () {
+            // Validate fields
+            let addCategoryForm = document.getElementById("add-category-form");
+            if (!addCategoryForm.reportValidity()) {
+                return;
+            }
+
+            // Package the data into an object
+
+            let categoryInfo = {
+                "name": this.category_name,
+                "description": this.category_description
+            };
+
+            axios
+                .post("/category", categoryInfo)
+                .then(
+                    response => {
+                        if (response.headers.code === '200') {
+                            $("#add-category-modal").modal("hide");
+                            // categories = response.data.msg.categories;
+                        }
+                        $("#category-server-responses").text(response.data.msg);
+                    }
+                );
+        }
+    }
+});
+
 jQuery(function() {
     $("#create-new-category-btn").on("click", function() {
         $("#add-category-modal").modal("show");
-    });
-
-    $("#add-category-btn").on("click", function(e) {
-        onAddCategoryClickHandler(e);
     });
 });
 
