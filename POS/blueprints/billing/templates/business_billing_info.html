@@ -9,18 +9,38 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3">
-            <div class="row">
-                <p>
-                    Business name: {{ business_billing_info.name }}
-                </p>
-                <p>
-                    Business account: {{ business_billing_info.account_id }}
-                </p>
-                <p>
-                    Balance: {{ business_billing_info.balance }}
-                </p>
-            </div>
+        <!-- Billing details -->
+        <div class="col-10 table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-head">
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Billing info -->
+                    <tr>
+                        <td>Business name</td>
+                        <td>{{ business_billing_info.name }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Paybill Number</td>
+                        <td>2334</td>
+                    </tr>
+
+                    <tr>
+                        <td>Account Number</td>
+                        <td>{{ business_billing_info.account_id }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Balance</td>
+                        <td>{{ business_billing_info.balance }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
