@@ -1,0 +1,52 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="row">
+        <div class="col-md-11 col-12">
+            <h3>BUSINESS BILLING INFO</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Billing details -->
+        <div class="col-10 table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-head">
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Billing info -->
+                    <tr>
+                        <td>Business name</td>
+                        <td>{{ business_billing_info.name }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Paybill Number</td>
+                        <td>2334</td>
+                    </tr>
+
+                    <tr>
+                        <td>Account Number</td>
+                        <td>{{ business_billing_info.account_id }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Balance</td>
+                        <td>{{ business_billing_info.balance }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Include the JS files (lazy loading)-->
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('static', filename='js/customAPICaller.js') }}"></script>
+    <!--suppress HtmlUnknownTarget -->
+    <script src="{{ url_for('dashboard_bp.static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

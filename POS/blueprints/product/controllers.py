@@ -15,13 +15,14 @@ from POS.models.stock_management.manufacturer import Manufacturer
 from POS.models.stock_management.category import Category
 from POS.models.user_management.business import Business
 
-from POS.utils import is_cashier, is_admin
+from POS.utils import is_cashier, is_admin, business_is_active
 
 
 class ProductsAPI(AppView):
     @staticmethod
     @login_required
     @is_admin
+    @business_is_active
     def get():
         try:
             # Get all products within business
@@ -39,6 +40,7 @@ class ProductsAPI(AppView):
 
     @login_required
     @is_admin
+    @business_is_active
     def put(self, product_id):
         if not product_id:
             return ProductsAPI.send_response(
@@ -119,6 +121,7 @@ class ProductsAPI(AppView):
     @staticmethod
     @login_required
     @is_admin
+    @business_is_active
     def delete(product_id):
         if not product_id:
             return ProductsAPI.send_response(
@@ -186,6 +189,7 @@ class ProductAPI(AppView):
     @staticmethod
     @login_required
     @is_cashier
+    @business_is_active
     def get():
         categories = CategoriesAPI.get_all_categories()
         suppliers = SuppliersAPI.get_all_suppliers()
@@ -201,6 +205,7 @@ class ProductAPI(AppView):
     @staticmethod
     @login_required
     @is_admin
+    @business_is_active
     def post():
         new_products_request = request.get_json(silent=True)
 

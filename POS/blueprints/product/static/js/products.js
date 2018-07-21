@@ -157,10 +157,10 @@ function onAddProductClickHandler(e) {
     var expirationDate = jQuery("input[name='expiration-date']").val();
     var categories = (document.getElementById("category-options")).options;
     var categoryId = categories[categories.selectedIndex].value;
-    var suppliers = (document.getElementById("supplier-options")).options;
-    var supplierId = suppliers[suppliers.selectedIndex].value;
-    var manufacturers = (document.getElementById("manufacturer-options")).options;
-    var manufacturerId = manufacturers[manufacturers.selectedIndex].value;
+    // var suppliers = (document.getElementById("supplier-options")).options;
+    // var supplierId = suppliers[suppliers.selectedIndex].value;
+    // var manufacturers = (document.getElementById("manufacturer-options")).options;
+    // var manufacturerId = manufacturers[manufacturers.selectedIndex].value;
 
 
     var productInfo = {
@@ -171,9 +171,9 @@ function onAddProductClickHandler(e) {
         "quantity": quantity,
         "reorder_level": reorderLevel,
         "expiration_date": expirationDate,
-        "category_id": categoryId,
-        "supplier_id": supplierId,
-        "manufacturer_id": manufacturerId
+        "category_id": categoryId
+        // "supplier_id": supplierId,
+        // "manufacturer_id": manufacturerId
     };
 
     // Send request

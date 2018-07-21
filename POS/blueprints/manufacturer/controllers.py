@@ -10,12 +10,13 @@ from POS.models.stock_management.manufacturer import Manufacturer
 from POS.models.stock_management.product import Product
 from POS.models.user_management.business import Business
 
-from POS.utils import is_admin
+from POS.utils import is_admin, business_is_active
 
 
 class ManufacturersAPI(AppView):
     @staticmethod
     @login_required
+    @business_is_active
     def get():
         try:
             # Get list of all manufacturers
@@ -34,6 +35,7 @@ class ManufacturersAPI(AppView):
     @staticmethod
     @login_required
     @is_admin
+    @business_is_active
     def put(manufacturer_id):
         if not manufacturer_id:
             return ManufacturersAPI.send_response(
@@ -84,6 +86,7 @@ class ManufacturersAPI(AppView):
     @staticmethod
     @login_required
     @is_admin
+    @business_is_active
     def delete(manufacturer_id):
         try:
             # Get manufacturer
@@ -151,6 +154,7 @@ class ManufacturerAPI(AppView):
     @staticmethod
     @login_required
     @is_admin
+    @business_is_active
     def post():
         manufacturer_addition_request = request.get_json(silent=True)
 

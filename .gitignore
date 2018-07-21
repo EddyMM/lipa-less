@@ -1,9 +1,13 @@
 # Flask session
 flask_session/
 
+# Redis
+*.rdb
+
 # Pycharm files
 .idea/workspace.xml
 .idea/markdown-*
+.idea/watcherTasks.xml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

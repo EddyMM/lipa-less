@@ -7,10 +7,12 @@ from POS.models.base_model import AppDB
 from POS.models.stock_management.supplier import Supplier
 from POS.models.stock_management.product import Product
 from POS.models.user_management.business import Business
+from POS.utils import business_is_active, is_admin
 
 
 class SuppliersAPI(AppView):
     @staticmethod
+    @business_is_active
     def get():
         try:
             suppliers = SuppliersAPI.get_all_suppliers()
@@ -26,6 +28,7 @@ class SuppliersAPI(AppView):
             return SuppliersAPI.error_in_processing_request()
 
     @staticmethod
+    @is_admin
     def put(supplier_id):
         if not supplier_id:
             return SuppliersAPI.send_response(
@@ -81,6 +84,7 @@ class SuppliersAPI(AppView):
             return SuppliersAPI.error_in_processing_request()
 
     @staticmethod
+    @is_admin
     def delete(supplier_id):
         if not supplier_id:
             return SuppliersAPI.send_response(
@@ -157,6 +161,7 @@ class SupplierAPI(AppView):
         API for the '/supplier' endpoint
     """
     @staticmethod
+    @is_admin
     def post():
         """
             Creates a new supplier

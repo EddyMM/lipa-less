@@ -3,7 +3,9 @@ import os
 from flask import session, redirect, url_for
 from flask_login import current_user
 
+from POS import constants
 from POS.models.base_model import AppDB
+from POS.models.billing.ewallet import EWallet
 from POS.models.user_management.user_business import UserBusiness
 from POS.models.user_management.role import Role
 
@@ -161,4 +163,21 @@ def is_cashier(cashier_restricted_func):
             )
         return cashier_restricted_func()
 
+    return wrapper
+
+
+def business_is_active(business_func):
+    def wrapper(*args, **kwargs):
+        # Get the current business EWallet account
+        business_ewallet = AppDB.db_session.query(EWallet).filter(
+            EWallet.business_id == session["business_id"]
+        ).first()
+
+        if business_ewallet.balance > constants.BILLING_AMOUNT_PER_INTERVAL_IN_SHILLINGS:
+            return business_func(*args, **kwargs)
+        else:
+            return redirect(
+                location=url_for("billing_bp.out_of_credit"),
+                code=303
+            )
     return wrapper

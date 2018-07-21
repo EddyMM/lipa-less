@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, current_app
-from flask_login import login_user
+from flask_login import login_user, current_user
 
 from sqlalchemy.exc import SQLAlchemyError
+
 
 from POS.constants import APP_NAME
 
@@ -63,8 +64,6 @@ class Login(AppView):
                 # Register user with login manager
                 login_user(user)
 
-                # Update session object with current user name
-
                 return Login.send_response(
                     msg="Successful login",
                     status=200
@@ -78,7 +77,7 @@ class Login(AppView):
             AppDB.db_session.rollback()
             current_app.logger.error(e)
             current_app.sentry.captureException()
-            return User.error_in_processing_request()
+            return Login.error_in_processing_request()
 
     @staticmethod
     def request_is_filled(client_request):

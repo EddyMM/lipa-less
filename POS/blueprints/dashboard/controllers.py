@@ -3,18 +3,19 @@ from flask_login import login_required
 
 from POS.blueprints.base.app_view import AppView
 
-from POS.utils import selected_business
-from POS.constants import APP_NAME
+from POS.utils import selected_business, business_is_active
+from POS import constants
 
 
 class DashboardAPI(AppView):
     @staticmethod
     @login_required
     @selected_business
+    @business_is_active
     def get():
         return render_template(
             template_name_or_list="dashboard.html",
-            title="%s: %s" % (APP_NAME, "Dashboard"),
+            title="%s: %s" % (constants.APP_NAME, "Dashboard"),
         )
 
     @staticmethod
@@ -34,7 +35,6 @@ dashboard_bp = Blueprint(
     static_folder="static",
     template_folder="templates"
 )
-
 
 # Create URL endpoint
 dashboard_bp.add_url_rule(rule="", view_func=dashboard_view)

@@ -1,11 +1,16 @@
 import os
-from .constants import APP_NAME, DATABASE_URL, TESTING_DATABASE_URL
+
+import redis
+
+from .constants import APP_NAME, DATABASE_URL, TESTING_DATABASE_URL, REDIS_URL_ENV_VAR, LOCAL_REDIS_URL
 
 
 class BaseConfig(object):
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SECRET_KEY = os.environ.get(APP_NAME + "_SECRET_KEY")
-    SESSION_TYPE = "filesystem"
+
+    SESSION_TYPE = "redis"
+    SESSION_REDIS = redis.from_url(os.environ.get(REDIS_URL_ENV_VAR, LOCAL_REDIS_URL))
     SESSION_PERMANENT = False
 
 
