@@ -29,6 +29,8 @@ class AppDB(object):
         from POS.models.stock_management.product import Product
         from POS.models.billing.ewallet import EWallet
         from POS.models.billing.billing_transaction import BillingTransaction
+        from POS.models.sales.sales_transaction import SalesTransaction
+        from POS.models.sales.line_item import LineItem
         # from POS.models.stock_management.supplier_manufacturer import SupplierManufacturer
 
 

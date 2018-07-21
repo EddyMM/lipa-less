@@ -20,6 +20,7 @@ class Business(AppDB.BaseModel):
     products = relationship("Product", back_populates="business")
     categories = relationship("Category", back_populates="business")
     ewallet = relationship("EWallet", back_populates = "business")
+    sales_transactions = relationship("SalesTransaction", back_populates="business")
 
     def __init__(self, name, contact_no):
         self.name = name

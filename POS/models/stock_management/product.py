@@ -24,6 +24,7 @@ class Product(AppDB.BaseModel):
     # Relationships
     business = relationship("Business", back_populates="products")
     category = relationship("Category", back_populates="products")
+    line_item = relationship("LineItem", back_populates="product")
     # supplier = relationship("Supplier", back_populates="products")
     # manufacturer = relationship("Manufacturer", back_populates="products")
 

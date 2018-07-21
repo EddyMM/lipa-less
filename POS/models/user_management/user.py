@@ -1,11 +1,10 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from flask import session
+
 from flask_login import UserMixin
 
 from POS.models.base_model import AppDB
-from .user_business import UserBusiness
 
 
 class User(AppDB.BaseModel, UserMixin):
@@ -25,6 +24,7 @@ class User(AppDB.BaseModel, UserMixin):
         "UserBusiness",
         back_populates="user"
     )
+    sales_transactions = relationship("SalesTransaction", back_populates="user")
 
     def __init__(self, name, email, password):
         self.name = name
