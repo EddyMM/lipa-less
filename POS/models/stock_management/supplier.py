@@ -13,8 +13,8 @@ class Supplier(AppDB.BaseModel):
     contact_no = Column(String)
 
     # Relationships
-    products = relationship("Product", back_populates="supplier")
-    manufacturers = relationship("SupplierManufacturer", back_populates="supplier")
+    # products = relationship("Product", back_populates="supplier")
+    # manufacturers = relationship("SupplierManufacturer", back_populates="supplier")
 
     def __init__(self, name, contact_person, contact_no):
         self.name = name

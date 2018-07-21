@@ -59,11 +59,9 @@ class ManageAccountsAPI(AppView):
                 UserBusiness.emp_id != current_user.emp_id,
             ).all()
 
-        print("accounts: %s" % accounts)
-
         # Modify the list for the template to use
         return [dict(
-            id=account[0].emp_id,
+            emp_id=account[0].emp_id,
             name=account[0].name,
             deactivated=account[1].is_deactivated,
             role=account[2].name
@@ -91,6 +89,18 @@ class UserRoleAPI(AppView):
     @login_required
     @is_admin
     @business_is_active
+    def get():
+        return ManageAccountsAPI.send_response(
+            msg=dict(
+                accounts=ManageAccountsAPI.get_all_accounts(),
+                roles=ManageAccountsAPI.get_all_roles()
+            ),
+            status=200
+        )
+
+    @staticmethod
+    @login_required
+    @is_admin
     def put():
         role_assignment_request = request.get_json()
 
@@ -304,4 +314,4 @@ manage_accounts_bp = Blueprint(
 
 # Create URL endpoint
 manage_accounts_bp.add_url_rule(rule="", view_func=manage_accounts_view)
-manage_accounts_bp.add_url_rule(rule="/role", view_func=user_role_view)
+manage_accounts_bp.add_url_rule(rule="/roles", view_func=user_role_view)

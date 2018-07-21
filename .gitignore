@@ -7,6 +7,9 @@ flask_session/
 # Pycharm files
 .idea/workspace.xml
 .idea/markdown-*
+.idea/PAYG.iml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/misc.xml
 .idea/watcherTasks.xml
 
 # Byte-compiled / optimized / DLL files

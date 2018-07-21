@@ -1,79 +1,55 @@
-/**
-* Handle successful registration of a new business
-**/
-function onAddBusinessSuccess(res, status, jqXHR) {
-    var responseStatus = parseInt(jqXHR.getResponseHeader("code"));
-    if(responseStatus === 200) {
-        window.location = "/dashboard";
-    } else {
-        if((res["msg"]!==undefined) || (res["msg"]!==null)) {
-            $("#server-responses").text(res["msg"]);
-        }
-    }
+function showCreateBusinessModal() {
+    $("#add-business-modal").modal("show");
 }
 
-/**
-* Handle any error when registering a new business
-**/
-function onAddBusinessError(res) {
-    var errorMsg = JSON.parse(res.responseText);
+let addBusinessApp = new Vue({
+    el: '#add-business-form',
+    data: {
+        name: null,
+        contactNumber: null
+    },
+    methods: {
+        addBusiness: function() {
+            // Validate fields
+            let addBusinessForm = document.getElementById("add-business-form");
+            if(!addBusinessForm.reportValidity()) {
+                return;
+            }
 
-    if((errorMsg["msg"]!==undefined) || (errorMsg["msg"]!=null)) {
-        alert(errorMsg["msg"]);
+            // Capture business info
+            let businessInfo = {
+                "name": this.name,
+                "contact_number": this.contactNumber
+            };
+
+            console.log(businessInfo);
+
+            axios
+                .post("/business", businessInfo)
+                .then(response => {
+                    if(response.headers.code === '200') {
+                        window.location = "/dashboard";
+                    }
+                    this.$refs.serverResponses.innerHTML = response.data.msg;
+                })
+        }
     }
-    $("#add-business-modal").modal("hide");
-}
+});
 
-$(document).ready(function (){
-    // $(".main-content").niceScroll();
+let selectBusiness = new Vue({
+    el: '#select-business-form',
+    data: {},
+    methods: {
+        selectBusiness: function() {
+            // Validate fields
+            let selectBusinessForm = document.getElementById("select-business-form");
+            if(!selectBusinessForm.reportValidity()) {
+                return;
+            }
 
-    // Create modal business form functionality
-    $("#create-business-btn").click(function() {
-        $("#add-business-modal").modal("show");
-    });
-
-    // Configure add business button
-    $("#add-business-btn").click(function(ele) {
-        // Prevent submission
-        ele.preventDefault();
-
-        // Validate fields
-        var addBusinessForm = document.getElementById("add-business-form");
-        if(!addBusinessForm.reportValidity()) {
-            return;
+            // Load dashboard using business id
+            let business_id = $("input[name='business']:checked").val();
+            window.location = "/business/select/" + business_id;
         }
-
-        // Package the data into an object
-        var name = $("input[name='name']").val();
-        var contactNumber = $("input[name='contact_number']").val();
-
-        var businessInfo = {
-            "name": name,
-            "contact_number": contactNumber
-        };
-
-        // Make AJAX API call
-        apiCall(
-            "/business", 'POST',
-            JSON.stringify(businessInfo),
-            onAddBusinessSuccess,
-            onAddBusinessError
-        );
-    });
-
-    // Configure select business button
-    $("#select-business-btn").click(function(ele) {
-        // Prevent submission
-        ele.preventDefault();
-
-        // Validate fields
-        var selectBusinessForm = document.getElementById("select-business-form");
-        if(!selectBusinessForm.reportValidity()) {
-            return;
-        }
-
-        // Load dashboard using business id
-        var business_id = $("input[name='business']:checked").val();
-        window.location = "/business/select/" + business_id;
-    });
+    }
 });

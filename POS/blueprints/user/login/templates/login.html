@@ -2,7 +2,10 @@
 
 {% block body %}
     <!--suppress HtmlFormInputWithoutLabel -->
-    <div class="row">
+    <div class="row" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+         xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+         xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+         xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
         <div class="col-md-11 col-12">
             <h3>LOG IN</h3>
         </div>
@@ -16,7 +19,7 @@
                     <div class="login-information col-md-12 col-12">
                         <!--Server response section-->
                         <div class="row">
-                            <p id="server-responses"></p>
+                            <p id="server-responses" ref="serverResponses"></p>
                         </div>
 
                         <!--Email section-->
@@ -31,6 +34,7 @@
                                        type="email"
                                        title="e.g. jondoe@gmail.com"
                                        pattern=".*@.*\..*"
+                                       v-model="email"
                                        required>
                             </div>
                         </div>
@@ -43,16 +47,19 @@
                                 </label>
                             </div>
                             <div class="col-md-6">
-                                <input name="password" type="password" required>
+                                <input name="password" type="password" v-model="password" required>
                             </div>
                         </div>
 
                         <!--Login and Clear-->
-                        <div class="form-btn-area row">
+                        <div id="form-btn-area" class="row">
                             <div class="col-md-6 col-12">
                                 <input id="login-btn" class="lipa-less-btn"
                                        value="LOGIN"
-                                       type="submit">
+                                       type="submit"
+                                       v-on:click.prevent="sendUserInfo">
+
+
                             </div>
 
                             <div class="col-md-6 col-12">

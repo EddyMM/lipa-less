@@ -24,12 +24,13 @@ class AppDB(object):
         from POS.models.user_management.role import Role
         from POS.models.user_management.user_business import UserBusiness
         from POS.models.stock_management.category import Category
-        from POS.models.stock_management.supplier import Supplier
-        from POS.models.stock_management.manufacturer import Manufacturer
+        # from POS.models.stock_management.supplier import Supplier
+        # from POS.models.stock_management.manufacturer import Manufacturer
         from POS.models.stock_management.product import Product
-        from POS.models.stock_management.supplier_manufacturer import SupplierManufacturer
         from POS.models.billing.ewallet import EWallet
         from POS.models.billing.billing_transaction import BillingTransaction
+        # from POS.models.stock_management.supplier_manufacturer import SupplierManufacturer
+
 
         try:
             db_engine = create_engine(

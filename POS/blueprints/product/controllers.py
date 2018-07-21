@@ -192,14 +192,14 @@ class ProductAPI(AppView):
     @business_is_active
     def get():
         categories = CategoriesAPI.get_all_categories()
-        suppliers = SuppliersAPI.get_all_suppliers()
-        manufacturers = ManufacturersAPI.get_all_manufacturers()
+        # suppliers = SuppliersAPI.get_all_suppliers()
+        # manufacturers = ManufacturersAPI.get_all_manufacturers()
 
         return render_template(
             template_name_or_list="add_product.html",
             categories=categories,
-            suppliers=suppliers,
-            manufacturers=manufacturers
+            # suppliers=suppliers,
+            # manufacturers=manufacturers
         )
 
     @staticmethod
@@ -231,8 +231,8 @@ class ProductAPI(AppView):
         description = new_products_request.get("description", None)
         expiration_date = new_products_request.get("expiration_date", None)
         category_id = new_products_request.get("category_id", None)
-        supplier_id = new_products_request.get("supplier_id", None)
-        manufacturer_id = new_products_request.get("manufacturer_id", None)
+        # supplier_id = new_products_request.get("supplier_id", None)
+        # manufacturer_id = new_products_request.get("manufacturer_id", None)
 
         try:
             # Create product
@@ -247,10 +247,10 @@ class ProductAPI(AppView):
             )
 
             # Relationships
-            if supplier_id:
-                product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
-            if manufacturer_id:
-                product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
+            # if supplier_id:
+            #     product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
+            # if manufacturer_id:
+            #     product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
             if category_id:
                 product.category = AppDB.db_session.query(Category).get(category_id)
 

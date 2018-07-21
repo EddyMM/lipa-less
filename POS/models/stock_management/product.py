@@ -18,14 +18,14 @@ class Product(AppDB.BaseModel):
     # Foreign keys
     business_id = Column(Integer, ForeignKey("business.id"))
     category_id = Column(Integer, ForeignKey("category.id"))
-    supplier_id = Column(Integer, ForeignKey("supplier.id"))
-    manufacturer_id = Column(Integer, ForeignKey("manufacturer.id"))
+    # supplier_id = Column(Integer, ForeignKey("supplier.id"))
+    # manufacturer_id = Column(Integer, ForeignKey("manufacturer.id"))
 
     # Relationships
     business = relationship("Business", back_populates="products")
     category = relationship("Category", back_populates="products")
-    supplier = relationship("Supplier", back_populates="products")
-    manufacturer = relationship("Manufacturer", back_populates="products")
+    # supplier = relationship("Supplier", back_populates="products")
+    # manufacturer = relationship("Manufacturer", back_populates="products")
 
     def __init__(self, name, description, buying_price, selling_price, reorder_level,
                  expiration_date, quantity):
