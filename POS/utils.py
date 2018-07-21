@@ -173,7 +173,7 @@ def business_is_active(business_func):
             EWallet.business_id == session["business_id"]
         ).first()
 
-        if business_ewallet.balance > constants.BILLING_AMOUNT_PER_INTERVAL_IN_SHILLINGS:
+        if business_ewallet.balance >= constants.BILLING_AMOUNT_PER_INTERVAL_IN_SHILLINGS:
             return business_func(*args, **kwargs)
         else:
             return redirect(
