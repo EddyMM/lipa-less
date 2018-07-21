@@ -97,7 +97,7 @@ class BillingAPI(AppView):
                 EWallet.business_id == business_id
             ).first()
 
-            if business_ewallet.balance > constants.BILLING_AMOUNT_PER_INTERVAL_IN_SHILLINGS:
+            if business_ewallet.balance >= constants.BILLING_AMOUNT_PER_INTERVAL_IN_SHILLINGS:
                 value = -constants.BILLING_AMOUNT_PER_INTERVAL_IN_SHILLINGS
                 # Create a new billing transaction
                 billing_transaction = BillingTransaction(value)
