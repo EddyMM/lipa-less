@@ -67,7 +67,7 @@ class BillingAPI(AppView):
                 current_business_ewallet.balance += value
 
                 # Resume billing if it had stopped
-                if not session["billing_job_id"]:
+                if not session.get("billing_job_id"):
                     BillingAPI.bill_user(session["business_id"])
 
                 AppDB.db_session.add(billing_transaction)
