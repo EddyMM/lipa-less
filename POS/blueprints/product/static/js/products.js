@@ -30,7 +30,7 @@ let productAddition = new Vue({
                 quantity: this.quantity,
                 reorder_level: this.reorder_level,
                 expiration_date: this.expiration_date,
-                category: this.category.id,
+                category_id: this.category,
             };
 
             console.log(productInfo);
@@ -41,7 +41,7 @@ let productAddition = new Vue({
                     response => {
                         if (response.headers.code === '200') {
                             console.log("Added product!");
-                            window.location("/products")
+                            window.location = "/products";
                         }
                         $("#product-server-responses").text(response.data.msg);
                     }
