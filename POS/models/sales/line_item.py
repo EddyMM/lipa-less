@@ -20,12 +20,12 @@ class LineItem(AppDB.BaseModel):
     product = relationship("Product", back_populates="line_item")
     sales_transaction = relationship("SalesTransaction", back_populates="line_items")
 
-
-    def __init__(self, timestamp, amount_given):
-        self.timestamp = timestamp
-        self.amount_given = amount_given
+    def __init__(self, name, quantity, price):
+        self.name = name
+        self.quantity = quantity
+        self.price = price
 
     def __repr__(self):
-        return "LineItem<name={0}, price={1}, quantity={2}>".format(
-            self.id, self.price, self.quantity
+        return "LineItem<name={0}, price={1}, quantity={2}, product_id={3}>".format(
+            self.name, self.price, self.quantity, self.product_id
         )

@@ -16,6 +16,7 @@
         <option value="$MODULE_DIR$/POS/blueprints/category/templates" />
         <option value="$MODULE_DIR$/POS/blueprints/billing/templates" />
         <option value="$MODULE_DIR$/POS/blueprints/dashboard/templates" />
+        <option value="$MODULE_DIR$/POS/blueprints/sales/templates" />
       </list>
     </option>
   </component>

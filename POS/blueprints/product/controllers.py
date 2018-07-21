@@ -1,20 +1,15 @@
 from flask import Blueprint, request, session, current_app, render_template
 from flask_login import login_required
-
 from sqlalchemy.exc import SQLAlchemyError
 
 from POS.blueprints.base.app_view import AppView
 from POS.blueprints.category.controllers import CategoriesAPI
-from POS.blueprints.manufacturer.controllers import ManufacturersAPI
-from POS.blueprints.supplier.controllers import SuppliersAPI
-
 from POS.models.base_model import AppDB
+from POS.models.stock_management.category import Category
+from POS.models.stock_management.manufacturer import Manufacturer
 from POS.models.stock_management.product import Product
 from POS.models.stock_management.supplier import Supplier
-from POS.models.stock_management.manufacturer import Manufacturer
-from POS.models.stock_management.category import Category
 from POS.models.user_management.business import Business
-
 from POS.utils import is_cashier, is_admin, business_is_active
 
 
@@ -171,7 +166,7 @@ class ProductsAPI(AppView):
     @staticmethod
     def get_all_products():
         products = [dict(
-            num=num+1,
+            num=num + 1,
             id=product.id,
             name=product.name,
             quantity=product.quantity,
@@ -300,7 +295,6 @@ product_bp = Blueprint(
 )
 
 product_bp.add_url_rule(rule="", view_func=product_view)
-
 
 # Create products API URL endpoints
 products_bp = Blueprint(
