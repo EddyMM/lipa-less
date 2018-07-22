@@ -1,16 +1,3 @@
-/**
- * total app
- */
-let totalApp = new Vue({
-    el: "#totalApp",
-    data: {
-        total: 0,
-        amountPaid: 0,
-        change: 0
-    },
-    methods: {}
-});
-
 let productOptionsApp = new Vue({
     el: '#productSelectionApp',
     delimiters: ['[[', ']]'],
@@ -23,27 +10,32 @@ let productOptionsApp = new Vue({
     methods: {
         changePriceFromQuantity: function changePriceFromQuantity() {
             if(this.selectedProduct >= 0) {
-                this.price = this.quantity * this.products[this.selectedProduct-1].price;
+                let product_from_id = getProductById(this.selectedProduct);
+                if(product_from_id != null) {
+                    this.price = this.quantity * product_from_id.price;
+                } else {
+                    console.log("No product by id: " + this.selectedProduct);
+                }
             }
         },
         addLineItem: function () {
-            if(this.selectedProduct > 0 &&
-                this.products[this.selectedProduct-1].name != null &&
-                this.products[this.selectedProduct-1].name !== "" &&
-                this.products[this.selectedProduct-1].price > 0 &&
-                this.products[this.selectedProduct-1].quantity) {
+            let productFromId =  getProductById(this.selectedProduct)
+            if(productFromId != null && this.selectedProduct > 0 &&
+                productFromId.name != null &&
+                productFromId.name !== "" &&
+                productFromId.price > 0 &&
+                productFromId.quantity) {
 
                 let lineItem = {
                     product_id: this.selectedProduct,
-                    name: this.products[this.selectedProduct-1].name,
-                    price: this.products[this.selectedProduct-1].price,
+                    name: productFromId.name,
+                    price: productFromId.price,
                     quantity: this.quantity
                 };
 
-                console.log(lineItem);
-
                 checkoutApp.lineItems.push(lineItem);
                 computeTotal();
+                resetProductOptionsApp();
             }
         }
     },
@@ -61,11 +53,37 @@ let productOptionsApp = new Vue({
  */
 let checkoutApp = new Vue({
     el: "#checkoutApp",
+    delimiters: ['[[', ']]'],
     data: {
-        lineItems: []
+        lineItems: [],
+        total: 0,
+        amountPaid: 0,
+        change: 0
     },
     methods: {
-
+        removeLineItem: function(index) {
+            this.$delete(this.lineItems, index);
+            computeTotal();
+        },
+        checkoutItems: function() {
+          console.log("Checking out items");
+          let sales_transaction_request = {
+              transaction: {
+                  amount_given: this.amountPaid
+              },
+              line_items: this.lineItems
+          };
+          axios
+            .post("/sales", sales_transaction_request)
+            .then(
+            response => {
+                if (response.headers.code === '200') {
+                    console.log("Successfully checked out items!");
+                } else {
+                    console.log("Error checking out items: " + response.data.msg);
+                }
+            });
+        }
     }
 });
 
@@ -76,7 +94,18 @@ function computeTotal() {
         total += checkoutApp.lineItems[x].price * checkoutApp.lineItems[x].quantity;
     }
 
-    console.log("Compute Total: " + total);
+    checkoutApp.total = total;
+}
 
-    totalApp.total = total;
+function resetProductOptionsApp() {
+    productOptionsApp.quantity = 0;
+    productOptionsApp.price = 0;
+}
+
+function getProductById(productId) {
+    for(x=0; x < productOptionsApp.products.length; x++) {
+        if(productOptionsApp.products[x].id === parseInt(productId)) {
+            return productOptionsApp.products[x];
+        }
+    }
 }

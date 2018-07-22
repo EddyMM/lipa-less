@@ -90,18 +90,18 @@
                 </thead>
                 <tbody>
                     <!-- Items -->
-                    <tr>
-                        <th scope="row">Bread</th>
-                        <td>2</td>
-                        <td>100</td>
-                        <td><button class="lipa-less-btn">Delete</button></td>
+                    <tr v-for="(lineItem, index) in lineItems">
+                        <th scope="row">[[ lineItem.name ]]</th>
+                        <td>[[ lineItem.quantity ]]</td>
+                        <td>[[ lineItem.price ]]</td>
+                        <td><button class="lipa-less-btn" @click.prevent="removeLineItem([[ index ]])">Delete</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <!-- Total and change -->
-        <div id="totalApp" class="col-3">
+        <div class="col-3">
             <table class="table table-sm table-bordered table-hover">
                 <tbody>
                     <tr>
@@ -118,6 +118,10 @@
                     </tr>
                 </tbody>
             </table>
+
+            <button class="lipa-less-btn" @click.prevent="checkoutItems" style="width: 100%; margin-top: 10%">
+                Checkout
+            </button>
         </div>
     </form>
 

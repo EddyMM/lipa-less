@@ -9,13 +9,14 @@ from POS.models.sales.line_item import LineItem
 from POS.models.sales.sales_transaction import SalesTransaction
 from POS.models.stock_management.product import Product
 from POS.models.user_management.business import Business
-from POS.utils import is_cashier, selected_business
+from POS.utils import is_cashier, selected_business, business_is_active
 
 
 class CheckoutAPI(AppView):
     @staticmethod
     @is_cashier
     @selected_business
+    @business_is_active
     def get():
         return render_template(
             template_name_or_list="checkout.html"
@@ -26,12 +27,14 @@ class SalesAPI(AppView):
     @staticmethod
     @is_cashier
     @selected_business
+    @business_is_active
     def get():
         pass
 
     @staticmethod
     @is_cashier
     @selected_business
+    @business_is_active
     def post():
         new_sales_request = request.get_json(silent=True)
 
@@ -41,6 +44,8 @@ class SalesAPI(AppView):
                 msg="Problem with structure of new products request",
                 status=400
             )
+
+        print("Sales request: %s" % new_sales_request)
 
         if not SalesAPI.validate_new_product_request(new_sales_request):
             return SalesAPI.send_response(
