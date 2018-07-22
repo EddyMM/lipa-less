@@ -3,7 +3,8 @@
 {% block body %}
     <div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
          xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
-         xmlns:v-bind="http://www.w3.org/1999/xhtml">
+         xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+         xmlns:v-on="http://www.w3.org/1999/xhtml">
         <div class="col-12">
             <h3>SALES</h3>
 
@@ -34,25 +35,37 @@
     </div>
 
     <!-- Add line item -->
-    <div id='app' class="row badge-dark" style="padding-bottom: 20px">
+    <div id='productSelectionApp' class="row badge-dark" style="text-align: left; padding-bottom: 2%">
         <div class="col-12">
-            Item:
-            <select-search v-model='secondExample' :items='products' :shows='"name"' :first-label='"ALL"'>
-            </select-search>
+            <label for="products" style="width: 90%; padding-top: 2%">
+                Item:
+            </label>
+            <input title="Select product" list="product-options"
+                   name="products" v-model="selectedProduct" type="text">
+            <datalist id="product-options"
+                      title="Select product">
+                <option
+                    v-for="product in products"
+                    :value="product.id">
+                    [[ product.name ]]
+                </option>
+            </datalist>
         </div>
 
-        <div class="col-3">
-            Quantity: <input class='form-control' @keyup.enter="changePriceFromQuantity" title="Item Price"
+        <div class="col-4">
+            <label>Quantity: </label>
+            <input @keyup.enter="changePriceFromQuantity" title="Item Price"
                              name="item_quantity" v-model="quantity" type="number">
         </div>
 
-        <div class="col-3">
-            Price: <input title="Item code" name="item_price" v-model="price" type="number">
+        <div class="col-4">
+            <label>Price: </label>
+            <input title="Item code" name="item_price" v-model="price" type="number">
         </div>
 
-        <div class="col-3">
-            <input class="btn lipa-less-btn" title="Add Line Item" style="margin-top: 10%"
-                   name="item_price" value="Add" type="submit">
+        <div class="col-2">
+            <button class="btn lipa-less-btn" title="Add Line Item" style="margin-top: 20%"
+                    name="item_price" value="Add" v-on:click="addLineItem">Add</button>
         </div>
     </div>
 
@@ -88,20 +101,20 @@
         </div>
 
         <!-- Total and change -->
-        <div class="col-3">
+        <div id="totalApp" class="col-3">
             <table class="table table-sm table-bordered table-hover">
                 <tbody>
                     <tr>
                         <th scope="row">Total</th>
-                        <td>1950</td>
+                        <td><input title="Total" type="number" v-model="total"></td>
                     </tr>
                     <tr>
                         <th scope="row">Amount Paid </th>
-                        <td>2000</td>
+                        <td><input title="Amount paid" type="number" v-model="amountPaid"></td>
                     </tr>
                     <tr>
                         <th scope="row">Change</th>
-                        <td>50</td>
+                        <td><input title="Change" type="number" v-model="change"></td>
                     </tr>
                 </tbody>
             </table>

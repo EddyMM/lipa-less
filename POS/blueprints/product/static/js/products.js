@@ -41,7 +41,7 @@ let productAddition = new Vue({
                     response => {
                         if (response.headers.code === '200') {
                             console.log("Added product!");
-                            window.location = "/products";
+                            window.location = "/products/manage";
                         }
                         $("#product-server-responses").text(response.data.msg);
                     }
