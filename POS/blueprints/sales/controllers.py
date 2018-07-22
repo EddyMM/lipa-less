@@ -75,10 +75,12 @@ class SalesAPI(AppView):
                         # Model a line item
                         line_item = LineItem(
                             name=line_item_request["name"],
-                            quantity=line_item_request["quantity"],
-                            price=line_item_request["price"]
+                            quantity=int(line_item_request["quantity"]),
+                            price=float(line_item_request["price"])
                         )
                         line_item.product = product
+
+                        product.quantity -= int(line_item_request["quantity"])
 
                         line_item.sales_transaction = sales_transaction
 
