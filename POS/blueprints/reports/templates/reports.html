@@ -1,0 +1,23 @@
+{% extends "layout-with-sidebar.html" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h3>REPORTS</h3>
+        </div>
+
+        <!-- List of possible reports-->
+        <div class="col-12" style="text-align: left">
+            {% if categories %}
+                <form action="{{ url_for('manage_reports_bp.product_brand_report') }}" method="POST">
+                    <select title="category" name="category" required>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input class="lipa-less-btn" type="submit" value=">> Products Brand">
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
