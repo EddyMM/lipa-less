@@ -30,6 +30,7 @@ from POS.blueprints.user.logout.controllers import logout_bp
 from POS.blueprints.user.signup.controllers import signup_bp
 from POS.blueprints.sales.controllers import checkout_bp
 from POS.blueprints.sales.controllers import sales_bp
+from POS.blueprints.reports.controllers import manage_reports_bp
 
 from POS.models.base_model import AppDB
 from POS.models.user_management.user import User
@@ -242,7 +243,8 @@ app_blueprints = (
     supplier_bp,
     billing_bp,
     checkout_bp,
-    sales_bp
+    sales_bp,
+    manage_reports_bp
 )
 
 register_blueprints(app_blueprints)
