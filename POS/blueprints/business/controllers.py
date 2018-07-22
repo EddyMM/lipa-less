@@ -116,6 +116,26 @@ class BusinessAPI(AppView):
             session["business_name"] = business.name
             session["role"] = AppDB.db_session.query(Role).get(owner_role_id).name
 
+            # Start billing user
+            business_id = session["business_id"]
+
+            if session.get("billing_job_id"):
+                current_app.logger.info("Resuming billing for business: %s" % session["business_name"])
+                constants.BILLING_SCH.resume_job(session["billing_job_id"])
+            else:
+                current_app.logger.info("Starting billing job for business: %s" % session["business_name"])
+                billing_job_id = uuid.uuid4()
+                session["billing_job_id"] = str(billing_job_id)
+                current_app.logger.info("Using Job ID of: %s for business: %s" % (
+                    session["billing_job_id"], session["business_name"]))
+
+                constants.BILLING_SCH.add_job(
+                    lambda: BillingAPI.bill_user(business_id),
+                    "interval",
+                    seconds=BILLING_INTERVAL_IN_SECONDS,
+                    id=str(billing_job_id)
+                )
+
             return BusinessAPI.send_response(
                 msg="Business created",
                 business_id=business.id,
@@ -199,7 +219,7 @@ class SelectBusinessAPI(AppView):
                     status=403
                 )
 
-            # Start billing user hourly
+            # Start billing user
             if session.get("billing_job_id"):
                 current_app.logger.info("Resuming billing for business: %s" % session["business_name"])
                 constants.BILLING_SCH.resume_job(session["billing_job_id"])
