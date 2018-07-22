@@ -30,6 +30,97 @@
                 {% endif %}
             </div>
         </div>
+
+        <div class="col-md-3">
+            <div class="row">
+                {% if session.role == OWNER_ROLE_NAME or session.role == ADMIN_ROLE_NAME or
+                        session.role == CASHIER_ROLE_NAME%}
+                <a href="{{ url_for('checkout_bp.checkout') }}">
+                <div id="dashboard-manage-accounts" class="dashboard-link col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/dashboard/sales.jpeg') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Sales</p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="row">
+                {% if session.role == OWNER_ROLE_NAME or session.role == ADMIN_ROLE_NAME %}
+                <a href="{{ url_for('products_bp.manage_products') }}">
+                <div id="dashboard-manage-accounts" class="dashboard-link col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/dashboard/stock_mng.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Products</p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="row">
+                {% if session.role == OWNER_ROLE_NAME %}
+                <a href="{{ url_for('billing_bp.billing') }}">
+                <div id="dashboard-manage-accounts" class="dashboard-link col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/dashboard/billing.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Billing</p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+        <div class="row" style="margin-top: 2%">
+        <div class="col-md-3">
+            <div class="row">
+                {% if session.role == OWNER_ROLE_NAME or session.role == ADMIN_ROLE_NAME %}
+                <a href="{{ url_for('manage_reports_bp.manage_reports') }}">
+                <div id="dashboard-manage-accounts" class="dashboard-link col-md-11 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="width: inherit !important;"
+                             src="{{ url_for('static', filename='imgs/icons/dashboard/reports_icon.png') }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Reports</p>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
     <!--Include the JS files (lazy loading)-->
