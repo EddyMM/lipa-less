@@ -13,7 +13,6 @@ class Product(AppDB.BaseModel):
     buying_price = Column(Float, nullable=False)
     selling_price = Column(Float, nullable=False)
     reorder_level = Column(Integer)
-    expiration_date = Column(Date)
     quantity = Column(Integer, nullable=False)
     # Foreign keys
     business_id = Column(Integer, ForeignKey("business.id"))
@@ -28,14 +27,12 @@ class Product(AppDB.BaseModel):
     # supplier = relationship("Supplier", back_populates="products")
     # manufacturer = relationship("Manufacturer", back_populates="products")
 
-    def __init__(self, name, description, buying_price, selling_price, reorder_level,
-                 expiration_date, quantity):
+    def __init__(self, name, description, buying_price, selling_price, reorder_level, quantity):
         self.name = name
         self.description = description
         self.buying_price = buying_price
         self.selling_price = selling_price
         self.reorder_level = reorder_level
-        self.expiration_date = expiration_date
         self.quantity = quantity
 
     def __repr__(self):

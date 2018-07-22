@@ -80,10 +80,10 @@ class ProductsAPI(AppView):
         quantity = modify_products_request["quantity"]
         reorder_level = modify_products_request.get("reorder_level", 0)
         description = modify_products_request.get("description", None)
-        expiration_date = modify_products_request.get("expiration_date", None)
+
         category_id = modify_products_request.get("category_id", None)
-        supplier_id = modify_products_request.get("supplier_id", None)
-        manufacturer_id = modify_products_request.get("manufacturer_id", None)
+        # supplier_id = modify_products_request.get("supplier_id", None)
+        # manufacturer_id = modify_products_request.get("manufacturer_id", None)
 
         try:
             # Get product
@@ -100,14 +100,13 @@ class ProductsAPI(AppView):
             product.selling_price = selling_price,
             product.quantity = quantity,
             product.description = description,
-            product.expiration_date = expiration_date,
             product.reorder_level = reorder_level
 
             # Relationships
-            if supplier_id:
-                product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
-            if manufacturer_id:
-                product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
+            # if supplier_id:
+            #     product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
+            # if manufacturer_id:
+            #     product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
             if category_id:
                 product.category = AppDB.db_session.query(Category).get(category_id)
 
@@ -239,7 +238,6 @@ class ProductAPI(AppView):
         quantity = new_products_request["quantity"]
         reorder_level = new_products_request.get("reorder_level", 0)
         description = new_products_request.get("description", None)
-        expiration_date = new_products_request.get("expiration_date", None)
         category_id = new_products_request.get("category_id", None)
         # supplier_id = new_products_request.get("supplier_id", None)
         # manufacturer_id = new_products_request.get("manufacturer_id", None)
@@ -252,7 +250,6 @@ class ProductAPI(AppView):
                 selling_price=selling_price,
                 quantity=quantity,
                 description=description,
-                expiration_date=expiration_date,
                 reorder_level=reorder_level
             )
 

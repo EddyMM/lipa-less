@@ -8,7 +8,6 @@ let productAddition = new Vue({
         selling_price: null,
         quantity: null,
         reorder_level: null,
-        expiration_date: null,
         categories: null,
         category: null,
     },
@@ -29,7 +28,6 @@ let productAddition = new Vue({
                 selling_price: this.selling_price,
                 quantity: this.quantity,
                 reorder_level: this.reorder_level,
-                expiration_date: this.expiration_date,
                 category_id: this.category,
             };
 
