@@ -13,6 +13,21 @@ from POS.models.user_management.business import Business
 from POS.utils import is_cashier, is_admin, business_is_active
 
 
+class ManageProductsAPI(AppView):
+    @staticmethod
+    @login_required
+    @is_admin
+    @business_is_active
+    def get():
+        # Get all products within business
+        products = ProductsAPI.get_all_products()
+
+        return render_template(
+            template_name_or_list="products.html",
+            products=products,
+        )
+
+
 class ProductsAPI(AppView):
     @staticmethod
     @login_required
@@ -20,12 +35,12 @@ class ProductsAPI(AppView):
     @business_is_active
     def get():
         try:
-            # Get all products within business
+            # Get updated list of products
             products = ProductsAPI.get_all_products()
 
-            return render_template(
-                template_name_or_list="products.html",
-                products=products,
+            return ProductsAPI.send_response(
+                msg=dict(products=products),
+                status=200
             )
         except SQLAlchemyError as e:
             AppDB.db_session.rollback()
@@ -306,8 +321,10 @@ products_bp = Blueprint(
 )
 
 products_view = ProductsAPI.as_view("products")
+manage_products_view = ManageProductsAPI.as_view("manage_products")
 
 products_bp.add_url_rule(rule="", view_func=products_view)
+products_bp.add_url_rule(rule="/manage", view_func=manage_products_view)
 products_bp.add_url_rule(
     rule="/<int:product_id>",
     view_func=products_view,

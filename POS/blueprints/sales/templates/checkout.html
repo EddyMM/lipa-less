@@ -1,14 +1,114 @@
 {% extends "layout-with-sidebar.html" %}
 
 {% block body %}
-    <div class="row">
+    <div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+         xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+         xmlns:v-bind="http://www.w3.org/1999/xhtml">
         <div class="col-12">
             <h3>SALES</h3>
-        </div>
 
-        <!-- List of categories -->
-        <div class="col-12">
-            <p>Sales ...</p>
+            <template id='my-template'>
+                <div class='input-group col' style='padding:0'>
+                    <div class='input-group-prepend'>
+                        <span class='input-group-text'><i class='fa fa-search'></i>&nbsp;[[ getCount() ]]</span>
+                    </div>
+                    <input type='text' class='form-control'
+                        v-model='searchQuery'
+                        placeholder='Search'
+                        @keyup.enter='addItem'
+                        @keyup.up='prevItem'
+                        @keyup.down='nextItem'
+                        @keyup.esc='close'
+                    >
+                    <select class='form-control d-inline' v-model='selectedItem' @change='manualChange'>
+                        <option :disabled='firstDisabled' value=0>
+                            <template v-if='addedItem == 0 && !firstDisabled'>=></template> [[ firstLabel ]]
+                        </option>
+                        <option v-for='item in searchedItems' :key='item.id' :value='item[returns]'>
+                            <template v-if='addedItem == item[returns]'>=></template> [[ formOptionText(item) ]]
+                        </option>
+                    </select>
+                </div>
+            </template>
         </div>
     </div>
+
+    <!-- Add line item -->
+    <div id='app' class="row badge-dark" style="padding-bottom: 20px">
+        <div class="col-12">
+            Item:
+            <select-search v-model='secondExample' :items='products' :shows='"name"' :first-label='"ALL"'>
+            </select-search>
+        </div>
+
+        <div class="col-3">
+            Quantity: <input class='form-control' @keyup.enter="changePriceFromQuantity" title="Item Price"
+                             name="item_quantity" v-model="quantity" type="number">
+        </div>
+
+        <div class="col-3">
+            Price: <input title="Item code" name="item_price" v-model="price" type="number">
+        </div>
+
+        <div class="col-3">
+            <input class="btn lipa-less-btn" title="Add Line Item" style="margin-top: 10%"
+                   name="item_price" value="Add" type="submit">
+        </div>
+    </div>
+
+    <!-- List of line items -->
+
+    <div class="row">
+        <div class="col-12">Items to be checked out: </div>
+    </div>
+
+
+    <form id="checkoutApp" class="row">
+        <div class="col-9 table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-head">
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Remove</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Items -->
+                    <tr>
+                        <th scope="row">Bread</th>
+                        <td>2</td>
+                        <td>100</td>
+                        <td><button class="lipa-less-btn">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Total and change -->
+        <div class="col-3">
+            <table class="table table-sm table-bordered table-hover">
+                <tbody>
+                    <tr>
+                        <th scope="row">Total</th>
+                        <td>1950</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Amount Paid </th>
+                        <td>2000</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Change</th>
+                        <td>50</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+
+    <script src="{{ url_for('checkout_bp.static', filename='js/checkout.js') }}"></script>
+
 {% endblock %}

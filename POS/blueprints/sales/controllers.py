@@ -47,7 +47,7 @@ class SalesAPI(AppView):
                 msg="Missing fields or missing values",
                 status=400
             )
-        
+
         try:
             if len(new_sales_request["line_items"]) > 0:
                 from POS import AppDB
@@ -133,8 +133,6 @@ sales_view = SalesAPI.as_view("sales")
 sales_bp = Blueprint(
     name="sales_bp",
     import_name=__name__,
-    template_folder="templates",
-    static_folder="static",
     url_prefix="/sales"
 )
 
