@@ -28,7 +28,6 @@
     <div class="row">
         <div class="offset-md-1 col-md-10 col-12">
             <form id="select-business-form" class="container-fluid">
-                <!--TODO: Show list if any business exists-->
                 {% if businesses %}
                 {% for business in businesses %}
                     <div class="row">
@@ -121,7 +120,10 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input name="contact_number" type="number" v-model="contactNumber" required>
+                                    <input name="contact_number" type="text"
+                                           title="Phone number e.g. 0712987234"
+                                           pattern="07.{8}"
+                                           v-model="contactNumber" required>
                                 </div>
                             </div>
 
