@@ -32,6 +32,7 @@
                     <tr v-for="(product, index) in products">
                         <th scope="row">[[ product.num ]]</th>
                         <td><input title="Name of product" type="text"
+                                   size="10"
                                    v-model="product.name"></td>
                         <td>[[ product.category ]]</td>
                         <td v-if="product.quantity<product.reorder_level" class="badge-danger">
@@ -39,12 +40,13 @@
                                    v-model="product.quantity"></td>
                         <td v-else="product.quantity<product.reorder_level">
                             <input title="Quantity in stock" type="number"
+
                                    v-model="product.quantity"></td>
                         <td><input title="Reorder Level" type="number"
                                    v-model="product.reorder_level"></td>
-                        <td><input title="Buying Price" type="number"
+                        <td><input title="Buying Price" type="number" style="width: 7em"
                                    v-model="product.buying_price"></td>
-                        <td><input title="Selling Price" type="number"
+                        <td><input title="Selling Price" type="number" style="width: 7em"
                                    v-model="product.selling_price"></td>
                         <td>
                             <button class="btn btn-success"
