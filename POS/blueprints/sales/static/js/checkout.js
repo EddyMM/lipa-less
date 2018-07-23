@@ -5,14 +5,14 @@ let productOptionsApp = new Vue({
         products: null,
         selectedProduct: null,
         quantity: 0,
-        price: 0,
+        selling_price: 0,
     },
     methods: {
         changePriceFromQuantity: function changePriceFromQuantity() {
             if(this.selectedProduct >= 0) {
                 let product_from_id = getProductById(this.selectedProduct);
                 if(product_from_id != null) {
-                    this.price = this.quantity * product_from_id.price;
+                    this.selling_price = this.quantity * product_from_id.selling_price;
                 } else {
                     console.log("No product by id: " + this.selectedProduct);
                 }
@@ -23,13 +23,13 @@ let productOptionsApp = new Vue({
             if(productFromId != null && this.selectedProduct > 0 &&
                 productFromId.name != null &&
                 productFromId.name !== "" &&
-                productFromId.price > 0 &&
+                productFromId.selling_price > 0 &&
                 productFromId.quantity) {
 
                 let lineItem = {
                     product_id: this.selectedProduct,
                     name: productFromId.name,
-                    price: productFromId.price,
+                    selling_price: productFromId.selling_price,
                     quantity: this.quantity
                 };
 
@@ -83,23 +83,26 @@ let checkoutApp = new Vue({
                     console.log("Error checking out items: " + response.data.msg);
                 }
             });
+        },
+        computeChange: function() {
+            this.change = this.amountPaid - this.total;
         }
     }
 });
 
 function computeTotal() {
-    let total = 0;
+    let checkout_total = 0;
 
     for(x=0; x<checkoutApp.lineItems.length; x++) {
-        total += checkoutApp.lineItems[x].price * checkoutApp.lineItems[x].quantity;
+        checkout_total += checkoutApp.lineItems[x].selling_price * checkoutApp.lineItems[x].quantity;
     }
 
-    checkoutApp.total = total;
+    checkoutApp.total = checkout_total;
 }
 
 function resetProductOptionsApp() {
     productOptionsApp.quantity = 0;
-    productOptionsApp.price = 0;
+    productOptionsApp.selling_price = 0;
 }
 
 function getProductById(productId) {

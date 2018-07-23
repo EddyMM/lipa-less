@@ -13,7 +13,7 @@
     </div>
     <div class="row">
         <!-- List of products -->
-        <div class="col-12 table-responsive">
+        <div id="products-list" class="col-12 table-responsive">
             <table class="table table-sm table-bordered table-hover">
                 <thead class="table-head">
                     <tr>
@@ -21,22 +21,38 @@
                         <th scope="col">Name</th>
                         <th scope="col">Category</th>
                         <th scope="col">Quantity</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Reorder Level</th>
+                        <th scope="col">Buying Price</th>
+                        <th scope="col">Selling Price</th>
                         <th scope="col">Edit</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Products -->
-                    {% for product in products %}
-                        <tr>
-                            <th scope="row">{{ product.num }}</th>
-                            <td>{{ product.name }}</td>
-                            <td>{{ product.category }}</td>
-                            <td>{{ product.quantity }}</td>
-                            <td>{{ product.price }}</td>
-                            <td><button class="lipa-less-btn">Edit</button></td>
-                        </tr>
-                    {% endfor %}
+                    <tr v-for="(product, index) in products">
+                        <th scope="row">[[ product.num ]]</th>
+                        <td><input title="Name of product" type="text"
+                                   v-model="product.name"></td>
+                        <td>[[ product.category ]]</td>
+                        <td v-if="product.quantity<product.reorder_level" class="badge-danger">
+                            <input title="Quantity in stock" type="number"
+                                   v-model="product.quantity"></td>
+                        <td v-else="product.quantity<product.reorder_level">
+                            <input title="Quantity in stock" type="number"
+                                   v-model="product.quantity"></td>
+                        <td><input title="Reorder Level" type="number"
+                                   v-model="product.reorder_level"></td>
+                        <td><input title="Buying Price" type="number"
+                                   v-model="product.buying_price"></td>
+                        <td><input title="Selling Price" type="number"
+                                   v-model="product.selling_price"></td>
+                        <td>
+                            <button class="btn btn-success"
+                                    @click.prevent="saveProductDetails([[ index ]])">Save</button>
+                            <button class="btn btn-danger"
+                                    @click.prevent="deleteProduct([[ index ]])">Delete</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -54,4 +70,6 @@
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
+
+    <script src="{{ url_for('product_bp.static', filename='js/list_products.js') }}"></script>
 {% endblock %}

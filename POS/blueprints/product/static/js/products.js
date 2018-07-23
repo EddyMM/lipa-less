@@ -52,13 +52,6 @@ let productAddition = new Vue({
             .then(response => {
                 this.categories = response.data.msg.categories;
             });
-
-        // axios
-        //     .get('/suppliers')
-        //     .then(response => {
-        //         console.log(response.data.msg);
-        //         // this.suppliers = response.data.msg.suppliers;
-        //     });
     }
 });
 
@@ -101,48 +94,6 @@ let categoryAddition = new Vue({
         }
     }
 });
-
-
-/**
- * Vue instance to manage category addition from products form
- */
-// let supplierAddition = new Vue({
-//     el: '#add-supplier-modal',
-//     delimiters: ['[[', ']]'],
-//     data: {
-//         supplier_name: null,
-//         supplier_contact_person: null,
-//         supplier_contact_number: null
-//     },
-//     methods: {
-//         addSupplier: function () {
-//             // Validate fields
-//             let addSupplierForm = document.getElementById("add-supplier-form");
-//             if (!addSupplierForm.reportValidity()) {
-//                 return;
-//             }
-//
-//             // Package the data into an object
-//             let supplierInfo = {
-//                 "name": this.supplier_name,
-//                 "contact_person": this.supplier_contact_person,
-//                 "contact_number": this.supplier_contact_number
-//             };
-//
-//             axios
-//                 .post("/supplier", supplierInfo)
-//                 .then(
-//                     response => {
-//                         if (response.headers.code === '200') {
-//                             $("#add-category-modal").modal("hide");
-//                             productAddition.categories = response.data.msg.categories;
-//                         }
-//                         $("#category-server-responses").text(response.data.msg);
-//                     }
-//                 );
-//         }
-//     }
-// });
 
 jQuery(function () {
     /**

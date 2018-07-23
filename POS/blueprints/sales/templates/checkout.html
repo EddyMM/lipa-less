@@ -7,30 +7,6 @@
          xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
         <div class="col-12">
             <h3>SALES</h3>
-
-            <template id='my-template'>
-                <div class='input-group col' style='padding:0'>
-                    <div class='input-group-prepend'>
-                        <span class='input-group-text'><i class='fa fa-search'></i>&nbsp;[[ getCount() ]]</span>
-                    </div>
-                    <input type='text' class='form-control'
-                        v-model='searchQuery'
-                        placeholder='Search'
-                        @keyup.enter='addItem'
-                        @keyup.up='prevItem'
-                        @keyup.down='nextItem'
-                        @keyup.esc='close'
-                    >
-                    <select class='form-control d-inline' v-model='selectedItem' @change='manualChange'>
-                        <option :disabled='firstDisabled' value=0>
-                            <template v-if='addedItem == 0 && !firstDisabled'>=></template> [[ firstLabel ]]
-                        </option>
-                        <option v-for='item in searchedItems' :key='item.id' :value='item[returns]'>
-                            <template v-if='addedItem == item[returns]'>=></template> [[ formOptionText(item) ]]
-                        </option>
-                    </select>
-                </div>
-            </template>
         </div>
     </div>
 
@@ -60,7 +36,7 @@
 
         <div class="col-4">
             <label>Price: </label>
-            <input title="Item code" name="item_price" v-model="price" type="number">
+            <input title="Item code" name="item_price" v-model="selling_price" type="number">
         </div>
 
         <div class="col-2">
@@ -93,7 +69,7 @@
                     <tr v-for="(lineItem, index) in lineItems">
                         <th scope="row">[[ lineItem.name ]]</th>
                         <td>[[ lineItem.quantity ]]</td>
-                        <td>[[ lineItem.price ]]</td>
+                        <td>[[ lineItem.selling_price ]]</td>
                         <td><button class="lipa-less-btn" @click.prevent="removeLineItem([[ index ]])">Delete</button></td>
                     </tr>
                 </tbody>
@@ -110,7 +86,9 @@
                     </tr>
                     <tr>
                         <th scope="row">Amount Paid </th>
-                        <td><input title="Amount paid" type="number" v-model="amountPaid"></td>
+                        <td><input title="Amount paid" type="number"
+                                   @keyup.enter="computeChange"
+                                   v-model="amountPaid"></td>
                     </tr>
                     <tr>
                         <th scope="row">Change</th>

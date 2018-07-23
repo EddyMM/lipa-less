@@ -51,19 +51,19 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-8">
             <div id="accounts-area" class="container-fluid">
                 <!-- Accounts column title -->
                 <div id="accounts-title-bar" class="row">
-                    <div class="col-4">
+                    <div class="col-6">
                         <h5>Role</h5>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <h5>Name</h5>
                     </div>
-                    <div class="col-4">
-                        <h5>Deactivated</h5>
-                    </div>
+{#                    <div class="col-4">#}
+{#                        <h5>Deactivated</h5>#}
+{#                    </div>#}
                 </div>
 
                 <!-- Accounts list -->
@@ -72,13 +72,13 @@
                         <div class="row">
                             <div id="accounts-list-items" class="container-fluid">
                                 <div v-if="accounts!=null && accounts.length <= 0" id="empty-accounts-list" class="account row">
-                                    <div class="col-12">
+                                    <div class="col-8">
                                         <p>No other users in your business</p>
                                     </div>
                                 </div>
 
                                 <div v-else id="filled-accounts-list" class="account row" v-for="account in accounts">
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <select name="role" v-model:role="account.role">
                                             <option
                                                 v-for="role in roles"
@@ -87,19 +87,19 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <label :id="[[ account.id ]]">[[ account.name ]]</label>
                                     </div>
-                                    <div class="col-4">
-                                        <input v-if="account.deactivated" name="deactivated"
-                                               :value="[[ account.deactivated ]]"
-                                               v-model:deactivated="account.deactivated"
-                                               type="checkbox" checked>
-                                        <input v-else name="deactivated"
-                                               :value="[[ account.deactivated ]]"
-                                               v-model:deactivated="account.deactivated"
-                                               type="checkbox">
-                                    </div>
+{#                                    <div class="col-4">#}
+{#                                        <input v-if="account.deactivated" name="deactivated"#}
+{#                                               :value="[[ account.deactivated ]]"#}
+{#                                               v-model:deactivated="account.deactivated"#}
+{#                                               type="checkbox" checked>#}
+{#                                        <input v-else name="deactivated"#}
+{#                                               :value="[[ account.deactivated ]]"#}
+{#                                               v-model:deactivated="account.deactivated"#}
+{#                                               type="checkbox">#}
+{#                                    </div>#}
                                 </div>
                             </div>
                         </div>

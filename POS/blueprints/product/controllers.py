@@ -67,6 +67,8 @@ class ProductsAPI(AppView):
                 status=400
             )
 
+        print(modify_products_request)
+
         if not ProductsAPI.validate_modify_product_request(modify_products_request):
             return ProductsAPI.send_response(
                 msg="Missing fields or missing values",
@@ -118,7 +120,7 @@ class ProductsAPI(AppView):
             products = ProductsAPI.get_all_products()
 
             return ProductsAPI.send_response(
-                msg=products,
+                msg=dict(products = products),
                 status=200
             )
         except SQLAlchemyError as e:
@@ -155,7 +157,7 @@ class ProductsAPI(AppView):
             products = ProductsAPI.get_all_products()
 
             return ProductsAPI.send_response(
-                msg=products,
+                msg=dict(products = products),
                 status=200
             )
         except SQLAlchemyError as e:
@@ -185,11 +187,13 @@ class ProductsAPI(AppView):
             name=product.name,
             quantity=product.quantity,
             category=Category.get_category_name(product.category_id),
-            price=product.selling_price,
+            buying_price=product.buying_price,
+            selling_price=product.selling_price,
+            reorder_level=product.reorder_level,
             description=product.description
         ) for num, product in enumerate(AppDB.db_session.query(Product).filter(
             Product.business_id == session["business_id"]
-        ).all())]
+        ).order_by(Product.id).all())]
 
         return products
 
@@ -270,7 +274,7 @@ class ProductAPI(AppView):
             products = ProductsAPI.get_all_products()
 
             return ProductAPI.send_response(
-                msg=products,
+                msg=dict(products = products),
                 status=200
             )
         except SQLAlchemyError as e:

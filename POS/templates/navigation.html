@@ -37,28 +37,13 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item dropdown">
-                                {% if session.role == OWNER_ROLE_NAME or session.role == ADMIN_ROLE_NAME %}
-                                    <a class="nav-link" href="#" role="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
+                            {% if session.role == OWNER_ROLE_NAME or session.role == ADMIN_ROLE_NAME %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url_for('products_bp.manage_products') }}">
                                         Stock
                                     </a>
-                                {% endif %}
-                                <div class="dropdown-menu" aria-labelledby="navBarDropdown">
-                                    <a class="dropdown-item" href="{{ url_for('products_bp.manage_products') }}">
-                                        Products
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url_for('categories_bp.manage_categories') }}">
-                                        Categories
-                                    </a>
-{#                                    <a class="dropdown-item" href="{{ url_for('suppliers_bp.manage_suppliers') }}">#}
-{#                                        Suppliers#}
-{#                                    </a>#}
-{#                                    <a class="dropdown-item" href="{{ url_for('manufacturers_bp.manufacturers') }}">#}
-{#                                        Manufacturers#}
-{#                                    </a>#}
-                                </div>
-                            </li>
+                                </li>
+                            {% endif %}
                         {% endif %}
 
                         {% if session.role == OWNER_ROLE_NAME or session.role == ADMIN_ROLE_NAME or session.role == CASHIER_ROLE_NAME %}
