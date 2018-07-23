@@ -59,6 +59,7 @@
                             </div>
                             <div class="col-md-3 col-12">
                                 <input name="buying-price" type="number"
+                                       min="1"
                                        v-model="buying_price"
                                        title="Buying price of the new product" required>
                             </div>
@@ -71,6 +72,7 @@
                             <div class="col-md-3 col-12">
                                 <input name="selling-price" type="number"
                                        v-model="selling_price"
+                                       min="1"
                                        title="Selling price of the new product" required>
                             </div>
                         </div>
@@ -85,6 +87,7 @@
                             <div class="col-md-3">
                                 <input name="quantity" type="number"
                                        v-model="quantity"
+                                       min="1"
                                        title="Number of units of the new product" required>
                             </div>
 
@@ -96,6 +99,7 @@
                             <div class="col-md-3">
                                 <input name="reorder-level" type="number"
                                        v-model="reorder_level"
+                                       min="1"
                                        title="Minimum amout that should be in stock before sending
                                        'running out of stock' notification"
                                        required>
@@ -120,11 +124,11 @@
                         <div class="row">
                             <div class="col-md-2">
                                 <label>
-                                    Category
+                                    Category *
                                 </label>
                             </div>
                             <div id="categories-list" class="col-md-8">
-                                <select id="category-options" name="category"
+                                <select id="category-options" name="category" required
                                         v-model="category"
                                         title="Classification of the new product">
                                     <option
