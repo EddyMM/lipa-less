@@ -4,7 +4,8 @@
     <div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
          xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
          xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
-         xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+         xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+         xmlns:v-on="http://www.w3.org/1999/xhtml">
         <div class="col-12">
             <h3>SALES</h3>
         </div>
@@ -30,7 +31,7 @@
 
         <div class="col-4">
             <label>Quantity: </label>
-            <input @keyup.enter="changePriceFromQuantity" title="Item Price"
+            <input @change.prevent="changePriceFromQuantity" title="Item Price"
                              name="item_quantity" v-model="quantity" type="number">
         </div>
 
@@ -70,7 +71,7 @@
                         <th scope="row">[[ lineItem.name ]]</th>
                         <td>[[ lineItem.quantity ]]</td>
                         <td>[[ lineItem.selling_price ]]</td>
-                        <td><button class="lipa-less-btn" @click.prevent="removeLineItem([[ index ]])">Delete</button></td>
+                        <td><button class="lipa-less-btn" v-on:click.self="removeLineItem([[ index ]])">Delete</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -87,7 +88,7 @@
                     <tr>
                         <th scope="row">Amount Paid </th>
                         <td><input title="Amount paid" type="number"
-                                   @keyup.enter="computeChange"
+                                   @change.prevent="computeChange"
                                    v-model="amountPaid"></td>
                     </tr>
                     <tr>
