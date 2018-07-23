@@ -76,7 +76,7 @@ class SalesAPI(AppView):
                         line_item = LineItem(
                             name=line_item_request["name"],
                             quantity=int(line_item_request["quantity"]),
-                            price=float(line_item_request["price"])
+                            price=float(line_item_request["selling_price"])
                         )
                         line_item.product = product
 
@@ -110,8 +110,8 @@ class SalesAPI(AppView):
                                 line_item["name"] not in ("", None) and \
                                 "product_id" in line_item and \
                                 line_item["product_id"] not in ("", None) and \
-                                "price" in line_item and \
-                                line_item["price"] not in ("", None) and \
+                                "selling_price" in line_item and \
+                                line_item["selling_price"] not in ("", None) and \
                                 "quantity" in line_item and \
                                 line_item["quantity"] not in ("", None):
                             pass

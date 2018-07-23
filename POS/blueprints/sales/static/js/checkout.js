@@ -78,7 +78,10 @@ let checkoutApp = new Vue({
             .then(
             response => {
                 if (response.headers.code === '200') {
-                    console.log("Successfully checked out items!");
+                    this.lineItems = [];
+                    this.total = 0;
+                    this.amountPaid = 0;
+                    this.change = 0;
                 } else {
                     console.log("Error checking out items: " + response.data.msg);
                 }
