@@ -9,14 +9,43 @@
         <!-- List of possible reports-->
         <div class="col-12" style="text-align: left">
             {% if categories %}
-                <form action="{{ url_for('manage_reports_bp.product_brand_report') }}" method="POST">
-                    <select title="category" name="category" required>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
-                    <input class="lipa-less-btn" type="submit" value=">> Products Brand">
-                </form>
+                <div class="row">
+                    <div class="col-12">
+                        <form action="{{ url_for('manage_reports_bp.product_brand_report') }}"
+                              class="report-type" method="POST">
+                            <fieldset style="display: inline-block">
+                                <legend>Product quanties for each category</legend>
+                                <label>Select a Product Category: </label>
+                                <select title="category" name="category" required>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </fieldset>
+
+                            <input class="lipa-less-btn" type="submit" value=">> Product Quantity">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <form action="{{ url_for('manage_reports_bp.reorder_level_report_view') }}"
+                              class="report-type" method="POST">
+                            <fieldset style="display: inline-block">
+                                <legend>Reorder level comparison</legend>
+                                <label>Select a Product Category: </label>
+                                <select title="category" name="category" required>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </fieldset>
+
+                            <input class="lipa-less-btn" type="submit" value=">> Product Brand Reorder Level">
+                        </form>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>

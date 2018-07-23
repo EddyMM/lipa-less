@@ -312,6 +312,12 @@ p {
     text-align: left;
 }
 
+.report-type {
+	border: 1px solid var(--lipaless-grey);
+	padding: 2%;
+	margin: 1%;
+}
+
 .select-business-box {
 	margin-top: 2%;
 	margin-bottom: 2%;

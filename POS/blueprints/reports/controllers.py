@@ -83,8 +83,67 @@ class ProductBrandReportAPI(AppView):
         return response
 
 
+class ReorderLevelReportAPI(AppView):
+    @staticmethod
+    @login_required
+    @is_admin
+    @business_is_active
+    def post():
+        if not "category" in request.form:
+            current_app.logger.warning("Category for product brand report not sent")
+
+        category_id = request.form["category"]
+        from POS import AppDB
+        products = AppDB.db_session.query(Product).join(Category).join(Business).filter(
+            Category.id == category_id,
+            Business.id == session["business_id"]
+        ).all()
+
+        """query database for same product but different brands, data_requirements: product name and quantity"""
+
+        product_name = AppDB.db_session.query(Category).get(category_id).name  # this part is fetched from db where name or from UI when user chooses product to query
+        product_brand_name = [product.name for product in products]
+        product_brand_quantity = [product.quantity for product in products]
+        product_brand_re_order = [product.reorder_level for product in products]
+
+        # draw the bar graph to make comparision, this should simply tell the user the quantity of the products in-stock
+        fig = Figure()
+        ax = fig.add_subplot(111)
+
+        x_pos = np.arange(len(product_brand_name))
+        ax.set_xticks(x_pos)
+        ax.set_xticklabels(product_brand_name)
+
+        # ax.title(product_name + 'BRANDS IN STOCK')
+        ax.set_xlabel('BRAND NAME')
+        ax.set_ylabel('QUANTITY IN STOCK')
+
+        # plotting for quantity
+        ax.bar(x_pos - 0.2, product_brand_quantity, width=0.4, label='CURRENT QUANTITY')
+
+
+        # plotting for re-order
+        ax.bar(x_pos + 0.2, product_brand_re_order, width=0.4, label='RE-ORDER LEVEL')
+
+
+        ax.legend()
+
+        # save file to pdf
+        # plt.savefig('/home/jeffkim/Desktop/projects/applications/python_projects/report_generation/reports/report_two'
+        #             '/static/images/product_brand_in_stock.pdf', bbox_inches='tight', pad_inches=1, transparent=True)
+
+        # render image to web page
+        canvas = FigureCanvas(fig)
+        png_output = BytesIO()
+        canvas.print_png(png_output)
+        response = make_response(png_output.getvalue())
+        response.headers['Content-Type'] = 'image/png'
+        return response
+
+
 manage_reports_view = ManageReportsAPI.as_view("manage_reports")
 product_brand_report_view = ProductBrandReportAPI.as_view("product_brand_report")
+reorder_level_report_view = ReorderLevelReportAPI.as_view("reorder_level_report_view")
 
 manage_reports_bp = Blueprint(
     name="manage_reports_bp",
@@ -96,3 +155,5 @@ manage_reports_bp = Blueprint(
 
 manage_reports_bp.add_url_rule(rule="", view_func=manage_reports_view)
 manage_reports_bp.add_url_rule(rule="/product_brand", view_func=product_brand_report_view)
+manage_reports_bp.add_url_rule(rule="/product_brand_reorder_level",
+                               view_func=reorder_level_report_view)
