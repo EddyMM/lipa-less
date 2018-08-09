@@ -50,11 +50,12 @@ class ProductBrandReportAPI(AppView):
 
         """query database for same product but different brands, data_requirements: product name and quantity"""
 
-        product_name = AppDB.db_session.query(Category).get(category_id).name  # this part is fetched from db where name or from UI when user chooses product to query
+        # This part is fetched from db where name or from UI when user chooses product to query
+        product_name = AppDB.db_session.query(Category).get(category_id).name
         product_brand_name = [product.name for product in products]
         product_brand_quantity = [product.quantity for product in products]
 
-        # draw the bar graph to make comparision, this should simply tell the user the quantity of the products in-stock
+        # Draw the bar graph to make comparision, this should simply tell the user the quantity of the products in-stock
         fig = Figure()
         ax = fig.add_subplot(111)
 
@@ -101,7 +102,6 @@ class ReorderLevelReportAPI(AppView):
 
         """query database for same product but different brands, data_requirements: product name and quantity"""
 
-        product_name = AppDB.db_session.query(Category).get(category_id).name  # this part is fetched from db where name or from UI when user chooses product to query
         product_brand_name = [product.name for product in products]
         product_brand_quantity = [product.quantity for product in products]
         product_brand_re_order = [product.reorder_level for product in products]

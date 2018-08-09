@@ -104,11 +104,6 @@ class ProductsAPI(AppView):
             product.description = description,
             product.reorder_level = reorder_level
 
-            # Relationships
-            # if supplier_id:
-            #     product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
-            # if manufacturer_id:
-            #     product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
             if category_id:
                 product.category = AppDB.db_session.query(Category).get(category_id)
 
@@ -257,11 +252,6 @@ class ProductAPI(AppView):
                 reorder_level=reorder_level
             )
 
-            # Relationships
-            # if supplier_id:
-            #     product.supplier = AppDB.db_session.query(Supplier).get(supplier_id)
-            # if manufacturer_id:
-            #     product.manufacturer = AppDB.db_session.query(Manufacturer).get(manufacturer_id)
             if category_id:
                 product.category = AppDB.db_session.query(Category).get(category_id)
 

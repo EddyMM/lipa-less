@@ -105,7 +105,7 @@ class BillingAPI(AppView):
                 current_business_ewallet = EWallet.get_ewallet_by_id(business_ewallet.account_id)
                 current_business_ewallet.billing_transactions.append(billing_transaction)
 
-                # Increment ewallet with amount
+                # Decrement ewallet with amount
                 current_business_ewallet.balance += value
 
                 AppDB.db_session.add(billing_transaction)
