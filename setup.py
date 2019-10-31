@@ -32,7 +32,7 @@ setup(
         "SQLAlchemy==1.2.5",
         "traitlets==4.3.2",
         "wcwidth==0.1.7",
-        "Werkzeug==0.14.1"
+        "Werkzeug==0.15.3"
     ],
     author="Eddy Mwenda, Jeff Ndungu, Catherine Nyambura",
     author_email="mwendaeddy@gmail.com, jeffkim207@gmail.com, cnyambura043@gmail.com",
