@@ -26,7 +26,7 @@ setup(
         "ptyprocess==0.5.2",
         "pyaml==17.12.1",
         "Pygments==2.2.0",
-        "PyYAML==3.12",
+        "PyYAML==5.4",
         "simplegeneric==0.8.1",
         "six==1.11.0",
         "SQLAlchemy==1.2.5",
