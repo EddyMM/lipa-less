@@ -25,7 +25,7 @@ setup(
         "psycopg2-binary==2.7.4",
         "ptyprocess==0.5.2",
         "pyaml==17.12.1",
-        "Pygments==2.2.0",
+        "Pygments==2.7.4",
         "PyYAML==3.12",
         "simplegeneric==0.8.1",
         "six==1.11.0",
